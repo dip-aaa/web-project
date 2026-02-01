@@ -1,14 +1,13 @@
+
 import styles from './page.module.css'
 import { Navbar } from '../components/Navbar';
 import { Frames } from '../components/Frames';
-import { Box } from './Box';
-import { Cup } from './Cup';
+import StickyFooter from '../components/StickyFooter';
 
 export default function Home() {
   return (
     <>
-      <Box />
-      <Cup />
+      {/* Removed Box and Cup components as files were deleted */}
       {/* Decorative circle bottom left */}
       <div style={{
         position: 'fixed',
@@ -67,6 +66,36 @@ export default function Home() {
             justifyContent: 'center',
           }}
         >
+          {/* Book SVG positioned above the cup */}
+          <img
+            src="/book.svg"
+            alt="Book"
+            style={{
+              position: 'absolute',
+              left: '10%',
+              top: '30%',
+              transform: 'translate(-50%, -50%)',
+              width: '60px',
+              height: '80px',
+              zIndex: 2,
+              pointerEvents: 'none',
+            }}
+          />
+          {/* Cup SVG positioned to the left of mascot */}
+          <img
+            src="/cup.svg"
+            alt="Cup"
+            style={{
+              position: 'absolute',
+              left: '20%',
+              top: '65%',
+              transform: 'translate(-50%, -50%)',
+              width: '80px',
+              height: '80px',
+              zIndex: 2,
+              pointerEvents: 'none',
+            }}
+          />
           <img
             src={"/1.png"}
             alt="Mascot"
@@ -89,6 +118,7 @@ export default function Home() {
           <Frames />
         </div>
       </main>
+      <StickyFooter />
     </>
   );
 }

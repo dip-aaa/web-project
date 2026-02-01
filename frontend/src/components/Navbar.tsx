@@ -1,4 +1,3 @@
-import vector from "../app/vector.svg";
 import styles from "./Navbar.module.css";
 
 export const Navbar = () => {
@@ -6,7 +5,7 @@ export const Navbar = () => {
     <nav className={styles.navbar} style={{ zIndex: 10, position: 'relative' }}>
       <div className={styles.logoContainer}>
         <div className={styles.logoCircle}>
-          <img src={vector} alt="Vector" style={{ width: 24, height: 20 }} />
+          <img src="/win.svg" alt="Win" style={{ width: 36, height: 36, borderRadius: '50%', background: '#a86a21', display: 'block' }} />
         </div>
         <span className={styles.logoText}>KOSH</span>
       </div>
