@@ -1,0 +1,56 @@
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #FDF7F2;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logoCircle {
+  width: 48px;
+  height: 48px;
+  background: #ab6b20;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoText {
+  font-family: 'Playfair Display', serif;
+  font-weight: bold;
+  color: #1a1a1a;
+  font-size: 2rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.login {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  color: #1a1a1a;
+  font-size: 1.25rem;
+}
+
+.joinHub {
+  background: #ab6b20;
+  border-radius: 9999px;
+  padding: 0.5rem 1.5rem;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+}

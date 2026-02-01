@@ -1,9 +1,6 @@
 .main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
-  background-color: lightblue;
+  background-color: #FDF7F2;
 }
 
 .main h1 {
