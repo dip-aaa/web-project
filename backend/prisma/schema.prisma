@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+/// ERD: College 1..* Student
+model College {
+  id       Int    @id @default(autoincrement())
+  name     String
+  location String
+
+  students Student[]
+}
+
+/// ERD: Student belongs to a College and is a supertype for Buyer/Seller/Mentor/Mentee
+model Student {
+  id          Int     @id @default(autoincrement())
+  name        String
+  email       String  @unique
+  phoneNumber String?
+  department  String?
+
+  collegeId Int
+  college   College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  buyer  Buyer?
+  seller Seller?
+  mentor Mentor?
+  mentee Mentee?
+}
+
+/// ERD subtype: Buyer (ISA Student)
+model Buyer {
+  studentId Int     @id
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  purchases Item[]   @relation("BuyerPurchases")
+  reviews   Review[]
+}
+
+/// ERD subtype: Seller (ISA Student)
+model Seller {
+  studentId Int     @id
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  items Item[] @relation("SellerItems")
+}
+
+/// ERD subtype: Mentor (ISA Student)
+model Mentor {
+  studentId     Int     @id
+  student       Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  expertiseArea String?
+
+  requestsReceived Request[]
+}
+
+/// ERD subtype: Mentee (ISA Student)
+model Mentee {
+  studentId    Int     @id
+  student      Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  interestArea String?
+
+  requestsSent Request[]
+}
+
+/// ERD: Category 1..* Item
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  items Item[]
+}
+
+/// ERD: Seller 1..* Items, Buyer 1..* Items (optional buyer until purchased)
+model Item {
+  id        Int    @id @default(autoincrement())
+  itemName  String
+  cost      Float
+  condition String
+
+  sellerId Int
+  seller   Seller @relation("SellerItems", fields: [sellerId], references: [studentId], onDelete: Restrict)
+
+  buyerId Int?
+  buyer   Buyer? @relation("BuyerPurchases", fields: [buyerId], references: [studentId], onDelete: SetNull)
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  @@index([sellerId])
+  @@index([buyerId])
+  @@index([categoryId])
+}
+
+/// ERD: Buyer 1..* Review
+model Review {
+  id       Int      @id @default(autoincrement())
+  comments String?
+  rating   Int
+  date     DateTime @default(now())
+
+  buyerId Int
+  buyer   Buyer @relation(fields: [buyerId], references: [studentId], onDelete: Cascade)
+
+  @@index([buyerId])
+}
+
+/// ERD: Mentee sends Requests, Mentor receives Requests
+model Request {
+  id              Int       @id @default(autoincrement())
+  requestStatus   String
+  requestSent     DateTime  @default(now())
+  requestReceived DateTime?
+
+  mentorId Int
+  mentor   Mentor @relation(fields: [mentorId], references: [studentId], onDelete: Cascade)
+
+  menteeId Int
+  mentee   Mentee @relation(fields: [menteeId], references: [studentId], onDelete: Cascade)
+
+  @@index([mentorId])
+  @@index([menteeId])
+}
