@@ -6,7 +6,7 @@ import WelcomeHeader from './components/WelcomeHeader';
 import StatsGrid from './components/StatsGrid';
 import CalendarSection from './components/CalendarSection';
 import TodoList from './components/TodoList';
-import StreakTracker from './components/StreakTracker';
+// import StreakTracker from './components/StreakTracker';
 import MarketplacePreview from './components/MarketplacePreview';
 import SuggestedMentors from './components/SuggestedMentors';
 import TopSellers from './components/TopSellers';
@@ -48,11 +48,11 @@ export default function DashboardPage() {
   const [showScheduler, setShowScheduler] = useState(false);
   
   const [marketplaceItems, setMarketplaceItems] = useState<MarketplaceItem[]>([
-    { id: 1, title: 'Engineering Textbook', price: 'Rs 500', image: '📚', wishlisted: false },
+    { id: 1, title: 'Engineering Textbook', price: 'रु 500', image: '📚', wishlisted: false },
     { id: 2, title: 'Scientific Calculator', price: 'Exchange', image: '🔢', wishlisted: false },
-    { id: 3, title: 'Lab Coat', price: 'Rs 300', image: '🥼', wishlisted: true },
-    { id: 4, title: 'Geometry Set', price: 'Rs 150', image: '📐', wishlisted: false },
-    { id: 5, title: 'Drawing Board', price: 'Rs 400', image: '🎨', wishlisted: false },
+    { id: 3, title: 'Lab Coat', price: 'रु 300', image: '🥼', wishlisted: true },
+    { id: 4, title: 'Geometry Set', price: 'रु 150', image: '📐', wishlisted: false },
+    { id: 5, title: 'Drawing Board', price: 'रु 400', image: '🎨', wishlisted: false },
   ]);
 
   const [events] = useState<CalendarEvent[]>([
@@ -102,10 +102,7 @@ export default function DashboardPage() {
           {/* Stats Grid */}
           <StatsGrid />
 
-          {/* Streak Tracker - Full Width */}
-          <div className="w-full">
-            <StreakTracker />
-          </div>
+          {/* Streak Tracker - Removed as requested */}
 
           {/* Calendar & Todo - Irregular Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -134,7 +131,7 @@ export default function DashboardPage() {
               <TodoList tasks={tasks} setTasks={setTasks} />
             </motion.div>
 
-            {/* Streak - Takes 3 columns (removed as requested) */}
+            
           </div>
 
           {/* Marketplace Preview */}

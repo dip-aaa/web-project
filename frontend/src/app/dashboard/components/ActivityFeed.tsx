@@ -46,59 +46,16 @@ export default function ActivityFeed({ activities }: ActivityFeedProps) {
         </button>
       </div>
       
-      <div className="space-y-6">
-        {activities.map((activity, idx) => {
-          const iconConfig = {
-            achievement: { bg: 'from-yellow-400 to-amber-500', icon: '🏆' },
-            mentor: { bg: 'from-emerald-400 to-green-500', icon: '🎓' },
-            marketplace: { bg: 'from-orange-400 to-red-400', icon: '🛍️' },
-            message: { bg: 'from-blue-400 to-indigo-500', icon: '💬' },
-          };
-          
-          const config = iconConfig[activity.type as keyof typeof iconConfig] || iconConfig.message;
-          
-          return (
-            <motion.div
-              key={activity.id}
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.9 + idx * 0.1 }}
-              className="flex gap-5 group"
-            >
-              <div className="relative flex-shrink-0">
-                <motion.div
-                  animate={idx === 0 ? {
-                    scale: [1, 1.3, 1],
-                    boxShadow: [
-                      '0 0 0 0 rgba(139, 111, 71, 0)',
-                      '0 0 0 10px rgba(139, 111, 71, 0)',
-                      '0 0 0 0 rgba(139, 111, 71, 0)'
-                    ]
-                  } : {}}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${config.bg} shadow-lg flex items-center justify-center text-xl`}
-                >
-                  {config.icon}
-                </motion.div>
-                {idx < activities.length - 1 && (
-                  <div className="absolute top-14 left-6 w-0.5 h-12 bg-gradient-to-b from-[#d4a574] to-transparent" />
-                )}
-              </div>
-              
-              <motion.div
-                whileHover={{ x: 5 }}
-                className="flex-1 pb-5 cursor-pointer bg-gradient-to-r from-[#f9f6f3] to-[#fdfcfa] rounded-2xl p-4 shadow-sm hover:shadow-md transition-all border border-[#d4a574]/10"
-              >
-                <p className="text-[#6b4423] font-semibold leading-relaxed mb-2">{activity.message}</p>
-                <div className="flex items-center gap-2 text-sm text-[#8b6f47]">
-                  <span>🕐</span>
-                  <span className="font-bold">{activity.time}</span>
-                </div>
-              </motion.div>
-            </motion.div>
-          );
-        })}
-      </div>
+      <ul className="space-y-2">
+        {activities.map((activity, idx) => (
+          <li key={activity.id}>
+            <div className="bg-gradient-to-r from-[#fdfcfa] to-white rounded-xl px-4 py-2 flex items-center min-h-[36px] border border-[#d4a574]/10 shadow-sm">
+              <span className="text-[#6b4423] font-medium flex-1">{activity.message}</span>
+              <span className="ml-2 text-xs text-[#8b6f47]">({activity.time})</span>
+            </div>
+          </li>
+        ))}
+      </ul>
       
       {/* Removed bottom View All Activity button, now at top right */}
     </motion.div>
