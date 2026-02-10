@@ -39,7 +39,7 @@ export default function SuggestedMentors() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: idx * 0.05 }}
             whileHover={{ y: -2 }}
-            className="bg-gradient-to-br from-[#f9f6f3] to-[#f5e9da] rounded-xl p-3 hover:shadow-md transition-all cursor-pointer border border-[#d4a574]/5 group"
+            className="bg-gradient-to-br from-[#fcfbfa] to-[#f9f6f3] rounded-xl p-3 hover:shadow-md transition-all cursor-pointer border border-[#d4a574]/5 group"
           >
             {/* Avatar & Name */}
             <div className="flex items-center gap-2.5 mb-2">
