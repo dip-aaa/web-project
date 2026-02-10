@@ -4,83 +4,87 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const sellers = [
-  { name: 'Priya S.', items: 12, badge: 1, color: 'from-yellow-400 to-amber-500', rank: 1 },
-  { name: 'Rahul K.', items: 9, badge: 2, color: 'from-gray-300 to-gray-400', rank: 2 },
-  { name: 'Anjali M.', items: 7, badge: 3, color: 'from-orange-400 to-orange-500', rank: 3 },
-  { name: 'Vikram R.', items: 6, badge: 4, color: 'from-blue-300 to-blue-400', rank: 4 },
-  { name: 'Neha P.', items: 5, badge: 5, color: 'from-purple-300 to-purple-400', rank: 5 },
+  { name: 'Priya S.', items: 12, earnings: 'रु 45,200', rank: 1 },
+  { name: 'Rahul K.', items: 9, earnings: 'रु 38,900', rank: 2 },
+  { name: 'Anjali M.', items: 7, earnings: 'रु 29,400', rank: 3 },
+  { name: 'Vikram R.', items: 6, earnings: 'रु 24,100', rank: 4 },
+  { name: 'Neha P.', items: 5, earnings: 'रु 19,800', rank: 5 },
 ];
 
 export default function TopSellers() {
   return (
-    <div className="bg-white/90 backdrop-blur-xl rounded-[2.5rem] p-8 shadow-2xl border-2 border-[#d4a574]/20">
-      <div className="flex items-center gap-4 mb-8">
-        <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
-          {/* Minimalist SVG trophy */}
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="8" y="3" width="12" height="6" rx="2" fill="#fff3cd" stroke="#bfa14a" strokeWidth="1.5"/>
-            <rect x="11" y="9" width="6" height="7" rx="2" fill="#fff3cd" stroke="#bfa14a" strokeWidth="1.5"/>
-            <rect x="12" y="16" width="4" height="5" rx="1.5" fill="#bfa14a"/>
-          </svg>
+    <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-5 shadow-lg border border-[#d4a574]/15">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 bg-gradient-to-br from-[#d4a574]/20 to-[#bfa77a]/20 rounded-xl flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9C6 9 6 4 12 4C18 4 18 9 18 9M6 9H18M6 9V18C6 19.1 6.9 20 8 20H16C17.1 20 18 19.1 18 18V9" 
+                stroke="#8b6f47" strokeWidth="1.8" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <h3 className="text-lg font-semibold text-[#6b4423]">Top Sellers</h3>
         </div>
-        <h3 className="text-2xl font-bold bg-gradient-to-r from-[#6b4423] to-[#8b5a3c] bg-clip-text text-transparent">
-          Top Sellers
-        </h3>
+        <span className="text-[10px] text-[#bfa77a] font-medium">This Month</span>
       </div>
       
-      <div className="space-y-3">
+      {/* Sellers List */}
+      <div className="space-y-2">
         {sellers.map((seller, idx) => (
           <motion.div
             key={idx}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.7 + idx * 0.1 }}
-            whileHover={{ scale: 1.03, x: -5 }}
-            className="flex items-center gap-4 bg-gradient-to-r from-[#fdfcfa] to-[#f9f6f3] rounded-2xl p-4 shadow-md hover:shadow-xl transition-all cursor-pointer border border-[#d4a574]/10 group relative overflow-hidden"
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: idx * 0.05 }}
+            whileHover={{ x: 3 }}
+            className="flex items-center gap-3 bg-gradient-to-r from-[#fdfcfa] to-white rounded-xl p-3 hover:shadow-md transition-all cursor-pointer group border border-[#d4a574]/5"
           >
-
-
-            {/* Minimal badge - circle with number */}
-            <div className={`w-14 h-14 bg-gradient-to-br ${seller.color} rounded-2xl flex items-center justify-center shadow-lg ml-4`}>
-              <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-                <circle cx="18" cy="18" r="16" fill="#fff" stroke="#bfa14a" strokeWidth="2"/>
-                <text x="18" y="24" textAnchor="middle" fontSize="18" fill="#bfa14a" fontWeight="bold">{seller.badge}</text>
-              </svg>
+            {/* Rank */}
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white ${
+              idx === 0 ? 'bg-gradient-to-br from-[#d4a574] to-[#bfa77a]' :
+              idx === 1 ? 'bg-gradient-to-br from-[#bfa77a] to-[#a0826d]' :
+              idx === 2 ? 'bg-gradient-to-br from-[#a0826d] to-[#8b6f47]' :
+              'bg-gradient-to-br from-[#e7d7c1] to-[#d4a574]'
+            }`}>
+              {seller.rank}
             </div>
 
             {/* Info */}
-            <div className="flex-1">
-              <div className="font-bold text-[#6b4423] text-lg">{seller.name}</div>
-              <div className="text-sm text-[#8b6f47] flex items-center gap-2">
-                <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="6" width="14" height="8" rx="2" fill="#bfa14a"/><rect x="7" y="10" width="6" height="2" rx="1" fill="#fff3cd"/></svg>
-                <span>{seller.items} items sold</span>
+            <div className="flex-1 min-w-0">
+              <div className="font-medium text-[#6b4423] text-base">{seller.name}</div>
+              <div className="flex items-center gap-2 text-sm text-[#8b6f47] mt-0.5">
+                <span className="text-base">{seller.items} sold</span>
+                <span className="text-[#bfa77a] text-base">•</span>
+                <span className="font-medium text-base">{seller.earnings}</span>
               </div>
             </div>
             
-            {/* View profile button - appears on hover */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-gradient-to-r from-[#8b6f47] to-[#6b4423] text-white text-xs font-bold px-4 py-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-all"
-            >
-              View Profile
-            </motion.button>
+            {/* Arrow */}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" 
+              className="text-[#bfa77a] opacity-0 group-hover:opacity-100 transition-opacity">
+              <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </motion.div>
         ))}
       </div>
       
-      {/* Leaderboard footer */}
+      {/* Your Rank */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2 }}
-        className="mt-6 bg-gradient-to-r from-[#f9f6f3] to-[#fdfcfa] rounded-2xl p-4 border border-[#d4a574]/30 text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="mt-4 bg-gradient-to-r from-[#f9f6f3] to-[#fdfcfa] rounded-xl p-3 border border-[#d4a574]/10"
       >
-        <div className="text-sm text-[#8b6f47] mb-1">Your Rank</div>
-        <div className="text-2xl font-black bg-gradient-to-r from-[#8b6f47] to-[#6b4423] bg-clip-text text-transparent">
-          #23
+        <div className="flex items-center justify-between text-xs">
+          <div>
+            <span className="text-[#8b6f47]">Your Rank: </span>
+            <span className="font-bold text-[#6b4423]">#23</span>
+          </div>
+          <div className="text-[#8b6f47]">
+            <span>3 sold • </span>
+            <span className="font-semibold text-[#6b4423]">रु8,500</span>
+          </div>
         </div>
-        <div className="text-xs text-[#8b6f47] mt-1">Keep selling to climb!</div>
       </motion.div>
     </div>
   );
