@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 /* ── Coffee-themed color palette matching the dashboard ── */
@@ -19,11 +20,16 @@ export const T = {
   activeBg: "linear-gradient(135deg, #e8c5a0, #d4a574)",
 };
 
-const navItems = [
-  { id: "dashboard", label: "Dashboard", type: "grid" },
-  { id: "mentors", label: "Mentors", type: "users" },
-  { id: "market", label: "Marketplace", type: "shop" },
-  { id: "chat", label: "Chat", type: "chat" },
+const navItems: Array<{
+  id: string;
+  label: string;
+  type: string;
+  href?: string;
+}> = [
+  { id: "dashboard", label: "Dashboard", type: "grid", href: "/dashboard" },
+  { id: "mentors", label: "Mentors", type: "users", href: "/mentorship" },
+  { id: "market", label: "Marketplace", type: "shop", href: "/marketplace" },
+  { id: "chat", label: "Chat", type: "chat", href: "/chat" },
   { id: "alerts", label: "Alerts", type: "bell" },
 ];
 
@@ -145,8 +151,9 @@ const CoffeeCupLogo = () => (
 );
 
 export default function Sidebar() {
-  const [active, setActive] = useState("dashboard");
   const [collapsed, setCollapsed] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <motion.aside
@@ -252,14 +259,20 @@ export default function Sidebar() {
         }}
       >
         {navItems.map((item, idx) => {
-          const isActive = active === item.id;
+          const isActive = item.href
+            ? pathname === item.href || pathname.startsWith(`${item.href}/`)
+            : false;
           return (
             <motion.button
               key={item.id}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 + idx * 0.1 }}
-              onClick={() => setActive(item.id)}
+              type="button"
+              aria-current={isActive ? "page" : undefined}
+              onClick={() => {
+                if (item.href) router.push(item.href);
+              }}
               whileHover={{ scale: 1.02, x: 4 }}
               whileTap={{ scale: 0.98 }}
               style={{

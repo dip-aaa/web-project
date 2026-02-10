@@ -1,16 +1,32 @@
-
+"use client";
+import Snowfall from 'react-snowfall';
 import styles from './page.module.css'
 import { Navbar } from '../../components/Navbar';
 import { Frames } from '../../components/Frames';
 import StickyFooter from '../../components/StickyFooter';
 
+
 export default function Dashboard() {
   return (
+    
     <div style={{
       minHeight: '100vh',
       background: 'linear-gradient(90deg, #F5E6D3 0%, #FFF9F3 15%, #FFFFFF 35%, #FFFFFF 100%)',
       position: 'relative',
     }}>
+      {/* Snowfall effect */}
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: 9999,
+        pointerEvents: 'none',
+      }}>
+        <Snowfall color="#FF69B4" radius={[5, 5]} />
+      </div>
+      
       {/* Decorative circles with unified color theme */}
       <div style={{
         position: 'fixed',
@@ -119,13 +135,18 @@ export default function Dashboard() {
               pointerEvents: 'none',
             }}
           />
+
         </div>
         {/* Right half with Frames */}
         <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', minWidth: 0, paddingRight: 64 }}>
           <Frames />
         </div>
+
+    
       </main>
       <StickyFooter />
     </div>
+
+    
   );
 }
