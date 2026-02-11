@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 /* ── Coffee-themed color palette matching the dashboard ── */
@@ -20,11 +21,12 @@ export const T = {
 };
 
 const navItems = [
-  { id: "dashboard", label: "Dashboard", type: "grid" },
-  { id: "mentors", label: "Mentors", type: "users" },
-  { id: "market", label: "Marketplace", type: "shop" },
-  { id: "chat", label: "Chat", type: "chat" },
-  { id: "alerts", label: "Alerts", type: "bell" },
+  { id: "dashboard", label: "Dashboard", type: "grid", href: "/dashboard" },
+  { id: "mentors", label: "Mentors", type: "users", href: "/mentorship" },
+  { id: "market", label: "Marketplace", type: "shop", href: "/marketplace" },
+  { id: "chat", label: "Chat", type: "chat", href: "/chat" },
+  { id: "alerts", label: "Alerts", type: "bell", href: "/alerts" },
+  { id: "profile", label: "Profile", type: "profile", href: "/profile" }, // Added profile button
 ];
 
 // Custom SVG Icons with coffee theme
@@ -88,6 +90,13 @@ export function Icon({ type, size = 22 }: { type: string; size?: number }) {
           <circle cx="18" cy="6" r="3" fill="#ff6b35" opacity="0.8" />
         </svg>
       );
+    case "profile":
+      return (
+        <svg {...commonProps}>
+          <circle cx="12" cy="8" r="4" stroke="currentColor" />
+          <path d="M4 22v-2a8 8 0 0 1 16 0v2" stroke="currentColor" />
+        </svg>
+      );
     default:
       return null;
   }
@@ -144,15 +153,17 @@ const CoffeeCupLogo = () => (
   </svg>
 );
 
-export default function Sidebar() {
-  const [active, setActive] = useState("dashboard");
+export default function Sidebar({ animate = true }: { animate?: boolean }) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
+  const AsideComponent = 'aside'; // Always use static aside, never motion.aside
+  const asideProps = {};
+
   return (
-    <motion.aside
-      initial={{ x: -100, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+    <AsideComponent
+      {...asideProps}
       style={{
         width: collapsed ? 85 : 260,
         minHeight: "100vh",
@@ -197,47 +208,25 @@ export default function Sidebar() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            boxShadow: "0 6px 20px rgba(107, 68, 35, 0.35)",
+            boxShadow: "0 6px 20px rgba(107, 111, 71, 0.35)",
             border: "2px solid rgba(255, 255, 255, 0.3)",
           }}
         >
           <CoffeeCupLogo />
         </motion.div>
-        <AnimatePresence>
-          {!collapsed && (
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div
-                style={{
-                  color: T.text,
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  fontSize: 22,
-                  fontWeight: 800,
-                  letterSpacing: "0.5px",
-                }}
-              >
-                KOSH
-              </div>
-              <div
-                style={{
-                  color: T.accent,
-                  fontSize: 9,
-                  textTransform: "uppercase",
-                  letterSpacing: "2.5px",
-                  fontFamily: "'Inter', sans-serif",
-                  fontWeight: 700,
-                  marginTop: -2,
-                }}
-              >
-                COLLEGE CAFFEINE
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {!collapsed && (
+          <div
+            style={{
+              color: T.text,
+              fontFamily: "'Playfair Display', Georgia, serif",
+              fontSize: 22,
+              fontWeight: 800,
+              letterSpacing: "0.5px",
+            }}
+          >
+            KOSH
+          </div>
+        )}
       </motion.div>
 
       {/* Navigation */}
@@ -252,16 +241,15 @@ export default function Sidebar() {
         }}
       >
         {navItems.map((item, idx) => {
-          const isActive = active === item.id;
+          const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+          const ButtonComponent = 'button';
+          const buttonProps = {};
+
           return (
-            <motion.button
+            <ButtonComponent
               key={item.id}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 + idx * 0.1 }}
-              onClick={() => setActive(item.id)}
-              whileHover={{ scale: 1.02, x: 4 }}
-              whileTap={{ scale: 0.98 }}
+              {...buttonProps}
+              onClick={() => router.push(item.href)}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -393,7 +381,7 @@ export default function Sidebar() {
                   3
                 </motion.div>
               )}
-            </motion.button>
+            </ButtonComponent>
           );
         })}
       </nav>
@@ -412,6 +400,7 @@ export default function Sidebar() {
         }}
       />
 
+      {/* User/XP/Level section removed for minimal look */}
       {/* Profile Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -500,69 +489,6 @@ export default function Sidebar() {
         </motion.div>
       </motion.div>
 
-      {/* XP Progress Bar (only when expanded) */}
-      <AnimatePresence>
-        {!collapsed && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            style={{
-              width: "calc(100% - 32px)",
-              marginTop: 16,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 11,
-                color: T.textMuted,
-                marginBottom: 8,
-                fontWeight: 600,
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              <span>Progress to Level 4</span>
-              <span>62%</span>
-            </div>
-            <div
-              style={{
-                width: "100%",
-                height: 8,
-                background: "rgba(139, 111, 71, 0.15)",
-                borderRadius: 10,
-                overflow: "hidden",
-                position: "relative",
-              }}
-            >
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: "62.5%" }}
-                transition={{ duration: 1.5, delay: 1, ease: "easeOut" }}
-                style={{
-                  height: "100%",
-                  background: "linear-gradient(90deg, #8b6f47, #6b4423)",
-                  borderRadius: 10,
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-                <motion.div
-                  animate={{ x: ["-100%", "200%"] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background:
-                      "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)",
-                  }}
-                />
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Toggle Button */}
       <motion.button
         whileHover={{ scale: 1.1 }}
@@ -633,6 +559,6 @@ export default function Sidebar() {
           />
         </svg>
       </motion.div>
-    </motion.aside>
+    </AsideComponent>
   );
 }
