@@ -369,14 +369,48 @@ export function MarketplaceView() {
 			/>
 
 			<section className="mk-container mt-4">
-				<div className="flex flex-col gap-3 rounded-2xl border border-amber-100 bg-white p-4 shadow-sm">
-					<div className="flex items-center justify-between gap-3">
-						<div className="text-sm font-semibold text-amber-950">
+				<div 
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						gap: 12,
+						borderRadius: 24,
+						background: "rgba(255, 255, 255, 0.9)",
+						border: "1px solid #f0e6dc",
+						padding: 24,
+						boxShadow: "0 4px 20px rgba(139, 111, 71, 0.08)",
+						backdropFilter: "blur(10px)",
+						fontFamily: "system-ui, -apple-system, sans-serif"
+					}}
+				>
+					<div 
+						style={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "space-between",
+							gap: 12
+						}}
+					>
+						<div 
+							style={{
+								fontSize: 16,
+								fontWeight: 600,
+								color: "#6b4423",
+								fontFamily: "system-ui, -apple-system, sans-serif"
+							}}
+						>
 							Showing {filteredItems.length} items
 						</div>
 						<button
 							type="button"
 							className="mk-subtle-link"
+							style={{
+								padding: "8px 16px",
+								borderRadius: 12,
+								background: showSellForm ? "linear-gradient(135deg, #f0e6dc, #e8ddd4)" : "transparent",
+								border: "1px solid #f0e6dc",
+								transition: "all 0.2s ease"
+							}}
 							onClick={() => setShowSellForm((v) => !v)}
 						>
 							{showSellForm ? "Close Sell Form" : "Sell an Item"}
@@ -389,29 +423,46 @@ export function MarketplaceView() {
 
 			{selectedItem ? (
 				<section className="mk-container mt-4">
-					<div className="grid grid-cols-1 gap-4 rounded-2xl border border-amber-100 bg-white p-4 shadow-sm md:grid-cols-3">
-						<div className="overflow-hidden rounded-xl bg-amber-100 md:col-span-1">
+					<div 
+						style={{
+							display: "grid",
+							gridTemplateColumns: "1fr",
+							gap: 16,
+							borderRadius: 24,
+							background: "rgba(255, 255, 255, 0.9)",
+							border: "1px solid #f0e6dc",
+							padding: 24,
+							boxShadow: "0 4px 20px rgba(139, 111, 71, 0.08)",
+							backdropFilter: "blur(10px)",
+							fontFamily: "system-ui, -apple-system, sans-serif"
+						}}
+					>
+						<div className="overflow-hidden rounded-xl" style={{background: "linear-gradient(135deg, #f9f6f3, #f5f0eb)"}}>
 							<img
 								src={selectedItem.imageUrl}
 								alt={selectedItem.title}
-								className="h-56 w-full object-cover"
+								style={{
+									height: 280,
+									width: "100%",
+									objectFit: "cover"
+								}}
 							/>
 						</div>
-						<div className="md:col-span-2">
-							<div className="flex items-start justify-between gap-3">
+						<div>
+							<div style={{display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12}}>
 								<div>
-									<div className="text-lg font-semibold text-amber-950">{selectedItem.title}</div>
-									<div className="mt-1 text-sm font-bold text-amber-950">
+									<div style={{fontSize: 24, fontWeight: 700, color: "#6b4423", fontFamily: "system-ui, -apple-system, sans-serif"}}>{selectedItem.title}</div>
+									<div style={{marginTop: 4, fontSize: 20, fontWeight: 700, color: "#8b6f47", fontFamily: "system-ui, -apple-system, sans-serif"}}>
 										${selectedItem.price.toFixed(2)}
 									</div>
-									<div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-amber-700">
-										<span className="rounded-full bg-amber-100 px-3 py-1">
+									<div style={{marginTop: 16, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, fontSize: 12, color: "#a0826d"}}>
+										<span style={{borderRadius: 16, background: "rgba(240, 230, 220, 0.6)", padding: "6px 12px", color: "#6b4423", fontWeight: 600}}>
 											{selectedItem.conditionLabel}
 										</span>
-										<span className="rounded-full bg-amber-100 px-3 py-1">
+										<span style={{borderRadius: 16, background: "rgba(240, 230, 220, 0.6)", padding: "6px 12px", color: "#6b4423", fontWeight: 600}}>
 											{selectedItem.category}
 										</span>
-										<span className="rounded-full bg-amber-100 px-3 py-1">
+										<span style={{borderRadius: 16, background: "rgba(240, 230, 220, 0.6)", padding: "6px 12px", color: "#6b4423", fontWeight: 600}}>
 											Seller: {selectedItem.seller}
 										</span>
 									</div>
@@ -419,16 +470,23 @@ export function MarketplaceView() {
 								<button
 									type="button"
 									className="mk-subtle-link"
+									style={{
+										padding: "8px 16px",
+										borderRadius: 12,
+										background: "linear-gradient(135deg, #f0e6dc, #e8ddd4)",
+										border: "1px solid #f0e6dc",
+										transition: "all 0.2s ease"
+									}}
 									onClick={() => setSelectedItem(null)}
 								>
 									Close
 								</button>
 							</div>
-							<div className="mt-3 text-sm text-amber-900">
+							<div style={{marginTop: 16, fontSize: 15, color: "#8b6f47", lineHeight: 1.6, fontFamily: "system-ui, -apple-system, sans-serif"}}>
 								{selectedItem.description ??
 									"No description provided. Ask the seller for details."}
 							</div>
-							<div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+							<div style={{marginTop: 20, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12}}>
 								<button type="button" className="mk-btn" onClick={() => setShowSellForm(true)}>
 									Sell Similar
 								</button>
@@ -468,7 +526,12 @@ function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) =>
 
 	return (
 		<form
-			className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+			style={{
+				display: "grid",
+				gridTemplateColumns: "1fr 1fr",
+				gap: 16,
+				fontFamily: "system-ui, -apple-system, sans-serif"
+			}}
 			onSubmit={(e) => {
 				e.preventDefault();
 				const numericPrice = Number(price);
@@ -487,7 +550,7 @@ function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) =>
 				setDescription("");
 			}}
 		>
-			<div className="sm:col-span-2">
+			<div style={{gridColumn: "1 / -1"}}>
 				<label className="mk-filter-label">TITLE</label>
 				<input
 					className="mk-select"
@@ -550,7 +613,7 @@ function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) =>
 				</div>
 			</div>
 
-			<div className="sm:col-span-2">
+			<div style={{gridColumn: "1 / -1"}}>
 				<label className="mk-filter-label">IMAGE URL</label>
 				<input
 					className="mk-select"
@@ -560,10 +623,22 @@ function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) =>
 				/>
 			</div>
 
-			<div className="sm:col-span-2">
+			<div style={{gridColumn: "1 / -1"}}>
 				<label className="mk-filter-label">DESCRIPTION</label>
 				<textarea
-					className="w-full rounded-2xl border border-amber-200 bg-white px-4 py-3 text-sm text-amber-950 shadow-sm outline-none transition focus:ring-2 focus:ring-amber-200"
+					style={{
+						width: "100%",
+						borderRadius: 16,
+						border: "1px solid #f0e6dc",
+						background: "rgba(255, 255, 255, 0.9)",
+						padding: "12px 16px",
+						fontSize: 14,
+						color: "#6b4423",
+						boxShadow: "0 2px 12px rgba(139, 111, 71, 0.06)",
+						outline: "none",
+						transition: "all 0.2s ease",
+						fontFamily: "system-ui, -apple-system, sans-serif"
+					}}
 					value={description}
 					onChange={(e) => setDescription(e.target.value)}
 					rows={3}
@@ -571,11 +646,11 @@ function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) =>
 				/>
 			</div>
 
-			<div className="sm:col-span-2">
+			<div style={{gridColumn: "1 / -1"}}>
 				<button type="submit" className="mk-btn">
 					Add Item
 				</button>
-				<div className="mt-2 text-xs text-amber-700">
+				<div style={{marginTop: 8, fontSize: 12, color: "#a0826d", fontFamily: "system-ui, -apple-system, sans-serif"}}>
 					Tip: After adding, use filters to find it.
 				</div>
 			</div>
