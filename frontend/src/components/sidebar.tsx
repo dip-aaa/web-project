@@ -157,8 +157,6 @@ export default function Sidebar({ animate = true }: { animate?: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
-  const pathname = usePathname();
-  const router = useRouter();
 
   const AsideComponent = 'aside'; // Always use static aside, never motion.aside
   const asideProps = {};

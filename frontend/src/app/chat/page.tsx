@@ -1,14 +1,7 @@
-import Sidebar from "@/src/components/Sidebar";
+"use client";
 
-export default function ChatPage() {
-	return (
-		<div className="min-h-screen h-screen flex bg-gradient-to-br from-[#f9f6f3] via-[#fdfcfa] to-[#f5f0eb]">
-			<Sidebar />
-			<div className="flex-1 min-w-0 p-6 overflow-y-auto">
-				<h1 className="text-2xl font-semibold">Chat</h1>
-				<p className="mt-2 text-sm text-neutral-600">Select an option from the sidebar to navigate.</p>
-			</div>
-		</div>
-	);
+import ChatPageComponent from './ChatPage';
+
+export default function Page() {
+  return <ChatPageComponent />;
 }
-
