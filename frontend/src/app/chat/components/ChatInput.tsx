@@ -3,34 +3,41 @@ import React, { useState, KeyboardEvent } from 'react';
 interface ChatInputProps {
   onSendMessage: (text: string) => void;
   placeholder?: string;
+  disabled?: boolean;
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({ 
   onSendMessage, 
-  placeholder = "Type a message..." 
+  placeholder = "Type a message...",
+  disabled = false 
 }) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleSend = () => {
-    if (inputValue.trim()) {
+    if (inputValue.trim() && !disabled) {
       onSendMessage(inputValue);
       setInputValue('');
     }
   };
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey && !disabled) {
       e.preventDefault();
       handleSend();
     }
   };
 
   return (
-    <div className="bg-gradient-to-r from-amber-100 via-orange-100 to-yellow-100 px-4 py-4 border-t border-amber-200 shadow-lg">
+    <div className="bg-[#f5f0eb] px-4 py-4 border-t border-[#e8ddd4] shadow-lg">
       <div className="max-w-4xl mx-auto flex gap-3 items-end">
         {/* Emoji/Attachment buttons */}
         <button 
-          className="flex-shrink-0 p-2.5 bg-amber-200 hover:bg-amber-300 text-amber-800 rounded-full transition-all duration-200 shadow-md hover:shadow-lg"
+          disabled={disabled}
+          className={`flex-shrink-0 p-2.5 rounded-full transition-all duration-200 shadow-md ${
+            disabled 
+              ? 'bg-stone-200 text-stone-400 cursor-not-allowed' 
+              : 'bg-stone-300 hover:bg-stone-400 text-stone-800 hover:shadow-lg'
+          }`}
           aria-label="Add emoji"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,30 +52,32 @@ const ChatInput: React.FC<ChatInputProps> = ({
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
+            disabled={disabled}
             placeholder={placeholder}
-            className="
+            className={`
               w-full px-5 py-3.5 
               bg-white
-              border-2 border-amber-200
+              border-2 border-[#e8ddd4]
               rounded-full 
-              text-amber-950 placeholder-amber-400
-              focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200
+              text-[#6b4423] placeholder-[#b08e62]
+              focus:outline-none focus:border-[#8b6f47] focus:ring-2 focus:ring-[#f5f0eb]
               shadow-sm
               transition-all duration-200
-            "
+              ${disabled ? 'opacity-60 cursor-not-allowed' : ''}
+            `}
           />
         </div>
 
         {/* Send button */}
         <button
           onClick={handleSend}
-          disabled={!inputValue.trim()}
+          disabled={!inputValue.trim() || disabled}
           className={`
             flex-shrink-0 p-3 rounded-full
             transition-all duration-200 shadow-md
-            ${inputValue.trim()
-              ? 'bg-gradient-to-br from-amber-700 to-amber-900 hover:from-amber-800 hover:to-amber-950 text-white shadow-lg hover:shadow-xl hover:scale-105'
-              : 'bg-amber-200 text-amber-400 cursor-not-allowed'
+            ${!inputValue.trim() || disabled
+              ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
+              : 'bg-[#6b4423] hover:bg-[#573217] text-white shadow-lg hover:shadow-xl hover:scale-105'
             }
           `}
           aria-label="Send message"

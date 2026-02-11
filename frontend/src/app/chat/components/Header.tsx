@@ -14,11 +14,11 @@ const Header: React.FC<HeaderProps> = ({ username, avatarUrl, status = 'online' 
   };
 
   return (
-    <header className="bg-gradient-to-r from-amber-900 via-amber-800 to-amber-900 text-amber-50 px-4 py-3 shadow-lg sticky top-0 z-10">
+    <header className="bg-gradient-to-r from-[#f9f6f3] via-[#fdfcfa] to-[#f5f0eb] text-[#6b4423] px-4 py-3 shadow-md sticky top-0 z-10 border-b border-[#e8ddd4]">
       <div className="max-w-4xl mx-auto flex items-center gap-3">
         {/* Avatar with status indicator */}
         <div className="relative">
-          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-amber-200 shadow-md bg-amber-100">
+          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#e8ddd4] shadow-md bg-[#f5f0eb]">
             {avatarUrl ? (
               <img 
                 src={avatarUrl} 
@@ -26,25 +26,25 @@ const Header: React.FC<HeaderProps> = ({ username, avatarUrl, status = 'online' 
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-600 to-amber-800 text-white font-bold text-lg">
-                {username.charAt(0).toUpperCase()}
+              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#8b6f47] to-[#6b4423] text-white font-bold text-lg">
+                ☕
               </div>
             )}
           </div>
           {/* Status indicator */}
-          <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 ${statusColors[status]} rounded-full border-2 border-amber-900`}></div>
+          <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 ${statusColors[status]} rounded-full border-2 border-[#f5f0eb]`}></div>
         </div>
 
         {/* Username and status */}
         <div className="flex-1">
-          <h1 className="font-semibold text-lg">{username}</h1>
-          <p className="text-xs text-amber-200 capitalize">{status}</p>
+          <h1 className="font-semibold text-lg text-[#6b4423]">{username}</h1>
+          <p className="text-xs text-[#8b6f47] capitalize">{status}</p>
         </div>
 
         {/* Optional action buttons */}
         <div className="flex gap-2">
           <button 
-            className="p-2 hover:bg-amber-700 rounded-full transition-colors"
+            className="p-2 hover:bg-stone-200 text-stone-700 rounded-full transition-colors"
             aria-label="Call"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,7 +52,7 @@ const Header: React.FC<HeaderProps> = ({ username, avatarUrl, status = 'online' 
             </svg>
           </button>
           <button 
-            className="p-2 hover:bg-amber-700 rounded-full transition-colors"
+            className="p-2 hover:bg-stone-200 text-stone-700 rounded-full transition-colors"
             aria-label="Video call"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,19 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
+import Sidebar from '../../components/Sidebar';
 import Header from './components/Header';
 import ChatBox from './components/ChatBox';
 import ChatInput from './components/ChatInput';
+import { useChat, Message } from './hooks/useChat';
+import './chat.css';
 
-export interface Message {
-  id: string;
-  text: string;
-  sender: 'user' | 'bot';
-  timestamp: Date;
-}
+export type { Message };
 
-const ChatPage: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([
+const ChatPageComponent: React.FC = () => {
+  const initialMessages: Message[] = [
     {
       id: '1',
       text: 'Hello! How can I assist you today?',
@@ -32,54 +30,25 @@ const ChatPage: React.FC = () => {
       sender: 'bot',
       timestamp: new Date(Date.now() - 30000),
     },
-  ]);
+  ];
 
-  const handleSendMessage = (text: string) => {
-    // Add user message
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text,
-      sender: 'user',
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-
-    // Simulate bot response after a short delay
-    setTimeout(() => {
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: generateBotResponse(text),
-        sender: 'bot',
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, botMessage]);
-    }, 800);
-  };
-
-  const generateBotResponse = (userMessage: string): string => {
-    const responses = [
-      "That's great! Can you tell me more about it?",
-      "How can I help you with that?",
-      "Interesting! What specific aspect would you like assistance with?",
-      "I understand. Let me help you with that.",
-      "That sounds like a good project. What's your next step?",
-      "I'm here to help! What would you like to know?",
-      "Got it! Do you have any specific questions?",
-    ];
-    return responses[Math.floor(Math.random() * responses.length)];
-  };
+  const { messages, isLoading, sendMessage } = useChat(initialMessages);
 
   return (
-    <div className="flex flex-col h-screen bg-white">
-      <Header 
-        username="Mentorship Chat" 
-        status="online"
-      />
-      <ChatBox messages={messages} />
-      <ChatInput onSendMessage={handleSendMessage} />
+    <div className="min-h-screen h-screen flex bg-gradient-to-br from-[#f9f6f3] via-[#fdfcfa] to-[#f5f0eb]">
+      <Sidebar />
+
+      <div className="flex-1 min-w-0 p-6 overflow-y-auto">
+        <div className="flex flex-col h-full bg-brown rounded-md shadow-sm">
+          <Header username="Mentorship Chat" status="online" />
+          <div className="flex-1 min-h-0">
+            <ChatBox messages={messages} isLoading={isLoading} />
+          </div>
+          <ChatInput onSendMessage={sendMessage} disabled={isLoading} />
+        </div>
+      </div>
     </div>
   );
 };
 
-export default ChatPage;
+export default ChatPageComponent;
