@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Sidebar from '../../components/sidebar';
+import Sidebar from '../../components/Sidebar';
 import WelcomeHeader from './components/WelcomeHeader';
 import StatsGrid from './components/StatsGrid';
 import CalendarSection from './components/CalendarSection';
