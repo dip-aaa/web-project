@@ -53,4 +53,10 @@
   font-size: 1rem;
   border: none;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.joinHub:hover {
+  background: #8d5619;
 }

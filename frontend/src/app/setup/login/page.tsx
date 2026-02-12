@@ -4,25 +4,62 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import StickyFooter from "../../../components/StickyFooter";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
+
 export default function LoginPage() {
-  const [rollNumber, setRollNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!rollNumber || !password || !confirmPassword) {
-      alert("Please fill in all fields.");
+    setError("");
+    
+    if (!email || !password) {
+      setError("Please fill in all fields.");
       return;
     }
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+    
+    if (!email.endsWith("@khwopa.edu.np")) {
+      setError("Please use your Khwopa College email (@khwopa.edu.np).");
       return;
     }
-    // On successful login, redirect to /dashboard
-    router.push("/dashboard");
+    
+    setLoading(true);
+    
+    try {
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+          password,
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+      
+      // Store tokens in localStorage
+      localStorage.setItem("accessToken", data.data.accessToken);
+      localStorage.setItem("refreshToken", data.data.refreshToken);
+      localStorage.setItem("user", JSON.stringify(data.data.user));
+      
+      alert("Login successful! Welcome back 🎉");
+      router.push("/dashboard");
+    } catch (err: any) {
+      setError(err.message || "Login failed. Please check your credentials.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inputStyle: React.CSSProperties = {
@@ -137,16 +174,34 @@ export default function LoginPage() {
           {/* Login form */}
           <div style={{ position: "relative", zIndex: 3, padding: "48px 36px 36px 80px" }}>
             <h2 style={{ fontWeight: 800, fontSize: 28, color: "#8B5E3C", marginBottom: 8, letterSpacing: 1 }}>Login</h2>
+            
+            {/* Error/Info messages */}
+            {error && (
+              <div style={{
+                padding: "12px",
+                marginBottom: "16px",
+                background: "#FFF0F0",
+                border: "1.5px solid #FFB4B4",
+                borderRadius: "8px",
+                color: "#D32F2F",
+                fontSize: "13px",
+                fontWeight: 600
+              }}>
+                {error}
+              </div>
+            )}
+            
             <form onSubmit={handleLogin}>
-              <label style={labelStyle} htmlFor="rollNumber">Roll Number</label>
+              <label style={labelStyle} htmlFor="email">College Email</label>
               <input
-                id="rollNumber"
-                type="text"
+                id="email"
+                type="email"
                 style={inputStyle}
-                value={rollNumber}
-                onChange={e => setRollNumber(e.target.value)}
-                placeholder="Enter your roll number"
-                autoComplete="username"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="your-email@khwopa.edu.np"
+                autoComplete="email"
+                disabled={loading}
               />
               <div style={{ height: 16 }} />
               <label style={labelStyle} htmlFor="password">Password</label>
@@ -159,38 +214,7 @@ export default function LoginPage() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   autoComplete="current-password"
-                />
-                <button
-                  type="button"
-                  style={{
-                    position: "absolute",
-                    right: 12,
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    background: "none",
-                    border: "none",
-                    color: "#8B5E3C",
-                    fontWeight: 700,
-                    cursor: "pointer",
-                    fontSize: 13,
-                  }}
-                  onClick={() => setShowPassword(v => !v)}
-                  tabIndex={-1}
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </button>
-              </div>
-              <div style={{ height: 16 }} />
-              <label style={labelStyle} htmlFor="confirmPassword">Confirm Password</label>
-              <div style={{ position: "relative" }}>
-                <input
-                  id="confirmPassword"
-                  type={showPassword ? "text" : "password"}
-                  style={inputStyle}
-                  value={confirmPassword}
-                  onChange={e => setConfirmPassword(e.target.value)}
-                  placeholder="Confirm your password"
-                  autoComplete="new-password"
+                  disabled={loading}
                 />
                 <button
                   type="button"
@@ -215,63 +239,57 @@ export default function LoginPage() {
               <div style={{ height: 24 }} />
               <button
                 type="submit"
+                disabled={loading}
                 style={{
-                  marginTop: 6,
+                  marginTop: 4,
                   padding: "13px 0",
                   width: "100%",
                   marginBottom: 12,
                   minWidth: 180,
-                  background: "linear-gradient(135deg, #c9936a, #b58f76)",
+                  background: loading ? "#CCC" : "linear-gradient(135deg, #c9936a, #b58f76)",
                   color: "white",
                   border: "none",
                   borderRadius: "10px",
                   fontSize: "16px",
                   fontWeight: 800,
                   fontFamily: "'Nunito', sans-serif",
-                  cursor: "pointer",
+                  cursor: loading ? "not-allowed" : "pointer",
                   letterSpacing: "1.5px",
                   boxShadow: "0 4px 14px rgba(158, 111, 80, 0.35)",
                   transition: "transform 0.15s, box-shadow 0.15s",
                 }}
                 onMouseDown={(e) => {
-                  (e.target as HTMLButtonElement).style.transform = "scale(0.97)";
+                  if (!loading) (e.target as HTMLButtonElement).style.transform = "scale(0.97)";
                 }}
                 onMouseUp={(e) => {
-                  (e.target as HTMLButtonElement).style.transform = "scale(1)";
+                  if (!loading) (e.target as HTMLButtonElement).style.transform = "scale(1)";
                 }}
                 onMouseEnter={(e) => {
-                  (e.target as HTMLButtonElement).style.boxShadow = "0 6px 20px rgba(107,66,38,0.45)";
+                  if (!loading) (e.target as HTMLButtonElement).style.boxShadow = "0 6px 20px rgba(107,66,38,0.45)";
                 }}
                 onMouseLeave={(e) => {
-                  (e.target as HTMLButtonElement).style.boxShadow = "0 4px 14px rgba(107,66,38,0.35)";
-                  (e.target as HTMLButtonElement).style.transform = "scale(1)";
+                  if (!loading) {
+                    (e.target as HTMLButtonElement).style.boxShadow = "0 4px 14px rgba(107,66,38,0.35)";
+                    (e.target as HTMLButtonElement).style.transform = "scale(1)";
+                  }
                 }}
               >
-                LOGIN
+                {loading ? "LOGGING IN..." : "LOGIN"}
               </button>
-
-              {/* Footer links */}
-              <div style={{ textAlign: "center", marginTop: 4 }}>
-                <p style={{ margin: 0, fontSize: "13px", color: "#9E8572" }}>
-                  <a href="#" style={{ color: "#8B5E3C", textDecoration: "none", fontWeight: 700 }}
-                    onMouseEnter={(e) => (e.target as HTMLAnchorElement).style.textDecoration = "underline"}
-                    onMouseLeave={(e) => (e.target as HTMLAnchorElement).style.textDecoration = "none"}
-                  >Forgot Password?</a>
-                </p>
-                <p style={{ margin: "4px 0 0", fontSize: "13px", color: "#9E8572" }}>
-                  Don't have an account?{" "}
-                  <a href="/home/signup" style={{ color: "#8B5E3C", textDecoration: "none", fontWeight: 700 }}
-                    onMouseEnter={(e) => (e.target as HTMLAnchorElement).style.textDecoration = "underline"}
-                    onMouseLeave={(e) => (e.target as HTMLAnchorElement).style.textDecoration = "none"}
-                  >Sign Up</a>
-                </p>
-              </div>
             </form>
+            <div style={{ textAlign: "center", marginTop: 4 }}>
+              <p style={{ margin: "4px 0 0", fontSize: "13px", color: "#9E8572" }}>
+                Don't have an account?{" "}
+                <a href="/setup/signup" style={{ color: "#8B5E3C", textDecoration: "none", fontWeight: 700 }}
+                  onMouseEnter={(e) => (e.target as HTMLAnchorElement).style.textDecoration = "underline"}
+                  onMouseLeave={(e) => (e.target as HTMLAnchorElement).style.textDecoration = "none"}
+                >Sign Up</a>
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    {/* StickyFooter component at the bottom */}
-    <StickyFooter />
+      <StickyFooter />
     </>
   );
 }

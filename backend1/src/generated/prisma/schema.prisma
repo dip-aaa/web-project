@@ -1,0 +1,218 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// User authentication and profile
+model User {
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  password    String
+  name        String
+  phoneNumber String?
+  department  String?
+  isVerified  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  collegeId Int
+  college   College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  otps          OTP[]
+  refreshTokens RefreshToken[]
+
+  buyer  Buyer?
+  seller Seller?
+  mentor Mentor?
+  mentee Mentee?
+
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+
+  @@index([email])
+}
+
+/// OTP for email verification
+model OTP {
+  id        Int      @id @default(autoincrement())
+  code      String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([code])
+}
+
+/// Refresh tokens for JWT
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+/// Chat messages between users and mentors
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  senderId Int
+  sender   User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+
+  receiverId Int
+  receiver   User @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([createdAt])
+}
+
+/// ERD: College 1..* Student
+model College {
+  id       Int    @id @default(autoincrement())
+  name     String
+  location String
+
+  users    User[]
+  students Student[]
+}
+
+/// ERD: Student belongs to a College and is a supertype for Buyer/Seller/Mentor/Mentee
+model Student {
+  id          Int     @id @default(autoincrement())
+  name        String
+  email       String  @unique
+  phoneNumber String?
+  department  String?
+
+  collegeId Int
+  college   College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  buyer  Buyer?
+  seller Seller?
+  mentor Mentor?
+  mentee Mentee?
+}
+
+/// ERD subtype: Buyer (ISA Student/User)
+model Buyer {
+  studentId Int?     @unique
+  student   Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  userId Int  @id
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  purchases Item[]   @relation("BuyerPurchases")
+  reviews   Review[]
+}
+
+/// ERD subtype: Seller (ISA Student/User)
+model Seller {
+  studentId Int?     @unique
+  student   Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  userId Int  @id
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  items Item[] @relation("SellerItems")
+}
+
+/// ERD subtype: Mentor (ISA Student/User)
+model Mentor {
+  studentId Int?     @unique
+  student   Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  userId        Int     @id
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expertiseArea String?
+
+  requestsReceived Request[]
+}
+
+/// ERD subtype: Mentee (ISA Student/User)
+model Mentee {
+  studentId Int?     @unique
+  student   Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  userId       Int     @id
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interestArea String?
+
+  requestsSent Request[]
+}
+
+/// ERD: Category 1..* Item
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  items Item[]
+}
+
+/// ERD: Seller 1..* Items, Buyer 1..* Items (optional buyer until purchased)
+model Item {
+  id        Int    @id @default(autoincrement())
+  itemName  String
+  cost      Float
+  condition String
+
+  sellerId Int
+  seller   Seller @relation("SellerItems", fields: [sellerId], references: [userId], onDelete: Restrict)
+
+  buyerId Int?
+  buyer   Buyer? @relation("BuyerPurchases", fields: [buyerId], references: [userId], onDelete: SetNull)
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  @@index([sellerId])
+  @@index([buyerId])
+  @@index([categoryId])
+}
+
+/// ERD: Buyer 1..* Review
+model Review {
+  id       Int      @id @default(autoincrement())
+  comments String?
+  rating   Int
+  date     DateTime @default(now())
+
+  buyerId Int
+  buyer   Buyer @relation(fields: [buyerId], references: [userId], onDelete: Cascade)
+
+  @@index([buyerId])
+}
+
+/// ERD: Mentee sends Requests, Mentor receives Requests
+model Request {
+  id              Int       @id @default(autoincrement())
+  requestStatus   String
+  requestSent     DateTime  @default(now())
+  requestReceived DateTime?
+
+  mentorId Int
+  mentor   Mentor @relation(fields: [mentorId], references: [userId], onDelete: Cascade)
+
+  menteeId Int
+  mentee   Mentee @relation(fields: [menteeId], references: [userId], onDelete: Cascade)
+
+  @@index([mentorId])
+  @@index([menteeId])
+}

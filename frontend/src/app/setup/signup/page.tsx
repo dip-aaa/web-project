@@ -1,54 +1,161 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import StickyFooter from "../../../components/StickyFooter";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
+
 export default function SignUpPage() {
-  const [step, setStep] = useState(1); // 1: Basic Info, 2: OTP Verification, 3: Password Setup
+  const router = useRouter();
+  const [step, setStep] = useState(1); // 1: Basic Info & Password, 2: OTP Verification
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [rollNumber, setRollNumber] = useState("");
-  const [otp, setOtp] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [department, setDepartment] = useState("");
+  const [otp, setOtp] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSendOTP = (e: React.FormEvent) => {
+  const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !email || !rollNumber) {
-      alert("Please fill in all fields.");
+    setError("");
+    
+    if (!name || !email || !password || !confirmPassword) {
+      setError("Please fill in all required fields.");
       return;
     }
-    // Simulate sending OTP
-    alert("OTP sent to your email!");
-    setStep(2);
-  };
-
-  const handleVerifyOTP = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!otp) {
-      alert("Please enter the OTP.");
-      return;
-    }
-    if (otp.length !== 6 || !/^\d{6}$/.test(otp)) {
-      alert("Please enter a valid 6-digit OTP.");
-      return;
-    }
-    alert("OTP verified successfully!");
-    setStep(3);
-  };
-
-  const handleSignUp = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!password || !confirmPassword) {
-      alert("Please fill in all fields.");
-      return;
-    }
+    
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      setError("Passwords do not match!");
       return;
     }
-    alert("Sign up successful! 🎉");
+    
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
+    
+    if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password)) {
+      setError("Password must contain uppercase, lowercase, and number.");
+      return;
+    }
+    
+    if (!email.endsWith("@khwopa.edu.np")) {
+      setError("Please use your Khwopa College email (@khwopa.edu.np).");
+      return;
+    }
+    
+    setLoading(true);
+    
+    try {
+      const response = await fetch(`${API_URL}/auth/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim().toLowerCase(),
+          password,
+          phoneNumber: phoneNumber.trim() || undefined,
+          department: department.trim() || undefined,
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to send OTP");
+      }
+      
+      alert("OTP sent to your email! Check your inbox.");
+      setStep(2);
+    } catch (err: any) {
+      setError(err.message || "Failed to send OTP. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    
+    if (!otp) {
+      setError("Please enter the OTP.");
+      return;
+    }
+    
+    if (otp.length !== 6 || !/^\d{6}$/.test(otp)) {
+      setError("Please enter a valid 6-digit OTP.");
+      return;
+    }
+    
+    setLoading(true);
+    
+    try {
+      const response = await fetch(`${API_URL}/auth/verify-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+          otp: otp.trim(),
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || "Invalid OTP");
+      }
+      
+      // Store tokens in localStorage
+      localStorage.setItem("accessToken", data.data.accessToken);
+      localStorage.setItem("refreshToken", data.data.refreshToken);
+      localStorage.setItem("user", JSON.stringify(data.data.user));
+      
+      alert("Email verified! Welcome to Khwopa College Portal 🎉");
+      router.push("/dashboard");
+    } catch (err: any) {
+      setError(err.message || "OTP verification failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendOTP = async () => {
+    setError("");
+    setLoading(true);
+    
+    try {
+      const response = await fetch(`${API_URL}/auth/resend-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to resend OTP");
+      }
+      
+      alert("OTP resent successfully! Check your email.");
+    } catch (err: any) {
+      setError(err.message || "Failed to resend OTP. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inputStyle: React.CSSProperties = {
@@ -169,13 +276,29 @@ export default function SignUpPage() {
           {/* Sign Up form */}
           <div style={{ position: "relative", zIndex: 3, padding: "48px 36px 36px 80px" }}>
             <h2 style={{ fontWeight: 800, fontSize: 28, color: "#8B5E3C", marginBottom: 8, letterSpacing: 1 }}>
-              {step === 1 ? "Sign Up" : step === 2 ? "Verify OTP" : "Set Password"}
+              {step === 1 ? "Sign Up" : "Verify OTP"}
             </h2>
             
-            {/* Step 1: Basic Information */}
+            {/* Error/Info messages */}
+            {error && (
+              <div style={{
+                padding: "12px",
+                marginBottom: "16px",
+                background: "#FFF0F0",
+                border: "1.5px solid #FFB4B4",
+                borderRadius: "8px",
+                color: "#D32F2F",
+                fontSize: "13px",
+                fontWeight: 600
+              }}>
+                {error}
+              </div>
+            )}
+            
+            {/* Step 1: Registration Form */}
             {step === 1 && (
               <form onSubmit={handleSendOTP}>
-                <label style={labelStyle} htmlFor="name">Full Name</label>
+                <label style={labelStyle} htmlFor="name">Full Name *</label>
                 <input
                   id="name"
                   type="text"
@@ -184,68 +307,154 @@ export default function SignUpPage() {
                   onChange={e => setName(e.target.value)}
                   placeholder="Enter your full name"
                   autoComplete="name"
+                  disabled={loading}
                 />
                 <div style={{ height: 16 }} />
                 
-                <label style={labelStyle} htmlFor="email">Email</label>
+                <label style={labelStyle} htmlFor="email">College Email *</label>
                 <input
                   id="email"
                   type="email"
                   style={inputStyle}
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder="your-email@khwopa.edu.np"
                   autoComplete="email"
+                  disabled={loading}
                 />
                 <div style={{ height: 16 }} />
                 
-                <label style={labelStyle} htmlFor="rollNumber">Roll Number</label>
+                <label style={labelStyle} htmlFor="password">Password *</label>
+                <div style={{ position: "relative" }}>
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    style={inputStyle}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="Min 8 chars, 1 upper, 1 lower, 1 number"
+                    autoComplete="new-password"
+                    disabled={loading}
+                  />
+                  <button
+                    type="button"
+                    style={{
+                      position: "absolute",
+                      right: 12,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      background: "none",
+                      border: "none",
+                      color: "#8B5E3C",
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      fontSize: 13,
+                    }}
+                    onClick={() => setShowPassword(v => !v)}
+                    tabIndex={-1}
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
+                <div style={{ height: 16 }} />
+                
+                <label style={labelStyle} htmlFor="confirmPassword">Confirm Password *</label>
+                <div style={{ position: "relative" }}>
+                  <input
+                    id="confirmPassword"
+                    type={showPassword ? "text" : "password"}
+                    style={inputStyle}
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    placeholder="Re-enter your password"
+                    autoComplete="new-password"
+                    disabled={loading}
+                  />
+                  <button
+                    type="button"
+                    style={{
+                      position: "absolute",
+                      right: 12,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      background: "none",
+                      border: "none",
+                      color: "#8B5E3C",
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      fontSize: 13,
+                    }}
+                    onClick={() => setShowPassword(v => !v)}
+                    tabIndex={-1}
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
+                <div style={{ height: 16 }} />
+                
+                <label style={labelStyle} htmlFor="phoneNumber">Phone Number (Optional)</label>
                 <input
-                  id="rollNumber"
+                  id="phoneNumber"
+                  type="tel"
+                  style={inputStyle}
+                  value={phoneNumber}
+                  onChange={e => setPhoneNumber(e.target.value)}
+                  placeholder="+977-9812345678"
+                  autoComplete="tel"
+                  disabled={loading}
+                />
+                <div style={{ height: 16 }} />
+                
+                <label style={labelStyle} htmlFor="department">Department (Optional)</label>
+                <input
+                  id="department"
                   type="text"
                   style={inputStyle}
-                  value={rollNumber}
-                  onChange={e => setRollNumber(e.target.value)}
-                  placeholder="Enter your roll number"
-                  autoComplete="username"
+                  value={department}
+                  onChange={e => setDepartment(e.target.value)}
+                  placeholder="e.g., Computer Engineering"
+                  disabled={loading}
                 />
-                <div style={{ height: 24 }} />
+                <div style={{ height: 16 }} />
                 
                 <button
                   type="submit"
+                  disabled={loading}
                   style={{
                     marginTop: 6,
                     padding: "13px 0",
                     width: "100%",
                     marginBottom: 12,
                     minWidth: 180,
-                    background: "linear-gradient(135deg, #c9936a, #b58f76)",
+                    background: loading ? "#CCC" : "linear-gradient(135deg, #c9936a, #b58f76)",
                     color: "white",
                     border: "none",
                     borderRadius: "10px",
                     fontSize: "16px",
                     fontWeight: 800,
                     fontFamily: "'Nunito', sans-serif",
-                    cursor: "pointer",
+                    cursor: loading ? "not-allowed" : "pointer",
                     letterSpacing: "1.5px",
                     boxShadow: "0 4px 14px rgba(158, 111, 80, 0.35)",
                     transition: "transform 0.15s, box-shadow 0.15s",
                   }}
                   onMouseDown={(e) => {
-                    (e.target as HTMLButtonElement).style.transform = "scale(0.97)";
+                    if (!loading) (e.target as HTMLButtonElement).style.transform = "scale(0.97)";
                   }}
                   onMouseUp={(e) => {
-                    (e.target as HTMLButtonElement).style.transform = "scale(1)";
+                    if (!loading) (e.target as HTMLButtonElement).style.transform = "scale(1)";
                   }}
                   onMouseEnter={(e) => {
-                    (e.target as HTMLButtonElement).style.boxShadow = "0 6px 20px rgba(107,66,38,0.45)";
+                    if (!loading) (e.target as HTMLButtonElement).style.boxShadow = "0 6px 20px rgba(107,66,38,0.45)";
                   }}
                   onMouseLeave={(e) => {
-                    (e.target as HTMLButtonElement).style.boxShadow = "0 4px 14px rgba(107,66,38,0.35)";
-                    (e.target as HTMLButtonElement).style.transform = "scale(1)";
+                    if (!loading) {
+                      (e.target as HTMLButtonElement).style.boxShadow = "0 4px 14px rgba(107,66,38,0.35)";
+                      (e.target as HTMLButtonElement).style.transform = "scale(1)";
+                    }
                   }}
                 >
-                  SEND OTP
+                  {loading ? "SENDING..." : "SEND OTP"}
                 </button>
               </form>
             )}
@@ -274,60 +483,84 @@ export default function SignUpPage() {
                   placeholder="000000"
                   maxLength={6}
                   autoComplete="one-time-code"
+                  disabled={loading}
                 />
                 <div style={{ height: 24 }} />
                 
                 <button
                   type="submit"
+                  disabled={loading}
                   style={{
                     marginTop: 6,
                     padding: "13px 0",
                     width: "100%",
                     marginBottom: 12,
                     minWidth: 180,
-                    background: "linear-gradient(135deg, #c9936a, #b58f76)",
+                    background: loading ? "#CCC" : "linear-gradient(135deg, #c9936a, #b58f76)",
                     color: "white",
                     border: "none",
                     borderRadius: "10px",
                     fontSize: "16px",
                     fontWeight: 800,
                     fontFamily: "'Nunito', sans-serif",
-                    cursor: "pointer",
+                    cursor: loading ? "not-allowed" : "pointer",
                     letterSpacing: "1.5px",
                     boxShadow: "0 4px 14px rgba(158, 111, 80, 0.35)",
                     transition: "transform 0.15s, box-shadow 0.15s",
                   }}
                   onMouseDown={(e) => {
-                    (e.target as HTMLButtonElement).style.transform = "scale(0.97)";
+                    if (!loading) (e.target as HTMLButtonElement).style.transform = "scale(0.97)";
                   }}
                   onMouseUp={(e) => {
-                    (e.target as HTMLButtonElement).style.transform = "scale(1)";
+                    if (!loading) (e.target as HTMLButtonElement).style.transform = "scale(1)";
                   }}
                   onMouseEnter={(e) => {
-                    (e.target as HTMLButtonElement).style.boxShadow = "0 6px 20px rgba(107,66,38,0.45)";
+                    if (!loading) (e.target as HTMLButtonElement).style.boxShadow = "0 6px 20px rgba(107,66,38,0.45)";
                   }}
                   onMouseLeave={(e) => {
-                    (e.target as HTMLButtonElement).style.boxShadow = "0 4px 14px rgba(107,66,38,0.35)";
-                    (e.target as HTMLButtonElement).style.transform = "scale(1)";
+                    if (!loading) {
+                      (e.target as HTMLButtonElement).style.boxShadow = "0 4px 14px rgba(107,66,38,0.35)";
+                      (e.target as HTMLButtonElement).style.transform = "scale(1)";
+                    }
                   }}
                 >
-                  VERIFY OTP
+                  {loading ? "VERIFYING..." : "VERIFY OTP"}
                 </button>
                 
                 <div style={{ textAlign: "center", marginTop: 8 }}>
                   <button
                     type="button"
-                    onClick={() => setStep(1)}
+                    onClick={handleResendOTP}
+                    disabled={loading}
                     style={{
                       background: "none",
                       border: "none",
-                      color: "#8B5E3C",
+                      color: loading ? "#CCC" : "#8B5E3C",
                       fontSize: "13px",
                       fontWeight: 700,
-                      cursor: "pointer",
+                      cursor: loading ? "not-allowed" : "pointer",
+                      textDecoration: "none",
+                      marginRight: "16px"
+                    }}
+                    onMouseEnter={(e) => !loading && ((e.target as HTMLButtonElement).style.textDecoration = "underline")}
+                    onMouseLeave={(e) => (e.target as HTMLButtonElement).style.textDecoration = "none"}
+                  >
+                    Resend OTP
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setStep(1)}
+                    disabled={loading}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: loading ? "#CCC" : "#8B5E3C",
+                      fontSize: "13px",
+                      fontWeight: 700,
+                      cursor: loading ? "not-allowed" : "pointer",
                       textDecoration: "none"
                     }}
-                    onMouseEnter={(e) => (e.target as HTMLButtonElement).style.textDecoration = "underline"}
+                    onMouseEnter={(e) => !loading && ((e.target as HTMLButtonElement).style.textDecoration = "underline")}
                     onMouseLeave={(e) => (e.target as HTMLButtonElement).style.textDecoration = "none"}
                   >
                     ← Back to Registration
@@ -336,123 +569,11 @@ export default function SignUpPage() {
               </form>
             )}
 
-            {/* Step 3: Password Setup */}
-            {step === 3 && (
-              <form onSubmit={handleSignUp}>
-                <p style={{ fontSize: "14px", color: "#9E8572", marginBottom: "20px", textAlign: "center" }}>
-                  Almost done! Set up your password
-                </p>
-                
-                <label style={labelStyle} htmlFor="password">Password</label>
-                <div style={{ position: "relative" }}>
-                  <input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    style={inputStyle}
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    placeholder="Enter your password"
-                    autoComplete="new-password"
-                  />
-                  <button
-                    type="button"
-                    style={{
-                      position: "absolute",
-                      right: 12,
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      background: "none",
-                      border: "none",
-                      color: "#8B5E3C",
-                      fontWeight: 700,
-                      cursor: "pointer",
-                      fontSize: 13,
-                    }}
-                    onClick={() => setShowPassword(v => !v)}
-                    tabIndex={-1}
-                  >
-                    {showPassword ? "Hide" : "Show"}
-                  </button>
-                </div>
-                <div style={{ height: 16 }} />
-                
-                <label style={labelStyle} htmlFor="confirmPassword">Confirm Password</label>
-                <div style={{ position: "relative" }}>
-                  <input
-                    id="confirmPassword"
-                    type={showPassword ? "text" : "password"}
-                    style={inputStyle}
-                    value={confirmPassword}
-                    onChange={e => setConfirmPassword(e.target.value)}
-                    placeholder="Confirm your password"
-                    autoComplete="new-password"
-                  />
-                  <button
-                    type="button"
-                    style={{
-                      position: "absolute",
-                      right: 12,
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      background: "none",
-                      border: "none",
-                      color: "#8B5E3C",
-                      fontWeight: 700,
-                      cursor: "pointer",
-                      fontSize: 13,
-                    }}
-                    onClick={() => setShowPassword(v => !v)}
-                    tabIndex={-1}
-                  >
-                    {showPassword ? "Hide" : "Show"}
-                  </button>
-                </div>
-                <div style={{ height: 24 }} />
-                
-                <button
-                  type="submit"
-                  style={{
-                    marginTop: 6,
-                    padding: "13px 0",
-                    width: "100%",
-                    marginBottom: 12,
-                    minWidth: 180,
-                    background: "linear-gradient(135deg, #c9936a, #b58f76)",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "10px",
-                    fontSize: "16px",
-                    fontWeight: 800,
-                    fontFamily: "'Nunito', sans-serif",
-                    cursor: "pointer",
-                    letterSpacing: "1.5px",
-                    boxShadow: "0 4px 14px rgba(158, 111, 80, 0.35)",
-                    transition: "transform 0.15s, box-shadow 0.15s",
-                  }}
-                  onMouseDown={(e) => {
-                    (e.target as HTMLButtonElement).style.transform = "scale(0.97)";
-                  }}
-                  onMouseUp={(e) => {
-                    (e.target as HTMLButtonElement).style.transform = "scale(1)";
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.target as HTMLButtonElement).style.boxShadow = "0 6px 20px rgba(107,66,38,0.45)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.target as HTMLButtonElement).style.boxShadow = "0 4px 14px rgba(107,66,38,0.35)";
-                    (e.target as HTMLButtonElement).style.transform = "scale(1)";
-                  }}
-                >
-                  SIGN UP
-                </button>
-              </form>
-            )}
-
             {/* Footer links */}
             <div style={{ textAlign: "center", marginTop: 4 }}>
               <p style={{ margin: "4px 0 0", fontSize: "13px", color: "#9E8572" }}>
                 Already have an account?{" "}
-                <a href="/home/login" style={{ color: "#8B5E3C", textDecoration: "none", fontWeight: 700 }}
+                <a href="/setup/login" style={{ color: "#8B5E3C", textDecoration: "none", fontWeight: 700 }}
                   onMouseEnter={(e) => (e.target as HTMLAnchorElement).style.textDecoration = "underline"}
                   onMouseLeave={(e) => (e.target as HTMLAnchorElement).style.textDecoration = "none"}
                 >Login</a>
