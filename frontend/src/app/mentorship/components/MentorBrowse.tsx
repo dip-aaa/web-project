@@ -1,41 +1,77 @@
 'use client';
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { T, SKILLS_LIST, BRANCHES, YEARS } from "./theme";
 import { SkillTag, Button } from "./ui";
 import MentorCard from "./MentorCard";
-import { MOCK_MENTORS, type MentorProfile } from "./data";
+import { type MentorProfile } from "./data";
+import { mentorshipAPI } from "../../../lib/api";
 
 export function MentorBrowse() {
   const [query, setQuery] = useState("");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>("");
-  const [roleFilter, setRoleFilter] = useState<"all" | "mentor" | "mentee">("all");
   const [showFilters, setShowFilters] = useState(false);
+  const [mentors, setMentors] = useState<MentorProfile[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch mentors from backend
+  useEffect(() => {
+    const fetchMentors = async () => {
+      try {
+        setLoading(true);
+        const response = await mentorshipAPI.getMentors({
+          search: query || undefined
+        });
+        
+        if (response.success && response.data) {
+          // Transform backend data to MentorProfile format
+          // Backend now only returns actual mentors (users with Mentor records)
+          const transformedMentors: MentorProfile[] = response.data.map((user: any) => ({
+            id: user.id.toString(),
+            name: user.name,
+            year: "Mentor", 
+            branch: user.department || "Not specified",
+            role: "mentor",
+            skills: user.expertiseArea ? [user.expertiseArea] : ["General Guidance"],
+            lookingFor: [],
+            bio: `Mentor from ${user.department || 'the college'}. ${user.expertiseArea ? `Expertise in ${user.expertiseArea}.` : 'Available for general guidance.'}`,
+            rating: 4.5, // Default rating
+            sessions: 0,
+            followers: 0,
+            online: false,
+            badges: [],
+            linkedinStyle: `${user.department || 'Student'} · ${user.email}`,
+            achievements: [],
+            openFor: ["1-on-1 mentoring", "Project guidance"],
+            fee: 0,
+            verified: true
+          }));
+          setMentors(transformedMentors);
+        }
+      } catch (error) {
+        console.error('Error fetching mentors:', error);
+        setMentors([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMentors();
+  }, [query]);
 
   const filtered = useMemo(() => {
-    return MOCK_MENTORS.filter((m) => {
-      const matchQuery =
-        !query ||
-        m.name.toLowerCase().includes(query.toLowerCase()) ||
-        m.skills.some((s) => s.toLowerCase().includes(query.toLowerCase())) ||
-        m.branch.toLowerCase().includes(query.toLowerCase());
-
+    return mentors.filter((m) => {
       const matchSkills =
         selectedSkills.length === 0 ||
         selectedSkills.some((sk) => m.skills.includes(sk));
 
       const matchYear = !selectedYear || m.year === selectedYear;
 
-      const matchRole =
-        roleFilter === "all" ||
-        m.role === roleFilter ||
-        m.role === "both";
-
-      return matchQuery && matchSkills && matchYear && matchRole;
+      return matchSkills && matchYear;
     });
-  }, [query, selectedSkills, selectedYear, roleFilter]);
+  }, [mentors, selectedSkills, selectedYear]);
 
   const toggleSkill = (s: string) =>
     setSelectedSkills((prev) =>
@@ -99,30 +135,6 @@ export function MentorBrowse() {
         >
           Filters {selectedSkills.length + (selectedYear ? 1 : 0) > 0 ? `(${selectedSkills.length + (selectedYear ? 1 : 0)})` : ""}
         </Button>
-      </div>
-
-      {/* Role filter pills */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-        {(["all", "mentor", "mentee"] as const).map((r) => (
-          <button
-            key={r}
-            onClick={() => setRoleFilter(r)}
-            style={{
-              padding: "7px 18px",
-              borderRadius: 12,
-              border: `1.5px solid ${roleFilter === r ? T.accent : T.border}`,
-              background: roleFilter === r ? T.tagBgActive : "transparent",
-              color: roleFilter === r ? T.text : T.textMuted,
-              fontSize: 12,
-              fontWeight: 700,
-              fontFamily: "'Inter', sans-serif",
-              cursor: "pointer",
-              textTransform: "capitalize",
-            }}
-          >
-            {r === "all" ? "All Students" : r === "mentor" ? "🧑‍🏫 Mentors" : "📚 Mentees"}
-          </button>
-        ))}
       </div>
 
       {/* Filter Panel */}
@@ -200,11 +212,22 @@ export function MentorBrowse() {
 
       {/* Results count */}
       <div style={{ marginBottom: 16, fontSize: 13, color: T.textMuted, fontFamily: "'Inter', sans-serif" }}>
-        Showing <strong style={{ color: T.text }}>{filtered.length}</strong> student{filtered.length !== 1 ? "s" : ""} from your college
+        {loading ? (
+          <span>Loading mentors...</span>
+        ) : (
+          <>
+            Showing <strong style={{ color: T.text }}>{filtered.length}</strong> student{filtered.length !== 1 ? "s" : ""} from your college
+          </>
+        )}
       </div>
 
       {/* Cards Grid */}
-      {filtered.length > 0 ? (
+      {loading ? (
+        <div style={{ textAlign: "center", padding: "60px 20px", color: T.textMuted }}>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>☕</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: T.text }}>Loading mentors...</div>
+        </div>
+      ) : filtered.length > 0 ? (
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",

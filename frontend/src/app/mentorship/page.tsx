@@ -4,13 +4,12 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MentorshipOverview } from "./components/MentorshipOverview";
 import { MentorBrowse } from "./components/MentorBrowse";
-import { CalloutFeed } from "./components/CalloutFeed";
 import Sidebar from "../../components/sidebar";
 
 /* ──────────────────────────────────────────────
    Types
 ────────────────────────────────────────────── */
-export type Tab = "overview" | "browse" | "callouts";
+export type Tab = "overview" | "browse";
 
 /* ──────────────────────────────────────────────
    Navigation Cards
@@ -19,7 +18,6 @@ function NavigationCards({ active, onChange }: { active: Tab; onChange: (t: Tab)
   const cards = [
     { id: "overview" as Tab, label: "Overview", emoji: "🏠" },
     { id: "browse" as Tab, label: "Find Mentors", emoji: "🔍" },
-    { id: "callouts" as Tab, label: "Callouts", emoji: "📢" },
   ];
 
   return (
@@ -160,7 +158,7 @@ function PageHeader() {
               fontFamily: "system-ui, -apple-system, sans-serif",
             }}
           >
-            IIT Bombay Campus
+            
           </span>
         </div>
         {/* Coffee coins display */}
@@ -232,7 +230,6 @@ export default function MentorsPage() {
           >
             {activeTab === "overview" && <MentorshipOverview />}
             {activeTab === "browse" && <MentorBrowse />}
-            {activeTab === "callouts" && <CalloutFeed />}
           </motion.div>
         </AnimatePresence>
       </div>

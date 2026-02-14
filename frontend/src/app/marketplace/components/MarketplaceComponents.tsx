@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { marketplaceAPI } from "../../../lib/api";
 
 export type MarketplaceItem = {
 	id: string;
@@ -13,7 +14,7 @@ export type MarketplaceItem = {
 	description?: string;
 };
 
-type PriceRange = "Any Price" | "Under $20" | "$20 - $50" | "$50 - $100" | "$100+";
+type PriceRange = "Any Price" | "Under Rs 500" | "Rs 500 - Rs 1000" | "Rs 1000 - Rs 2000" | "Rs 2000+";
 type Condition =
 	| "All Conditions"
 	| "Brand New"
@@ -28,110 +29,12 @@ type Filters = {
 	condition: Condition;
 };
 
-const ITEM_TEMPLATES: Omit<MarketplaceItem, "id">[] = [
-	{
-		title: "Organic Chemistry Textbook",
-		price: 45,
-		seller: "Alex J.",
-		conditionLabel: "Gently Used",
-		category: "Books",
-		imageUrl: "https://placehold.co/800x600/png?text=Organic+Chemistry",
-		description:
-			"Clean pages, minimal highlights. Great for students who want a solid reference for problem sets.",
-	},
-	{
-		title: "TI-84 Plus Graphing Calculator",
-		price: 80,
-		seller: "Sarah K.",
-		conditionLabel: "Like New",
-		category: "Calculators",
-		imageUrl: "https://placehold.co/800x600/png?text=TI-84+Plus",
-		description:
-			"All buttons work, screen is clear, includes cover. Perfect for calculus and physics.",
-	},
-	{
-		title: "Calculus II Exam Notes Pack",
-		price: 15,
-		seller: "Mike R.",
-		conditionLabel: "High Quality",
-		category: "Notes",
-		imageUrl: "https://placehold.co/800x600/png?text=Calculus+Notes",
-		description:
-			"Organized summaries and practice problems. Great for quick revision before exams.",
-	},
-	{
-		title: "Unisex Lab Coat",
-		price: 20,
-		seller: "David L.",
-		conditionLabel: "Brand New",
-		category: "Lab Gear",
-		imageUrl: "https://placehold.co/800x600/png?text=Lab+Coat",
-		description:
-			"Never worn. Standard fit, suitable for chemistry and biology labs.",
-	},
-	{
-		title: "Acrylic Master Set (Paints)",
-		price: 25,
-		seller: "Emma W.",
-		conditionLabel: "Gently Used",
-		category: "Art Supplies",
-		imageUrl: "https://placehold.co/800x600/png?text=Acrylic+Set",
-		description:
-			"A few colors lightly used, most unopened. Great starter set for assignments.",
-	},
-	{
-		title: "Engineering Drafting Kit",
-		price: 35,
-		seller: "Chris P.",
-		conditionLabel: "Well Loved",
-		category: "All Items",
-		imageUrl: "https://placehold.co/800x600/png?text=Drafting+Kit",
-		description:
-			"Includes ruler, compass, and templates. Has signs of use but fully functional.",
-	},
-	{
-		title: "Physics II Lab Binder",
-		price: 10,
-		seller: "Taylor B.",
-		conditionLabel: "Like New",
-		category: "Notes",
-		imageUrl: "https://placehold.co/800x600/png?text=Lab+Binder",
-		description:
-			"Neatly organized lab printouts. Tabs included for each experiment.",
-	},
-	{
-		title: "Noise Cancelling Headphones",
-		price: 120,
-		seller: "Jordan M.",
-		conditionLabel: "Like New",
-		category: "All Items",
-		imageUrl: "https://placehold.co/800x600/png?text=Headphones",
-		description:
-			"Great for study sessions. Includes carrying case and charging cable.",
-	},
-];
-
-function makeMockItems(count: number): MarketplaceItem[] {
-	return Array.from({ length: count }, (_, index) => {
-		const template = ITEM_TEMPLATES[index % ITEM_TEMPLATES.length];
-		const n = Math.floor(index / ITEM_TEMPLATES.length) + 1;
-		return {
-			id: String(index + 1),
-			...template,
-			title: n === 1 ? template.title : `${template.title} • ${n}`,
-			price: Number((template.price + (index % 5) * 2.5).toFixed(2)),
-		};
-	});
-}
-
-const MOCK_ITEMS: MarketplaceItem[] = makeMockItems(48);
-
 function matchesPriceRange(price: number, range: PriceRange): boolean {
 	if (range === "Any Price") return true;
-	if (range === "Under $20") return price < 20;
-	if (range === "$20 - $50") return price >= 20 && price <= 50;
-	if (range === "$50 - $100") return price > 50 && price <= 100;
-	return price > 100;
+	if (range === "Under Rs 500") return price < 500;
+	if (range === "Rs 500 - Rs 1000") return price >= 500 && price <= 1000;
+	if (range === "Rs 1000 - Rs 2000") return price > 1000 && price <= 2000;
+	return price > 2000;
 }
 
 function filterItems(items: MarketplaceItem[], filters: Filters): MarketplaceItem[] {
@@ -210,10 +113,10 @@ export function MarketplaceFilters({
 							}
 						>
 							<option value="Any Price">Any Price</option>
-							<option value="Under $20">Under $20</option>
-							<option value="$20 - $50">$20 - $50</option>
-							<option value="$50 - $100">$50 - $100</option>
-							<option value="$100+">$100+</option>
+					<option value="Under Rs 500">Under Rs 500</option>
+					<option value="Rs 500 - Rs 1000">Rs 500 - Rs 1000</option>
+					<option value="Rs 1000 - Rs 2000">Rs 1000 - Rs 2000</option>
+					<option value="Rs 2000+">Rs 2000+</option>
 						</select>
 						<span className="mk-select-icon">▾</span>
 					</div>
@@ -264,7 +167,7 @@ export function ProductCard({
 			</div>
 			<div className="mk-card-body">
 				<h3 className="mk-card-title">{item.title}</h3>
-				<div className="mk-price">${item.price.toFixed(2)}</div>
+				<div className="mk-price">Rs {item.price.toFixed(2)}</div>
 				<div className="mk-card-meta">
 					<span className="inline-flex items-center gap-1">
 						<span aria-hidden>👤</span>
@@ -280,12 +183,28 @@ export function ProductCard({
 }
 
 export function ProductGrid({
-	items = MOCK_ITEMS,
+	items,
 	onViewDetails,
 }: {
-	items?: MarketplaceItem[];
+	items: MarketplaceItem[];
 	onViewDetails: (item: MarketplaceItem) => void;
 }) {
+	if (items.length === 0) {
+		return (
+			<section className="mk-container">
+				<div style={{
+					padding: '60px 20px',
+					textAlign: 'center',
+					color: '#8b6f47'
+				}}>
+					<div style={{ fontSize: 48, marginBottom: 16 }}>📦</div>
+					<h3 style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 8 }}>No items found</h3>
+					<p style={{ fontSize: 14 }}>Try adjusting your filters or be the first to list an item!</p>
+				</div>
+			</section>
+		);
+	}
+
 	return (
 		<section className="mk-container">
 			<div className="mk-grid">
@@ -335,7 +254,8 @@ export function SellItemButton() {
 }
 
 export function MarketplaceView() {
-	const [items, setItems] = React.useState<MarketplaceItem[]>(MOCK_ITEMS);
+	const [items, setItems] = React.useState<MarketplaceItem[]>([]);
+	const [loading, setLoading] = React.useState(true);
 	const [filters, setFilters] = React.useState<Filters>({
 		category: "Select Category",
 		priceRange: "Any Price",
@@ -344,6 +264,27 @@ export function MarketplaceView() {
 	const [selectedItem, setSelectedItem] = React.useState<MarketplaceItem | null>(null);
 	const [showSellForm, setShowSellForm] = React.useState(false);
 
+	// Fetch items from API
+	const fetchItems = React.useCallback(async () => {
+		try {
+			setLoading(true);
+			const response = await marketplaceAPI.getItems();
+			if (response.success) {
+				setItems(response.data);
+			} else {
+				console.error('Failed to fetch items:', response.message);
+			}
+		} catch (error) {
+			console.error('Error fetching items:', error);
+		} finally {
+			setLoading(false);
+		}
+	}, []);
+
+	React.useEffect(() => {
+		fetchItems();
+	}, [fetchItems]);
+
 	const filteredItems = React.useMemo(() => filterItems(items, filters), [items, filters]);
 
 	function resetAll() {
@@ -351,10 +292,29 @@ export function MarketplaceView() {
 		setSelectedItem(null);
 	}
 
-	function handleAddItem(payload: Omit<MarketplaceItem, "id">) {
-		setItems((prev) => [{ id: String(Date.now()), ...payload }, ...prev]);
-		setShowSellForm(false);
-		setSelectedItem(null);
+	async function handleAddItem(payload: Omit<MarketplaceItem, "id">) {
+		try {
+			const response = await marketplaceAPI.createItem({
+				title: payload.title,
+				price: payload.price,
+				category: payload.category,
+				condition: payload.conditionLabel,
+				description: payload.description
+			});
+
+			if (response.success) {
+				// Refresh items list
+				await fetchItems();
+				setShowSellForm(false);
+				setSelectedItem(null);
+				alert('Item added successfully! 🎉');
+			} else {
+				alert('Failed to add item: ' + response.message);
+			}
+		} catch (error) {
+			console.error('Error adding item:', error);
+			alert('Failed to add item. Please make sure you are logged in.');
+		}
 	}
 
 	return (
@@ -368,7 +328,20 @@ export function MarketplaceView() {
 				}}
 			/>
 
-			<section className="mk-container mt-4">
+			{loading ? (
+				<section className="mk-container mt-4">
+					<div style={{
+						padding: '60px 20px',
+						textAlign: 'center',
+						color: '#8b6f47'
+					}}>
+						<div style={{ fontSize: 48, marginBottom: 16 }}>⏳</div>
+						<h3 style={{ fontSize: 20, fontWeight: 'bold' }}>Loading items...</h3>
+					</div>
+				</section>
+			) : (
+				<>
+					<section className="mk-container mt-4">
 				<div 
 					style={{
 						display: "flex",
@@ -453,7 +426,7 @@ export function MarketplaceView() {
 								<div>
 									<div style={{fontSize: 24, fontWeight: 700, color: "#6b4423", fontFamily: "system-ui, -apple-system, sans-serif"}}>{selectedItem.title}</div>
 									<div style={{marginTop: 4, fontSize: 20, fontWeight: 700, color: "#8b6f47", fontFamily: "system-ui, -apple-system, sans-serif"}}>
-										${selectedItem.price.toFixed(2)}
+										Rs {selectedItem.price.toFixed(2)}
 									</div>
 									<div style={{marginTop: 16, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, fontSize: 12, color: "#a0826d"}}>
 										<span style={{borderRadius: 16, background: "rgba(240, 230, 220, 0.6)", padding: "6px 12px", color: "#6b4423", fontWeight: 600}}>
@@ -486,15 +459,15 @@ export function MarketplaceView() {
 								{selectedItem.description ??
 									"No description provided. Ask the seller for details."}
 							</div>
-							<div style={{marginTop: 20, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12}}>
-								<button type="button" className="mk-btn" onClick={() => setShowSellForm(true)}>
-									Sell Similar
-								</button>
+							<div style={{marginTop: 20, display: "flex", justifyContent: "flex-end"}}>
 								<button type="button" className="mk-btn" onClick={() => setSelectedItem(null)}>
 									Back to Grid
 								</button>
 							</div>
 						</div>
+
+						{/* Comments Section */}
+						<CommentsSection itemId={selectedItem.id} />
 					</div>
 				</section>
 			) : null}
@@ -511,7 +484,245 @@ export function MarketplaceView() {
 				<span aria-hidden>＋</span>
 				<span>Sell Item</span>
 			</button>
+				</>
+			)}
 		</main>
+	);
+}
+
+function CommentsSection({ itemId }: { itemId: string }) {
+	const [comments, setComments] = React.useState<Array<{
+		id: number;
+		text: string;
+		createdAt: string;
+		user: {
+			id: number;
+			name: string;
+			email: string;
+		};
+	}>>([]);
+	const [newComment, setNewComment] = React.useState("");
+	const [loading, setLoading] = React.useState(true);
+	const [submitting, setSubmitting] = React.useState(false);
+
+	// Fetch comments
+	const fetchComments = React.useCallback(async () => {
+		try {
+			setLoading(true);
+			const response = await marketplaceAPI.getComments(itemId);
+			if (response.success) {
+				setComments(response.data);
+			}
+		} catch (error) {
+			console.error('Error fetching comments:', error);
+		} finally {
+			setLoading(false);
+		}
+	}, [itemId]);
+
+	React.useEffect(() => {
+		fetchComments();
+	}, [fetchComments]);
+
+	const handleAddComment = async (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!newComment.trim() || submitting) return;
+
+		try {
+			setSubmitting(true);
+			const response = await marketplaceAPI.addComment(itemId, newComment.trim());
+			if (response.success) {
+				setNewComment("");
+				await fetchComments();
+			} else {
+				alert('Failed to add comment: ' + response.message);
+			}
+		} catch (error) {
+			console.error('Error adding comment:', error);
+			alert('Failed to add comment. Please make sure you are logged in.');
+		} finally {
+			setSubmitting(false);
+		}
+	};
+
+	const handleDeleteComment = async (commentId: number) => {
+		if (!confirm('Are you sure you want to delete this comment?')) return;
+
+		try {
+			const response = await marketplaceAPI.deleteComment(commentId);
+			if (response.success) {
+				await fetchComments();
+			} else {
+				alert('Failed to delete comment: ' + response.message);
+			}
+		} catch (error) {
+			console.error('Error deleting comment:', error);
+			alert('Failed to delete comment.');
+		}
+	};
+
+	const formatDate = (dateString: string) => {
+		const date = new Date(dateString);
+		const now = new Date();
+		const diff = now.getTime() - date.getTime();
+		const minutes = Math.floor(diff / 60000);
+		const hours = Math.floor(minutes / 60);
+		const days = Math.floor(hours / 24);
+
+		if (minutes < 1) return 'Just now';
+		if (minutes < 60) return `${minutes}m ago`;
+		if (hours < 24) return `${hours}h ago`;
+		if (days < 7) return `${days}d ago`;
+		return date.toLocaleDateString();
+	};
+
+	const currentUserId = typeof window !== 'undefined' ? 
+		JSON.parse(localStorage.getItem('user') || '{}').id : null;
+
+	return (
+		<div style={{
+			marginTop: 24,
+			paddingTop: 24,
+			borderTop: '2px solid #f0e6dc'
+		}}>
+			<h3 style={{
+				fontSize: 20,
+				fontWeight: 700,
+				color: '#6b4423',
+				marginBottom: 16,
+				fontFamily: 'system-ui, -apple-system, sans-serif'
+			}}>
+				Comments ({comments.length})
+			</h3>
+
+			{/* Add Comment Form */}
+			<form onSubmit={handleAddComment} style={{ marginBottom: 20 }}>
+				<textarea
+					style={{
+						width: '100%',
+						borderRadius: 12,
+						border: '1px solid #f0e6dc',
+						background: 'rgba(255, 255, 255, 0.9)',
+						padding: '12px 16px',
+						fontSize: 14,
+						color: '#6b4423',
+						boxShadow: '0 2px 12px rgba(139, 111, 71, 0.06)',
+						outline: 'none',
+						transition: 'all 0.2s ease',
+						fontFamily: 'system-ui, -apple-system, sans-serif',
+						resize: 'vertical',
+						minHeight: '80px'
+					}}
+					value={newComment}
+					onChange={(e) => setNewComment(e.target.value)}
+					placeholder="Add a comment..."
+					disabled={submitting}
+				/>
+				<button
+					type="submit"
+					className="mk-btn"
+					disabled={!newComment.trim() || submitting}
+					style={{
+						marginTop: 8,
+						opacity: (!newComment.trim() || submitting) ? 0.5 : 1
+					}}
+				>
+					{submitting ? 'Posting...' : 'Post Comment'}
+				</button>
+			</form>
+
+			{/* Comments List */}
+			{loading ? (
+				<div style={{
+					textAlign: 'center',
+					padding: '20px',
+					color: '#8b6f47',
+					fontSize: 14
+				}}>
+					Loading comments...
+				</div>
+			) : comments.length === 0 ? (
+				<div style={{
+					textAlign: 'center',
+					padding: '40px 20px',
+					color: '#a0826d',
+					fontSize: 14
+				}}>
+					No comments yet. Be the first to comment!
+				</div>
+			) : (
+				<div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+					{comments.map((comment) => (
+						<div
+							key={comment.id}
+							style={{
+								background: 'rgba(249, 246, 243, 0.6)',
+								borderRadius: 12,
+								padding: 16,
+								border: '1px solid #f0e6dc'
+							}}
+						>
+							<div style={{
+								display: 'flex',
+								justifyContent: 'space-between',
+								alignItems: 'flex-start',
+								marginBottom: 8
+							}}>
+								<div>
+									<div style={{
+										fontSize: 14,
+										fontWeight: 600,
+										color: '#6b4423',
+										fontFamily: 'system-ui, -apple-system, sans-serif'
+									}}>
+										{comment.user.name}
+									</div>
+									<div style={{
+										fontSize: 12,
+										color: '#a0826d',
+										marginTop: 2
+									}}>
+										{formatDate(comment.createdAt)}
+									</div>
+								</div>
+								{currentUserId === comment.user.id && (
+									<button
+										type="button"
+										onClick={() => handleDeleteComment(comment.id)}
+										style={{
+											background: 'transparent',
+											border: 'none',
+											color: '#d32f2f',
+											cursor: 'pointer',
+											fontSize: 12,
+											padding: '4px 8px',
+											borderRadius: 6,
+											transition: 'background 0.2s ease'
+										}}
+										onMouseEnter={(e) => {
+											e.currentTarget.style.background = 'rgba(211, 47, 47, 0.1)';
+										}}
+										onMouseLeave={(e) => {
+											e.currentTarget.style.background = 'transparent';
+										}}
+									>
+										Delete
+									</button>
+								)}
+							</div>
+							<div style={{
+								fontSize: 14,
+								color: '#6b4423',
+								lineHeight: 1.5,
+								fontFamily: 'system-ui, -apple-system, sans-serif'
+							}}>
+								{comment.text}
+							</div>
+						</div>
+					))}
+				</div>
+			)}
+		</div>
 	);
 }
 

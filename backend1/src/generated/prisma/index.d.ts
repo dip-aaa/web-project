@@ -74,6 +74,11 @@ export type Category = $Result.DefaultSelection<Prisma.$CategoryPayload>
  */
 export type Item = $Result.DefaultSelection<Prisma.$ItemPayload>
 /**
+ * Model ItemComment
+ * Comments on marketplace items
+ */
+export type ItemComment = $Result.DefaultSelection<Prisma.$ItemCommentPayload>
+/**
  * Model Review
  * ERD: Buyer 1..* Review
  */
@@ -321,6 +326,16 @@ export class PrismaClient<
     * ```
     */
   get item(): Prisma.ItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.itemComment`: Exposes CRUD operations for the **ItemComment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ItemComments
+    * const itemComments = await prisma.itemComment.findMany()
+    * ```
+    */
+  get itemComment(): Prisma.ItemCommentDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.review`: Exposes CRUD operations for the **Review** model.
@@ -794,6 +809,7 @@ export namespace Prisma {
     Mentee: 'Mentee',
     Category: 'Category',
     Item: 'Item',
+    ItemComment: 'ItemComment',
     Review: 'Review',
     Request: 'Request'
   };
@@ -814,7 +830,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "oTP" | "refreshToken" | "message" | "college" | "student" | "buyer" | "seller" | "mentor" | "mentee" | "category" | "item" | "review" | "request"
+      modelProps: "user" | "oTP" | "refreshToken" | "message" | "college" | "student" | "buyer" | "seller" | "mentor" | "mentee" | "category" | "item" | "itemComment" | "review" | "request"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1706,6 +1722,80 @@ export namespace Prisma {
           }
         }
       }
+      ItemComment: {
+        payload: Prisma.$ItemCommentPayload<ExtArgs>
+        fields: Prisma.ItemCommentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ItemCommentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemCommentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ItemCommentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemCommentPayload>
+          }
+          findFirst: {
+            args: Prisma.ItemCommentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemCommentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ItemCommentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemCommentPayload>
+          }
+          findMany: {
+            args: Prisma.ItemCommentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemCommentPayload>[]
+          }
+          create: {
+            args: Prisma.ItemCommentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemCommentPayload>
+          }
+          createMany: {
+            args: Prisma.ItemCommentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ItemCommentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemCommentPayload>[]
+          }
+          delete: {
+            args: Prisma.ItemCommentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemCommentPayload>
+          }
+          update: {
+            args: Prisma.ItemCommentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemCommentPayload>
+          }
+          deleteMany: {
+            args: Prisma.ItemCommentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ItemCommentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ItemCommentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemCommentPayload>[]
+          }
+          upsert: {
+            args: Prisma.ItemCommentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemCommentPayload>
+          }
+          aggregate: {
+            args: Prisma.ItemCommentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateItemComment>
+          }
+          groupBy: {
+            args: Prisma.ItemCommentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ItemCommentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ItemCommentCountArgs<ExtArgs>
+            result: $Utils.Optional<ItemCommentCountAggregateOutputType> | number
+          }
+        }
+      }
       Review: {
         payload: Prisma.$ReviewPayload<ExtArgs>
         fields: Prisma.ReviewFieldRefs
@@ -1962,6 +2052,7 @@ export namespace Prisma {
     mentee?: MenteeOmit
     category?: CategoryOmit
     item?: ItemOmit
+    itemComment?: ItemCommentOmit
     review?: ReviewOmit
     request?: RequestOmit
   }
@@ -2048,6 +2139,7 @@ export namespace Prisma {
     refreshTokens: number
     sentMessages: number
     receivedMessages: number
+    itemComments: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2055,6 +2147,7 @@ export namespace Prisma {
     refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
     sentMessages?: boolean | UserCountOutputTypeCountSentMessagesArgs
     receivedMessages?: boolean | UserCountOutputTypeCountReceivedMessagesArgs
+    itemComments?: boolean | UserCountOutputTypeCountItemCommentsArgs
   }
 
   // Custom InputTypes
@@ -2094,6 +2187,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountReceivedMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MessageWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountItemCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItemCommentWhereInput
   }
 
 
@@ -2298,6 +2398,37 @@ export namespace Prisma {
    */
   export type CategoryCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ItemWhereInput
+  }
+
+
+  /**
+   * Count Type ItemCountOutputType
+   */
+
+  export type ItemCountOutputType = {
+    comments: number
+  }
+
+  export type ItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    comments?: boolean | ItemCountOutputTypeCountCommentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ItemCountOutputType without action
+   */
+  export type ItemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemCountOutputType
+     */
+    select?: ItemCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ItemCountOutputType without action
+   */
+  export type ItemCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItemCommentWhereInput
   }
 
 
@@ -2556,6 +2687,7 @@ export namespace Prisma {
     mentee?: boolean | User$menteeArgs<ExtArgs>
     sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
     receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
+    itemComments?: boolean | User$itemCommentsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2611,6 +2743,7 @@ export namespace Prisma {
     mentee?: boolean | User$menteeArgs<ExtArgs>
     sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
     receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
+    itemComments?: boolean | User$itemCommentsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2632,6 +2765,7 @@ export namespace Prisma {
       mentee: Prisma.$MenteePayload<ExtArgs> | null
       sentMessages: Prisma.$MessagePayload<ExtArgs>[]
       receivedMessages: Prisma.$MessagePayload<ExtArgs>[]
+      itemComments: Prisma.$ItemCommentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -3047,6 +3181,7 @@ export namespace Prisma {
     mentee<T extends User$menteeArgs<ExtArgs> = {}>(args?: Subset<T, User$menteeArgs<ExtArgs>>): Prisma__MenteeClient<$Result.GetResult<Prisma.$MenteePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     sentMessages<T extends User$sentMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$sentMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivedMessages<T extends User$receivedMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    itemComments<T extends User$itemCommentsArgs<ExtArgs> = {}>(args?: Subset<T, User$itemCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3649,6 +3784,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
+  }
+
+  /**
+   * User.itemComments
+   */
+  export type User$itemCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentInclude<ExtArgs> | null
+    where?: ItemCommentWhereInput
+    orderBy?: ItemCommentOrderByWithRelationInput | ItemCommentOrderByWithRelationInput[]
+    cursor?: ItemCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ItemCommentScalarFieldEnum | ItemCommentScalarFieldEnum[]
   }
 
   /**
@@ -15091,6 +15250,8 @@ export namespace Prisma {
     seller?: boolean | SellerDefaultArgs<ExtArgs>
     buyer?: boolean | Item$buyerArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
+    comments?: boolean | Item$commentsArgs<ExtArgs>
+    _count?: boolean | ItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["item"]>
 
   export type ItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -15134,6 +15295,8 @@ export namespace Prisma {
     seller?: boolean | SellerDefaultArgs<ExtArgs>
     buyer?: boolean | Item$buyerArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
+    comments?: boolean | Item$commentsArgs<ExtArgs>
+    _count?: boolean | ItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     seller?: boolean | SellerDefaultArgs<ExtArgs>
@@ -15152,6 +15315,7 @@ export namespace Prisma {
       seller: Prisma.$SellerPayload<ExtArgs>
       buyer: Prisma.$BuyerPayload<ExtArgs> | null
       category: Prisma.$CategoryPayload<ExtArgs>
+      comments: Prisma.$ItemCommentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -15558,6 +15722,7 @@ export namespace Prisma {
     seller<T extends SellerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SellerDefaultArgs<ExtArgs>>): Prisma__SellerClient<$Result.GetResult<Prisma.$SellerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     buyer<T extends Item$buyerArgs<ExtArgs> = {}>(args?: Subset<T, Item$buyerArgs<ExtArgs>>): Prisma__BuyerClient<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     category<T extends CategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CategoryDefaultArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    comments<T extends Item$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Item$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -16007,6 +16172,30 @@ export namespace Prisma {
   }
 
   /**
+   * Item.comments
+   */
+  export type Item$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentInclude<ExtArgs> | null
+    where?: ItemCommentWhereInput
+    orderBy?: ItemCommentOrderByWithRelationInput | ItemCommentOrderByWithRelationInput[]
+    cursor?: ItemCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ItemCommentScalarFieldEnum | ItemCommentScalarFieldEnum[]
+  }
+
+  /**
    * Item without action
    */
   export type ItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -16022,6 +16211,1112 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ItemComment
+   */
+
+  export type AggregateItemComment = {
+    _count: ItemCommentCountAggregateOutputType | null
+    _avg: ItemCommentAvgAggregateOutputType | null
+    _sum: ItemCommentSumAggregateOutputType | null
+    _min: ItemCommentMinAggregateOutputType | null
+    _max: ItemCommentMaxAggregateOutputType | null
+  }
+
+  export type ItemCommentAvgAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    itemId: number | null
+  }
+
+  export type ItemCommentSumAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    itemId: number | null
+  }
+
+  export type ItemCommentMinAggregateOutputType = {
+    id: number | null
+    text: string | null
+    createdAt: Date | null
+    userId: number | null
+    itemId: number | null
+  }
+
+  export type ItemCommentMaxAggregateOutputType = {
+    id: number | null
+    text: string | null
+    createdAt: Date | null
+    userId: number | null
+    itemId: number | null
+  }
+
+  export type ItemCommentCountAggregateOutputType = {
+    id: number
+    text: number
+    createdAt: number
+    userId: number
+    itemId: number
+    _all: number
+  }
+
+
+  export type ItemCommentAvgAggregateInputType = {
+    id?: true
+    userId?: true
+    itemId?: true
+  }
+
+  export type ItemCommentSumAggregateInputType = {
+    id?: true
+    userId?: true
+    itemId?: true
+  }
+
+  export type ItemCommentMinAggregateInputType = {
+    id?: true
+    text?: true
+    createdAt?: true
+    userId?: true
+    itemId?: true
+  }
+
+  export type ItemCommentMaxAggregateInputType = {
+    id?: true
+    text?: true
+    createdAt?: true
+    userId?: true
+    itemId?: true
+  }
+
+  export type ItemCommentCountAggregateInputType = {
+    id?: true
+    text?: true
+    createdAt?: true
+    userId?: true
+    itemId?: true
+    _all?: true
+  }
+
+  export type ItemCommentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ItemComment to aggregate.
+     */
+    where?: ItemCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItemComments to fetch.
+     */
+    orderBy?: ItemCommentOrderByWithRelationInput | ItemCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ItemCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItemComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItemComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ItemComments
+    **/
+    _count?: true | ItemCommentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ItemCommentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ItemCommentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ItemCommentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ItemCommentMaxAggregateInputType
+  }
+
+  export type GetItemCommentAggregateType<T extends ItemCommentAggregateArgs> = {
+        [P in keyof T & keyof AggregateItemComment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateItemComment[P]>
+      : GetScalarType<T[P], AggregateItemComment[P]>
+  }
+
+
+
+
+  export type ItemCommentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItemCommentWhereInput
+    orderBy?: ItemCommentOrderByWithAggregationInput | ItemCommentOrderByWithAggregationInput[]
+    by: ItemCommentScalarFieldEnum[] | ItemCommentScalarFieldEnum
+    having?: ItemCommentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ItemCommentCountAggregateInputType | true
+    _avg?: ItemCommentAvgAggregateInputType
+    _sum?: ItemCommentSumAggregateInputType
+    _min?: ItemCommentMinAggregateInputType
+    _max?: ItemCommentMaxAggregateInputType
+  }
+
+  export type ItemCommentGroupByOutputType = {
+    id: number
+    text: string
+    createdAt: Date
+    userId: number
+    itemId: number
+    _count: ItemCommentCountAggregateOutputType | null
+    _avg: ItemCommentAvgAggregateOutputType | null
+    _sum: ItemCommentSumAggregateOutputType | null
+    _min: ItemCommentMinAggregateOutputType | null
+    _max: ItemCommentMaxAggregateOutputType | null
+  }
+
+  type GetItemCommentGroupByPayload<T extends ItemCommentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ItemCommentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ItemCommentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ItemCommentGroupByOutputType[P]>
+            : GetScalarType<T[P], ItemCommentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ItemCommentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    text?: boolean
+    createdAt?: boolean
+    userId?: boolean
+    itemId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    item?: boolean | ItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itemComment"]>
+
+  export type ItemCommentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    text?: boolean
+    createdAt?: boolean
+    userId?: boolean
+    itemId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    item?: boolean | ItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itemComment"]>
+
+  export type ItemCommentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    text?: boolean
+    createdAt?: boolean
+    userId?: boolean
+    itemId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    item?: boolean | ItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itemComment"]>
+
+  export type ItemCommentSelectScalar = {
+    id?: boolean
+    text?: boolean
+    createdAt?: boolean
+    userId?: boolean
+    itemId?: boolean
+  }
+
+  export type ItemCommentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "text" | "createdAt" | "userId" | "itemId", ExtArgs["result"]["itemComment"]>
+  export type ItemCommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    item?: boolean | ItemDefaultArgs<ExtArgs>
+  }
+  export type ItemCommentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    item?: boolean | ItemDefaultArgs<ExtArgs>
+  }
+  export type ItemCommentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    item?: boolean | ItemDefaultArgs<ExtArgs>
+  }
+
+  export type $ItemCommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ItemComment"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      item: Prisma.$ItemPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      text: string
+      createdAt: Date
+      userId: number
+      itemId: number
+    }, ExtArgs["result"]["itemComment"]>
+    composites: {}
+  }
+
+  type ItemCommentGetPayload<S extends boolean | null | undefined | ItemCommentDefaultArgs> = $Result.GetResult<Prisma.$ItemCommentPayload, S>
+
+  type ItemCommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ItemCommentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ItemCommentCountAggregateInputType | true
+    }
+
+  export interface ItemCommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ItemComment'], meta: { name: 'ItemComment' } }
+    /**
+     * Find zero or one ItemComment that matches the filter.
+     * @param {ItemCommentFindUniqueArgs} args - Arguments to find a ItemComment
+     * @example
+     * // Get one ItemComment
+     * const itemComment = await prisma.itemComment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ItemCommentFindUniqueArgs>(args: SelectSubset<T, ItemCommentFindUniqueArgs<ExtArgs>>): Prisma__ItemCommentClient<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ItemComment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ItemCommentFindUniqueOrThrowArgs} args - Arguments to find a ItemComment
+     * @example
+     * // Get one ItemComment
+     * const itemComment = await prisma.itemComment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ItemCommentFindUniqueOrThrowArgs>(args: SelectSubset<T, ItemCommentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ItemCommentClient<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ItemComment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemCommentFindFirstArgs} args - Arguments to find a ItemComment
+     * @example
+     * // Get one ItemComment
+     * const itemComment = await prisma.itemComment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ItemCommentFindFirstArgs>(args?: SelectSubset<T, ItemCommentFindFirstArgs<ExtArgs>>): Prisma__ItemCommentClient<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ItemComment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemCommentFindFirstOrThrowArgs} args - Arguments to find a ItemComment
+     * @example
+     * // Get one ItemComment
+     * const itemComment = await prisma.itemComment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ItemCommentFindFirstOrThrowArgs>(args?: SelectSubset<T, ItemCommentFindFirstOrThrowArgs<ExtArgs>>): Prisma__ItemCommentClient<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ItemComments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemCommentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ItemComments
+     * const itemComments = await prisma.itemComment.findMany()
+     * 
+     * // Get first 10 ItemComments
+     * const itemComments = await prisma.itemComment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const itemCommentWithIdOnly = await prisma.itemComment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ItemCommentFindManyArgs>(args?: SelectSubset<T, ItemCommentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ItemComment.
+     * @param {ItemCommentCreateArgs} args - Arguments to create a ItemComment.
+     * @example
+     * // Create one ItemComment
+     * const ItemComment = await prisma.itemComment.create({
+     *   data: {
+     *     // ... data to create a ItemComment
+     *   }
+     * })
+     * 
+     */
+    create<T extends ItemCommentCreateArgs>(args: SelectSubset<T, ItemCommentCreateArgs<ExtArgs>>): Prisma__ItemCommentClient<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ItemComments.
+     * @param {ItemCommentCreateManyArgs} args - Arguments to create many ItemComments.
+     * @example
+     * // Create many ItemComments
+     * const itemComment = await prisma.itemComment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ItemCommentCreateManyArgs>(args?: SelectSubset<T, ItemCommentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ItemComments and returns the data saved in the database.
+     * @param {ItemCommentCreateManyAndReturnArgs} args - Arguments to create many ItemComments.
+     * @example
+     * // Create many ItemComments
+     * const itemComment = await prisma.itemComment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ItemComments and only return the `id`
+     * const itemCommentWithIdOnly = await prisma.itemComment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ItemCommentCreateManyAndReturnArgs>(args?: SelectSubset<T, ItemCommentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ItemComment.
+     * @param {ItemCommentDeleteArgs} args - Arguments to delete one ItemComment.
+     * @example
+     * // Delete one ItemComment
+     * const ItemComment = await prisma.itemComment.delete({
+     *   where: {
+     *     // ... filter to delete one ItemComment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ItemCommentDeleteArgs>(args: SelectSubset<T, ItemCommentDeleteArgs<ExtArgs>>): Prisma__ItemCommentClient<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ItemComment.
+     * @param {ItemCommentUpdateArgs} args - Arguments to update one ItemComment.
+     * @example
+     * // Update one ItemComment
+     * const itemComment = await prisma.itemComment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ItemCommentUpdateArgs>(args: SelectSubset<T, ItemCommentUpdateArgs<ExtArgs>>): Prisma__ItemCommentClient<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ItemComments.
+     * @param {ItemCommentDeleteManyArgs} args - Arguments to filter ItemComments to delete.
+     * @example
+     * // Delete a few ItemComments
+     * const { count } = await prisma.itemComment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ItemCommentDeleteManyArgs>(args?: SelectSubset<T, ItemCommentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ItemComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemCommentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ItemComments
+     * const itemComment = await prisma.itemComment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ItemCommentUpdateManyArgs>(args: SelectSubset<T, ItemCommentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ItemComments and returns the data updated in the database.
+     * @param {ItemCommentUpdateManyAndReturnArgs} args - Arguments to update many ItemComments.
+     * @example
+     * // Update many ItemComments
+     * const itemComment = await prisma.itemComment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ItemComments and only return the `id`
+     * const itemCommentWithIdOnly = await prisma.itemComment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ItemCommentUpdateManyAndReturnArgs>(args: SelectSubset<T, ItemCommentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ItemComment.
+     * @param {ItemCommentUpsertArgs} args - Arguments to update or create a ItemComment.
+     * @example
+     * // Update or create a ItemComment
+     * const itemComment = await prisma.itemComment.upsert({
+     *   create: {
+     *     // ... data to create a ItemComment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ItemComment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ItemCommentUpsertArgs>(args: SelectSubset<T, ItemCommentUpsertArgs<ExtArgs>>): Prisma__ItemCommentClient<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ItemComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemCommentCountArgs} args - Arguments to filter ItemComments to count.
+     * @example
+     * // Count the number of ItemComments
+     * const count = await prisma.itemComment.count({
+     *   where: {
+     *     // ... the filter for the ItemComments we want to count
+     *   }
+     * })
+    **/
+    count<T extends ItemCommentCountArgs>(
+      args?: Subset<T, ItemCommentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ItemCommentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ItemComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemCommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ItemCommentAggregateArgs>(args: Subset<T, ItemCommentAggregateArgs>): Prisma.PrismaPromise<GetItemCommentAggregateType<T>>
+
+    /**
+     * Group by ItemComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemCommentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ItemCommentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ItemCommentGroupByArgs['orderBy'] }
+        : { orderBy?: ItemCommentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ItemCommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetItemCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ItemComment model
+   */
+  readonly fields: ItemCommentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ItemComment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ItemCommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    item<T extends ItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ItemDefaultArgs<ExtArgs>>): Prisma__ItemClient<$Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ItemComment model
+   */
+  interface ItemCommentFieldRefs {
+    readonly id: FieldRef<"ItemComment", 'Int'>
+    readonly text: FieldRef<"ItemComment", 'String'>
+    readonly createdAt: FieldRef<"ItemComment", 'DateTime'>
+    readonly userId: FieldRef<"ItemComment", 'Int'>
+    readonly itemId: FieldRef<"ItemComment", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ItemComment findUnique
+   */
+  export type ItemCommentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemComment to fetch.
+     */
+    where: ItemCommentWhereUniqueInput
+  }
+
+  /**
+   * ItemComment findUniqueOrThrow
+   */
+  export type ItemCommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemComment to fetch.
+     */
+    where: ItemCommentWhereUniqueInput
+  }
+
+  /**
+   * ItemComment findFirst
+   */
+  export type ItemCommentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemComment to fetch.
+     */
+    where?: ItemCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItemComments to fetch.
+     */
+    orderBy?: ItemCommentOrderByWithRelationInput | ItemCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ItemComments.
+     */
+    cursor?: ItemCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItemComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItemComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ItemComments.
+     */
+    distinct?: ItemCommentScalarFieldEnum | ItemCommentScalarFieldEnum[]
+  }
+
+  /**
+   * ItemComment findFirstOrThrow
+   */
+  export type ItemCommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemComment to fetch.
+     */
+    where?: ItemCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItemComments to fetch.
+     */
+    orderBy?: ItemCommentOrderByWithRelationInput | ItemCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ItemComments.
+     */
+    cursor?: ItemCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItemComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItemComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ItemComments.
+     */
+    distinct?: ItemCommentScalarFieldEnum | ItemCommentScalarFieldEnum[]
+  }
+
+  /**
+   * ItemComment findMany
+   */
+  export type ItemCommentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemComments to fetch.
+     */
+    where?: ItemCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItemComments to fetch.
+     */
+    orderBy?: ItemCommentOrderByWithRelationInput | ItemCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ItemComments.
+     */
+    cursor?: ItemCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItemComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItemComments.
+     */
+    skip?: number
+    distinct?: ItemCommentScalarFieldEnum | ItemCommentScalarFieldEnum[]
+  }
+
+  /**
+   * ItemComment create
+   */
+  export type ItemCommentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ItemComment.
+     */
+    data: XOR<ItemCommentCreateInput, ItemCommentUncheckedCreateInput>
+  }
+
+  /**
+   * ItemComment createMany
+   */
+  export type ItemCommentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ItemComments.
+     */
+    data: ItemCommentCreateManyInput | ItemCommentCreateManyInput[]
+  }
+
+  /**
+   * ItemComment createManyAndReturn
+   */
+  export type ItemCommentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * The data used to create many ItemComments.
+     */
+    data: ItemCommentCreateManyInput | ItemCommentCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ItemComment update
+   */
+  export type ItemCommentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ItemComment.
+     */
+    data: XOR<ItemCommentUpdateInput, ItemCommentUncheckedUpdateInput>
+    /**
+     * Choose, which ItemComment to update.
+     */
+    where: ItemCommentWhereUniqueInput
+  }
+
+  /**
+   * ItemComment updateMany
+   */
+  export type ItemCommentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ItemComments.
+     */
+    data: XOR<ItemCommentUpdateManyMutationInput, ItemCommentUncheckedUpdateManyInput>
+    /**
+     * Filter which ItemComments to update
+     */
+    where?: ItemCommentWhereInput
+    /**
+     * Limit how many ItemComments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ItemComment updateManyAndReturn
+   */
+  export type ItemCommentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * The data used to update ItemComments.
+     */
+    data: XOR<ItemCommentUpdateManyMutationInput, ItemCommentUncheckedUpdateManyInput>
+    /**
+     * Filter which ItemComments to update
+     */
+    where?: ItemCommentWhereInput
+    /**
+     * Limit how many ItemComments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ItemComment upsert
+   */
+  export type ItemCommentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ItemComment to update in case it exists.
+     */
+    where: ItemCommentWhereUniqueInput
+    /**
+     * In case the ItemComment found by the `where` argument doesn't exist, create a new ItemComment with this data.
+     */
+    create: XOR<ItemCommentCreateInput, ItemCommentUncheckedCreateInput>
+    /**
+     * In case the ItemComment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ItemCommentUpdateInput, ItemCommentUncheckedUpdateInput>
+  }
+
+  /**
+   * ItemComment delete
+   */
+  export type ItemCommentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentInclude<ExtArgs> | null
+    /**
+     * Filter which ItemComment to delete.
+     */
+    where: ItemCommentWhereUniqueInput
+  }
+
+  /**
+   * ItemComment deleteMany
+   */
+  export type ItemCommentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ItemComments to delete
+     */
+    where?: ItemCommentWhereInput
+    /**
+     * Limit how many ItemComments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ItemComment without action
+   */
+  export type ItemCommentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentInclude<ExtArgs> | null
   }
 
 
@@ -18380,6 +19675,17 @@ export namespace Prisma {
   export type ItemScalarFieldEnum = (typeof ItemScalarFieldEnum)[keyof typeof ItemScalarFieldEnum]
 
 
+  export const ItemCommentScalarFieldEnum: {
+    id: 'id',
+    text: 'text',
+    createdAt: 'createdAt',
+    userId: 'userId',
+    itemId: 'itemId'
+  };
+
+  export type ItemCommentScalarFieldEnum = (typeof ItemCommentScalarFieldEnum)[keyof typeof ItemCommentScalarFieldEnum]
+
+
   export const ReviewScalarFieldEnum: {
     id: 'id',
     comments: 'comments',
@@ -18485,6 +19791,7 @@ export namespace Prisma {
     mentee?: XOR<MenteeNullableScalarRelationFilter, MenteeWhereInput> | null
     sentMessages?: MessageListRelationFilter
     receivedMessages?: MessageListRelationFilter
+    itemComments?: ItemCommentListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -18507,6 +19814,7 @@ export namespace Prisma {
     mentee?: MenteeOrderByWithRelationInput
     sentMessages?: MessageOrderByRelationAggregateInput
     receivedMessages?: MessageOrderByRelationAggregateInput
+    itemComments?: ItemCommentOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -18532,6 +19840,7 @@ export namespace Prisma {
     mentee?: XOR<MenteeNullableScalarRelationFilter, MenteeWhereInput> | null
     sentMessages?: MessageListRelationFilter
     receivedMessages?: MessageListRelationFilter
+    itemComments?: ItemCommentListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -19137,6 +20446,7 @@ export namespace Prisma {
     seller?: XOR<SellerScalarRelationFilter, SellerWhereInput>
     buyer?: XOR<BuyerNullableScalarRelationFilter, BuyerWhereInput> | null
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
+    comments?: ItemCommentListRelationFilter
   }
 
   export type ItemOrderByWithRelationInput = {
@@ -19150,6 +20460,7 @@ export namespace Prisma {
     seller?: SellerOrderByWithRelationInput
     buyer?: BuyerOrderByWithRelationInput
     category?: CategoryOrderByWithRelationInput
+    comments?: ItemCommentOrderByRelationAggregateInput
   }
 
   export type ItemWhereUniqueInput = Prisma.AtLeast<{
@@ -19166,6 +20477,7 @@ export namespace Prisma {
     seller?: XOR<SellerScalarRelationFilter, SellerWhereInput>
     buyer?: XOR<BuyerNullableScalarRelationFilter, BuyerWhereInput> | null
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
+    comments?: ItemCommentListRelationFilter
   }, "id">
 
   export type ItemOrderByWithAggregationInput = {
@@ -19194,6 +20506,66 @@ export namespace Prisma {
     sellerId?: IntWithAggregatesFilter<"Item"> | number
     buyerId?: IntNullableWithAggregatesFilter<"Item"> | number | null
     categoryId?: IntWithAggregatesFilter<"Item"> | number
+  }
+
+  export type ItemCommentWhereInput = {
+    AND?: ItemCommentWhereInput | ItemCommentWhereInput[]
+    OR?: ItemCommentWhereInput[]
+    NOT?: ItemCommentWhereInput | ItemCommentWhereInput[]
+    id?: IntFilter<"ItemComment"> | number
+    text?: StringFilter<"ItemComment"> | string
+    createdAt?: DateTimeFilter<"ItemComment"> | Date | string
+    userId?: IntFilter<"ItemComment"> | number
+    itemId?: IntFilter<"ItemComment"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    item?: XOR<ItemScalarRelationFilter, ItemWhereInput>
+  }
+
+  export type ItemCommentOrderByWithRelationInput = {
+    id?: SortOrder
+    text?: SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    itemId?: SortOrder
+    user?: UserOrderByWithRelationInput
+    item?: ItemOrderByWithRelationInput
+  }
+
+  export type ItemCommentWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ItemCommentWhereInput | ItemCommentWhereInput[]
+    OR?: ItemCommentWhereInput[]
+    NOT?: ItemCommentWhereInput | ItemCommentWhereInput[]
+    text?: StringFilter<"ItemComment"> | string
+    createdAt?: DateTimeFilter<"ItemComment"> | Date | string
+    userId?: IntFilter<"ItemComment"> | number
+    itemId?: IntFilter<"ItemComment"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    item?: XOR<ItemScalarRelationFilter, ItemWhereInput>
+  }, "id">
+
+  export type ItemCommentOrderByWithAggregationInput = {
+    id?: SortOrder
+    text?: SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    itemId?: SortOrder
+    _count?: ItemCommentCountOrderByAggregateInput
+    _avg?: ItemCommentAvgOrderByAggregateInput
+    _max?: ItemCommentMaxOrderByAggregateInput
+    _min?: ItemCommentMinOrderByAggregateInput
+    _sum?: ItemCommentSumOrderByAggregateInput
+  }
+
+  export type ItemCommentScalarWhereWithAggregatesInput = {
+    AND?: ItemCommentScalarWhereWithAggregatesInput | ItemCommentScalarWhereWithAggregatesInput[]
+    OR?: ItemCommentScalarWhereWithAggregatesInput[]
+    NOT?: ItemCommentScalarWhereWithAggregatesInput | ItemCommentScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ItemComment"> | number
+    text?: StringWithAggregatesFilter<"ItemComment"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ItemComment"> | Date | string
+    userId?: IntWithAggregatesFilter<"ItemComment"> | number
+    itemId?: IntWithAggregatesFilter<"ItemComment"> | number
   }
 
   export type ReviewWhereInput = {
@@ -19336,6 +20708,7 @@ export namespace Prisma {
     mentee?: MenteeCreateNestedOneWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -19357,6 +20730,7 @@ export namespace Prisma {
     mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -19377,6 +20751,7 @@ export namespace Prisma {
     mentee?: MenteeUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -19398,6 +20773,7 @@ export namespace Prisma {
     mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -19939,6 +21315,7 @@ export namespace Prisma {
     seller: SellerCreateNestedOneWithoutItemsInput
     buyer?: BuyerCreateNestedOneWithoutPurchasesInput
     category: CategoryCreateNestedOneWithoutItemsInput
+    comments?: ItemCommentCreateNestedManyWithoutItemInput
   }
 
   export type ItemUncheckedCreateInput = {
@@ -19949,6 +21326,7 @@ export namespace Prisma {
     sellerId: number
     buyerId?: number | null
     categoryId: number
+    comments?: ItemCommentUncheckedCreateNestedManyWithoutItemInput
   }
 
   export type ItemUpdateInput = {
@@ -19958,6 +21336,7 @@ export namespace Prisma {
     seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
     buyer?: BuyerUpdateOneWithoutPurchasesNestedInput
     category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
+    comments?: ItemCommentUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateInput = {
@@ -19968,6 +21347,7 @@ export namespace Prisma {
     sellerId?: IntFieldUpdateOperationsInput | number
     buyerId?: NullableIntFieldUpdateOperationsInput | number | null
     categoryId?: IntFieldUpdateOperationsInput | number
+    comments?: ItemCommentUncheckedUpdateManyWithoutItemNestedInput
   }
 
   export type ItemCreateManyInput = {
@@ -19994,6 +21374,57 @@ export namespace Prisma {
     sellerId?: IntFieldUpdateOperationsInput | number
     buyerId?: NullableIntFieldUpdateOperationsInput | number | null
     categoryId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ItemCommentCreateInput = {
+    text: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutItemCommentsInput
+    item: ItemCreateNestedOneWithoutCommentsInput
+  }
+
+  export type ItemCommentUncheckedCreateInput = {
+    id?: number
+    text: string
+    createdAt?: Date | string
+    userId: number
+    itemId: number
+  }
+
+  export type ItemCommentUpdateInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutItemCommentsNestedInput
+    item?: ItemUpdateOneRequiredWithoutCommentsNestedInput
+  }
+
+  export type ItemCommentUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
+    itemId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ItemCommentCreateManyInput = {
+    id?: number
+    text: string
+    createdAt?: Date | string
+    userId: number
+    itemId: number
+  }
+
+  export type ItemCommentUpdateManyMutationInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItemCommentUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
+    itemId?: IntFieldUpdateOperationsInput | number
   }
 
   export type ReviewCreateInput = {
@@ -20204,6 +21635,12 @@ export namespace Prisma {
     none?: MessageWhereInput
   }
 
+  export type ItemCommentListRelationFilter = {
+    every?: ItemCommentWhereInput
+    some?: ItemCommentWhereInput
+    none?: ItemCommentWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -20218,6 +21655,10 @@ export namespace Prisma {
   }
 
   export type MessageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ItemCommentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -20814,6 +22255,47 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type ItemScalarRelationFilter = {
+    is?: ItemWhereInput
+    isNot?: ItemWhereInput
+  }
+
+  export type ItemCommentCountOrderByAggregateInput = {
+    id?: SortOrder
+    text?: SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    itemId?: SortOrder
+  }
+
+  export type ItemCommentAvgOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    itemId?: SortOrder
+  }
+
+  export type ItemCommentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    text?: SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    itemId?: SortOrder
+  }
+
+  export type ItemCommentMinOrderByAggregateInput = {
+    id?: SortOrder
+    text?: SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    itemId?: SortOrder
+  }
+
+  export type ItemCommentSumOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    itemId?: SortOrder
+  }
+
   export type BuyerScalarRelationFilter = {
     is?: BuyerWhereInput
     isNot?: BuyerWhereInput
@@ -20987,6 +22469,13 @@ export namespace Prisma {
     connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
   }
 
+  export type ItemCommentCreateNestedManyWithoutUserInput = {
+    create?: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput> | ItemCommentCreateWithoutUserInput[] | ItemCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemCommentCreateOrConnectWithoutUserInput | ItemCommentCreateOrConnectWithoutUserInput[]
+    createMany?: ItemCommentCreateManyUserInputEnvelope
+    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+  }
+
   export type OTPUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<OTPCreateWithoutUserInput, OTPUncheckedCreateWithoutUserInput> | OTPCreateWithoutUserInput[] | OTPUncheckedCreateWithoutUserInput[]
     connectOrCreate?: OTPCreateOrConnectWithoutUserInput | OTPCreateOrConnectWithoutUserInput[]
@@ -21037,6 +22526,13 @@ export namespace Prisma {
     connectOrCreate?: MessageCreateOrConnectWithoutReceiverInput | MessageCreateOrConnectWithoutReceiverInput[]
     createMany?: MessageCreateManyReceiverInputEnvelope
     connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+  }
+
+  export type ItemCommentUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput> | ItemCommentCreateWithoutUserInput[] | ItemCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemCommentCreateOrConnectWithoutUserInput | ItemCommentCreateOrConnectWithoutUserInput[]
+    createMany?: ItemCommentCreateManyUserInputEnvelope
+    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -21159,6 +22655,20 @@ export namespace Prisma {
     deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
   }
 
+  export type ItemCommentUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput> | ItemCommentCreateWithoutUserInput[] | ItemCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemCommentCreateOrConnectWithoutUserInput | ItemCommentCreateOrConnectWithoutUserInput[]
+    upsert?: ItemCommentUpsertWithWhereUniqueWithoutUserInput | ItemCommentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ItemCommentCreateManyUserInputEnvelope
+    set?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    disconnect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    delete?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    update?: ItemCommentUpdateWithWhereUniqueWithoutUserInput | ItemCommentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ItemCommentUpdateManyWithWhereWithoutUserInput | ItemCommentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -21261,6 +22771,20 @@ export namespace Prisma {
     update?: MessageUpdateWithWhereUniqueWithoutReceiverInput | MessageUpdateWithWhereUniqueWithoutReceiverInput[]
     updateMany?: MessageUpdateManyWithWhereWithoutReceiverInput | MessageUpdateManyWithWhereWithoutReceiverInput[]
     deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  }
+
+  export type ItemCommentUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput> | ItemCommentCreateWithoutUserInput[] | ItemCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemCommentCreateOrConnectWithoutUserInput | ItemCommentCreateOrConnectWithoutUserInput[]
+    upsert?: ItemCommentUpsertWithWhereUniqueWithoutUserInput | ItemCommentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ItemCommentCreateManyUserInputEnvelope
+    set?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    disconnect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    delete?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    update?: ItemCommentUpdateWithWhereUniqueWithoutUserInput | ItemCommentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ItemCommentUpdateManyWithWhereWithoutUserInput | ItemCommentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutOtpsInput = {
@@ -21943,6 +23467,20 @@ export namespace Prisma {
     connect?: CategoryWhereUniqueInput
   }
 
+  export type ItemCommentCreateNestedManyWithoutItemInput = {
+    create?: XOR<ItemCommentCreateWithoutItemInput, ItemCommentUncheckedCreateWithoutItemInput> | ItemCommentCreateWithoutItemInput[] | ItemCommentUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: ItemCommentCreateOrConnectWithoutItemInput | ItemCommentCreateOrConnectWithoutItemInput[]
+    createMany?: ItemCommentCreateManyItemInputEnvelope
+    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+  }
+
+  export type ItemCommentUncheckedCreateNestedManyWithoutItemInput = {
+    create?: XOR<ItemCommentCreateWithoutItemInput, ItemCommentUncheckedCreateWithoutItemInput> | ItemCommentCreateWithoutItemInput[] | ItemCommentUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: ItemCommentCreateOrConnectWithoutItemInput | ItemCommentCreateOrConnectWithoutItemInput[]
+    createMany?: ItemCommentCreateManyItemInputEnvelope
+    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+  }
+
   export type FloatFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -21975,6 +23513,62 @@ export namespace Prisma {
     upsert?: CategoryUpsertWithoutItemsInput
     connect?: CategoryWhereUniqueInput
     update?: XOR<XOR<CategoryUpdateToOneWithWhereWithoutItemsInput, CategoryUpdateWithoutItemsInput>, CategoryUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type ItemCommentUpdateManyWithoutItemNestedInput = {
+    create?: XOR<ItemCommentCreateWithoutItemInput, ItemCommentUncheckedCreateWithoutItemInput> | ItemCommentCreateWithoutItemInput[] | ItemCommentUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: ItemCommentCreateOrConnectWithoutItemInput | ItemCommentCreateOrConnectWithoutItemInput[]
+    upsert?: ItemCommentUpsertWithWhereUniqueWithoutItemInput | ItemCommentUpsertWithWhereUniqueWithoutItemInput[]
+    createMany?: ItemCommentCreateManyItemInputEnvelope
+    set?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    disconnect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    delete?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    update?: ItemCommentUpdateWithWhereUniqueWithoutItemInput | ItemCommentUpdateWithWhereUniqueWithoutItemInput[]
+    updateMany?: ItemCommentUpdateManyWithWhereWithoutItemInput | ItemCommentUpdateManyWithWhereWithoutItemInput[]
+    deleteMany?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
+  }
+
+  export type ItemCommentUncheckedUpdateManyWithoutItemNestedInput = {
+    create?: XOR<ItemCommentCreateWithoutItemInput, ItemCommentUncheckedCreateWithoutItemInput> | ItemCommentCreateWithoutItemInput[] | ItemCommentUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: ItemCommentCreateOrConnectWithoutItemInput | ItemCommentCreateOrConnectWithoutItemInput[]
+    upsert?: ItemCommentUpsertWithWhereUniqueWithoutItemInput | ItemCommentUpsertWithWhereUniqueWithoutItemInput[]
+    createMany?: ItemCommentCreateManyItemInputEnvelope
+    set?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    disconnect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    delete?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    update?: ItemCommentUpdateWithWhereUniqueWithoutItemInput | ItemCommentUpdateWithWhereUniqueWithoutItemInput[]
+    updateMany?: ItemCommentUpdateManyWithWhereWithoutItemInput | ItemCommentUpdateManyWithWhereWithoutItemInput[]
+    deleteMany?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutItemCommentsInput = {
+    create?: XOR<UserCreateWithoutItemCommentsInput, UserUncheckedCreateWithoutItemCommentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutItemCommentsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ItemCreateNestedOneWithoutCommentsInput = {
+    create?: XOR<ItemCreateWithoutCommentsInput, ItemUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutCommentsInput
+    connect?: ItemWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutItemCommentsNestedInput = {
+    create?: XOR<UserCreateWithoutItemCommentsInput, UserUncheckedCreateWithoutItemCommentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutItemCommentsInput
+    upsert?: UserUpsertWithoutItemCommentsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutItemCommentsInput, UserUpdateWithoutItemCommentsInput>, UserUncheckedUpdateWithoutItemCommentsInput>
+  }
+
+  export type ItemUpdateOneRequiredWithoutCommentsNestedInput = {
+    create?: XOR<ItemCreateWithoutCommentsInput, ItemUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutCommentsInput
+    upsert?: ItemUpsertWithoutCommentsInput
+    connect?: ItemWhereUniqueInput
+    update?: XOR<XOR<ItemUpdateToOneWithWhereWithoutCommentsInput, ItemUpdateWithoutCommentsInput>, ItemUncheckedUpdateWithoutCommentsInput>
   }
 
   export type BuyerCreateNestedOneWithoutReviewsInput = {
@@ -22418,6 +24012,28 @@ export namespace Prisma {
     data: MessageCreateManyReceiverInput | MessageCreateManyReceiverInput[]
   }
 
+  export type ItemCommentCreateWithoutUserInput = {
+    text: string
+    createdAt?: Date | string
+    item: ItemCreateNestedOneWithoutCommentsInput
+  }
+
+  export type ItemCommentUncheckedCreateWithoutUserInput = {
+    id?: number
+    text: string
+    createdAt?: Date | string
+    itemId: number
+  }
+
+  export type ItemCommentCreateOrConnectWithoutUserInput = {
+    where: ItemCommentWhereUniqueInput
+    create: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput>
+  }
+
+  export type ItemCommentCreateManyUserInputEnvelope = {
+    data: ItemCommentCreateManyUserInput | ItemCommentCreateManyUserInput[]
+  }
+
   export type CollegeUpsertWithoutUsersInput = {
     update: XOR<CollegeUpdateWithoutUsersInput, CollegeUncheckedUpdateWithoutUsersInput>
     create: XOR<CollegeCreateWithoutUsersInput, CollegeUncheckedCreateWithoutUsersInput>
@@ -22631,6 +24247,33 @@ export namespace Prisma {
     data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyWithoutReceiverInput>
   }
 
+  export type ItemCommentUpsertWithWhereUniqueWithoutUserInput = {
+    where: ItemCommentWhereUniqueInput
+    update: XOR<ItemCommentUpdateWithoutUserInput, ItemCommentUncheckedUpdateWithoutUserInput>
+    create: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput>
+  }
+
+  export type ItemCommentUpdateWithWhereUniqueWithoutUserInput = {
+    where: ItemCommentWhereUniqueInput
+    data: XOR<ItemCommentUpdateWithoutUserInput, ItemCommentUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ItemCommentUpdateManyWithWhereWithoutUserInput = {
+    where: ItemCommentScalarWhereInput
+    data: XOR<ItemCommentUpdateManyMutationInput, ItemCommentUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ItemCommentScalarWhereInput = {
+    AND?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
+    OR?: ItemCommentScalarWhereInput[]
+    NOT?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
+    id?: IntFilter<"ItemComment"> | number
+    text?: StringFilter<"ItemComment"> | string
+    createdAt?: DateTimeFilter<"ItemComment"> | Date | string
+    userId?: IntFilter<"ItemComment"> | number
+    itemId?: IntFilter<"ItemComment"> | number
+  }
+
   export type UserCreateWithoutOtpsInput = {
     email: string
     password: string
@@ -22648,6 +24291,7 @@ export namespace Prisma {
     mentee?: MenteeCreateNestedOneWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOtpsInput = {
@@ -22668,6 +24312,7 @@ export namespace Prisma {
     mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOtpsInput = {
@@ -22703,6 +24348,7 @@ export namespace Prisma {
     mentee?: MenteeUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOtpsInput = {
@@ -22723,6 +24369,7 @@ export namespace Prisma {
     mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutRefreshTokensInput = {
@@ -22742,6 +24389,7 @@ export namespace Prisma {
     mentee?: MenteeCreateNestedOneWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -22762,6 +24410,7 @@ export namespace Prisma {
     mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -22797,6 +24446,7 @@ export namespace Prisma {
     mentee?: MenteeUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -22817,6 +24467,7 @@ export namespace Prisma {
     mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSentMessagesInput = {
@@ -22836,6 +24487,7 @@ export namespace Prisma {
     mentor?: MentorCreateNestedOneWithoutUserInput
     mentee?: MenteeCreateNestedOneWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -22856,6 +24508,7 @@ export namespace Prisma {
     mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
     mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -22880,6 +24533,7 @@ export namespace Prisma {
     mentor?: MentorCreateNestedOneWithoutUserInput
     mentee?: MenteeCreateNestedOneWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedMessagesInput = {
@@ -22900,6 +24554,7 @@ export namespace Prisma {
     mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
     mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedMessagesInput = {
@@ -22935,6 +24590,7 @@ export namespace Prisma {
     mentor?: MentorUpdateOneWithoutUserNestedInput
     mentee?: MenteeUpdateOneWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -22955,6 +24611,7 @@ export namespace Prisma {
     mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
     mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedMessagesInput = {
@@ -22985,6 +24642,7 @@ export namespace Prisma {
     mentor?: MentorUpdateOneWithoutUserNestedInput
     mentee?: MenteeUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedMessagesInput = {
@@ -23005,6 +24663,7 @@ export namespace Prisma {
     mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
     mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutCollegeInput = {
@@ -23024,6 +24683,7 @@ export namespace Prisma {
     mentee?: MenteeCreateNestedOneWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCollegeInput = {
@@ -23044,6 +24704,7 @@ export namespace Prisma {
     mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCollegeInput = {
@@ -23390,6 +25051,7 @@ export namespace Prisma {
     mentee?: MenteeCreateNestedOneWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBuyerInput = {
@@ -23410,6 +25072,7 @@ export namespace Prisma {
     mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBuyerInput = {
@@ -23423,6 +25086,7 @@ export namespace Prisma {
     condition: string
     seller: SellerCreateNestedOneWithoutItemsInput
     category: CategoryCreateNestedOneWithoutItemsInput
+    comments?: ItemCommentCreateNestedManyWithoutItemInput
   }
 
   export type ItemUncheckedCreateWithoutBuyerInput = {
@@ -23432,6 +25096,7 @@ export namespace Prisma {
     condition: string
     sellerId: number
     categoryId: number
+    comments?: ItemCommentUncheckedCreateNestedManyWithoutItemInput
   }
 
   export type ItemCreateOrConnectWithoutBuyerInput = {
@@ -23527,6 +25192,7 @@ export namespace Prisma {
     mentee?: MenteeUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBuyerInput = {
@@ -23547,6 +25213,7 @@ export namespace Prisma {
     mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ItemUpsertWithWhereUniqueWithoutBuyerInput = {
@@ -23650,6 +25317,7 @@ export namespace Prisma {
     mentee?: MenteeCreateNestedOneWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSellerInput = {
@@ -23670,6 +25338,7 @@ export namespace Prisma {
     mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSellerInput = {
@@ -23683,6 +25352,7 @@ export namespace Prisma {
     condition: string
     buyer?: BuyerCreateNestedOneWithoutPurchasesInput
     category: CategoryCreateNestedOneWithoutItemsInput
+    comments?: ItemCommentCreateNestedManyWithoutItemInput
   }
 
   export type ItemUncheckedCreateWithoutSellerInput = {
@@ -23692,6 +25362,7 @@ export namespace Prisma {
     condition: string
     buyerId?: number | null
     categoryId: number
+    comments?: ItemCommentUncheckedCreateNestedManyWithoutItemInput
   }
 
   export type ItemCreateOrConnectWithoutSellerInput = {
@@ -23765,6 +25436,7 @@ export namespace Prisma {
     mentee?: MenteeUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSellerInput = {
@@ -23785,6 +25457,7 @@ export namespace Prisma {
     mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ItemUpsertWithWhereUniqueWithoutSellerInput = {
@@ -23848,6 +25521,7 @@ export namespace Prisma {
     mentee?: MenteeCreateNestedOneWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMentorInput = {
@@ -23868,6 +25542,7 @@ export namespace Prisma {
     mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMentorInput = {
@@ -23961,6 +25636,7 @@ export namespace Prisma {
     mentee?: MenteeUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentorInput = {
@@ -23981,6 +25657,7 @@ export namespace Prisma {
     mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RequestUpsertWithWhereUniqueWithoutMentorInput = {
@@ -24056,6 +25733,7 @@ export namespace Prisma {
     mentor?: MentorCreateNestedOneWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMenteeInput = {
@@ -24076,6 +25754,7 @@ export namespace Prisma {
     mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMenteeInput = {
@@ -24169,6 +25848,7 @@ export namespace Prisma {
     mentor?: MentorUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMenteeInput = {
@@ -24189,6 +25869,7 @@ export namespace Prisma {
     mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RequestUpsertWithWhereUniqueWithoutMenteeInput = {
@@ -24213,6 +25894,7 @@ export namespace Prisma {
     condition: string
     seller: SellerCreateNestedOneWithoutItemsInput
     buyer?: BuyerCreateNestedOneWithoutPurchasesInput
+    comments?: ItemCommentCreateNestedManyWithoutItemInput
   }
 
   export type ItemUncheckedCreateWithoutCategoryInput = {
@@ -24222,6 +25904,7 @@ export namespace Prisma {
     condition: string
     sellerId: number
     buyerId?: number | null
+    comments?: ItemCommentUncheckedCreateNestedManyWithoutItemInput
   }
 
   export type ItemCreateOrConnectWithoutCategoryInput = {
@@ -24295,6 +25978,28 @@ export namespace Prisma {
     create: XOR<CategoryCreateWithoutItemsInput, CategoryUncheckedCreateWithoutItemsInput>
   }
 
+  export type ItemCommentCreateWithoutItemInput = {
+    text: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutItemCommentsInput
+  }
+
+  export type ItemCommentUncheckedCreateWithoutItemInput = {
+    id?: number
+    text: string
+    createdAt?: Date | string
+    userId: number
+  }
+
+  export type ItemCommentCreateOrConnectWithoutItemInput = {
+    where: ItemCommentWhereUniqueInput
+    create: XOR<ItemCommentCreateWithoutItemInput, ItemCommentUncheckedCreateWithoutItemInput>
+  }
+
+  export type ItemCommentCreateManyItemInputEnvelope = {
+    data: ItemCommentCreateManyItemInput | ItemCommentCreateManyItemInput[]
+  }
+
   export type SellerUpsertWithoutItemsInput = {
     update: XOR<SellerUpdateWithoutItemsInput, SellerUncheckedUpdateWithoutItemsInput>
     create: XOR<SellerCreateWithoutItemsInput, SellerUncheckedCreateWithoutItemsInput>
@@ -24357,6 +26062,174 @@ export namespace Prisma {
   export type CategoryUncheckedUpdateWithoutItemsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ItemCommentUpsertWithWhereUniqueWithoutItemInput = {
+    where: ItemCommentWhereUniqueInput
+    update: XOR<ItemCommentUpdateWithoutItemInput, ItemCommentUncheckedUpdateWithoutItemInput>
+    create: XOR<ItemCommentCreateWithoutItemInput, ItemCommentUncheckedCreateWithoutItemInput>
+  }
+
+  export type ItemCommentUpdateWithWhereUniqueWithoutItemInput = {
+    where: ItemCommentWhereUniqueInput
+    data: XOR<ItemCommentUpdateWithoutItemInput, ItemCommentUncheckedUpdateWithoutItemInput>
+  }
+
+  export type ItemCommentUpdateManyWithWhereWithoutItemInput = {
+    where: ItemCommentScalarWhereInput
+    data: XOR<ItemCommentUpdateManyMutationInput, ItemCommentUncheckedUpdateManyWithoutItemInput>
+  }
+
+  export type UserCreateWithoutItemCommentsInput = {
+    email: string
+    password: string
+    name: string
+    phoneNumber?: string | null
+    department?: string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    college: CollegeCreateNestedOneWithoutUsersInput
+    otps?: OTPCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    buyer?: BuyerCreateNestedOneWithoutUserInput
+    seller?: SellerCreateNestedOneWithoutUserInput
+    mentor?: MentorCreateNestedOneWithoutUserInput
+    mentee?: MenteeCreateNestedOneWithoutUserInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+  }
+
+  export type UserUncheckedCreateWithoutItemCommentsInput = {
+    id?: number
+    email: string
+    password: string
+    name: string
+    phoneNumber?: string | null
+    department?: string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    collegeId: number
+    otps?: OTPUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
+    seller?: SellerUncheckedCreateNestedOneWithoutUserInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+  }
+
+  export type UserCreateOrConnectWithoutItemCommentsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutItemCommentsInput, UserUncheckedCreateWithoutItemCommentsInput>
+  }
+
+  export type ItemCreateWithoutCommentsInput = {
+    itemName: string
+    cost: number
+    condition: string
+    seller: SellerCreateNestedOneWithoutItemsInput
+    buyer?: BuyerCreateNestedOneWithoutPurchasesInput
+    category: CategoryCreateNestedOneWithoutItemsInput
+  }
+
+  export type ItemUncheckedCreateWithoutCommentsInput = {
+    id?: number
+    itemName: string
+    cost: number
+    condition: string
+    sellerId: number
+    buyerId?: number | null
+    categoryId: number
+  }
+
+  export type ItemCreateOrConnectWithoutCommentsInput = {
+    where: ItemWhereUniqueInput
+    create: XOR<ItemCreateWithoutCommentsInput, ItemUncheckedCreateWithoutCommentsInput>
+  }
+
+  export type UserUpsertWithoutItemCommentsInput = {
+    update: XOR<UserUpdateWithoutItemCommentsInput, UserUncheckedUpdateWithoutItemCommentsInput>
+    create: XOR<UserCreateWithoutItemCommentsInput, UserUncheckedCreateWithoutItemCommentsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutItemCommentsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutItemCommentsInput, UserUncheckedUpdateWithoutItemCommentsInput>
+  }
+
+  export type UserUpdateWithoutItemCommentsInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
+    otps?: OTPUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    buyer?: BuyerUpdateOneWithoutUserNestedInput
+    seller?: SellerUpdateOneWithoutUserNestedInput
+    mentor?: MentorUpdateOneWithoutUserNestedInput
+    mentee?: MenteeUpdateOneWithoutUserNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutItemCommentsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    collegeId?: IntFieldUpdateOperationsInput | number
+    otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
+    seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
+    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+  }
+
+  export type ItemUpsertWithoutCommentsInput = {
+    update: XOR<ItemUpdateWithoutCommentsInput, ItemUncheckedUpdateWithoutCommentsInput>
+    create: XOR<ItemCreateWithoutCommentsInput, ItemUncheckedCreateWithoutCommentsInput>
+    where?: ItemWhereInput
+  }
+
+  export type ItemUpdateToOneWithWhereWithoutCommentsInput = {
+    where?: ItemWhereInput
+    data: XOR<ItemUpdateWithoutCommentsInput, ItemUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type ItemUpdateWithoutCommentsInput = {
+    itemName?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    condition?: StringFieldUpdateOperationsInput | string
+    seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
+    buyer?: BuyerUpdateOneWithoutPurchasesNestedInput
+    category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
+  }
+
+  export type ItemUncheckedUpdateWithoutCommentsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    itemName?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    condition?: StringFieldUpdateOperationsInput | string
+    sellerId?: IntFieldUpdateOperationsInput | number
+    buyerId?: NullableIntFieldUpdateOperationsInput | number | null
+    categoryId?: IntFieldUpdateOperationsInput | number
   }
 
   export type BuyerCreateWithoutReviewsInput = {
@@ -24510,6 +26383,13 @@ export namespace Prisma {
     senderId: number
   }
 
+  export type ItemCommentCreateManyUserInput = {
+    id?: number
+    text: string
+    createdAt?: Date | string
+    itemId: number
+  }
+
   export type OTPUpdateWithoutUserInput = {
     code?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24599,6 +26479,26 @@ export namespace Prisma {
     senderId?: IntFieldUpdateOperationsInput | number
   }
 
+  export type ItemCommentUpdateWithoutUserInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    item?: ItemUpdateOneRequiredWithoutCommentsNestedInput
+  }
+
+  export type ItemCommentUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    itemId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ItemCommentUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    itemId?: IntFieldUpdateOperationsInput | number
+  }
+
   export type UserCreateManyCollegeInput = {
     id?: number
     email: string
@@ -24636,6 +26536,7 @@ export namespace Prisma {
     mentee?: MenteeUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCollegeInput = {
@@ -24656,6 +26557,7 @@ export namespace Prisma {
     mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCollegeInput = {
@@ -24723,6 +26625,7 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
     category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
+    comments?: ItemCommentUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutBuyerInput = {
@@ -24732,6 +26635,7 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     sellerId?: IntFieldUpdateOperationsInput | number
     categoryId?: IntFieldUpdateOperationsInput | number
+    comments?: ItemCommentUncheckedUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateManyWithoutBuyerInput = {
@@ -24778,6 +26682,7 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     buyer?: BuyerUpdateOneWithoutPurchasesNestedInput
     category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
+    comments?: ItemCommentUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutSellerInput = {
@@ -24787,6 +26692,7 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     buyerId?: NullableIntFieldUpdateOperationsInput | number | null
     categoryId?: IntFieldUpdateOperationsInput | number
+    comments?: ItemCommentUncheckedUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateManyWithoutSellerInput = {
@@ -24875,6 +26781,7 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
     buyer?: BuyerUpdateOneWithoutPurchasesNestedInput
+    comments?: ItemCommentUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutCategoryInput = {
@@ -24884,6 +26791,7 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     sellerId?: IntFieldUpdateOperationsInput | number
     buyerId?: NullableIntFieldUpdateOperationsInput | number | null
+    comments?: ItemCommentUncheckedUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateManyWithoutCategoryInput = {
@@ -24893,6 +26801,33 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     sellerId?: IntFieldUpdateOperationsInput | number
     buyerId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ItemCommentCreateManyItemInput = {
+    id?: number
+    text: string
+    createdAt?: Date | string
+    userId: number
+  }
+
+  export type ItemCommentUpdateWithoutItemInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutItemCommentsNestedInput
+  }
+
+  export type ItemCommentUncheckedUpdateWithoutItemInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ItemCommentUncheckedUpdateManyWithoutItemInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
   }
 
 

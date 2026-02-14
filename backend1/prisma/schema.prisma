@@ -34,6 +34,8 @@ model User {
   sentMessages     Message[] @relation("SentMessages")
   receivedMessages Message[] @relation("ReceivedMessages")
   
+  itemComments ItemComment[]
+  
   @@index([email])
 }
 
@@ -182,9 +184,27 @@ model Item {
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 
+  comments ItemComment[]
+
   @@index([sellerId])
   @@index([buyerId])
   @@index([categoryId])
+}
+
+/// Comments on marketplace items
+model ItemComment {
+  id        Int      @id @default(autoincrement())
+  text      String
+  createdAt DateTime @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  itemId Int
+  item   Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([itemId])
 }
 
 /// ERD: Buyer 1..* Review

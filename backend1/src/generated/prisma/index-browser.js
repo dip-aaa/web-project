@@ -209,6 +209,14 @@ exports.Prisma.ItemScalarFieldEnum = {
   categoryId: 'categoryId'
 };
 
+exports.Prisma.ItemCommentScalarFieldEnum = {
+  id: 'id',
+  text: 'text',
+  createdAt: 'createdAt',
+  userId: 'userId',
+  itemId: 'itemId'
+};
+
 exports.Prisma.ReviewScalarFieldEnum = {
   id: 'id',
   comments: 'comments',
@@ -250,6 +258,7 @@ exports.Prisma.ModelName = {
   Mentee: 'Mentee',
   Category: 'Category',
   Item: 'Item',
+  ItemComment: 'ItemComment',
   Review: 'Review',
   Request: 'Request'
 };
