@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { mentorshipAPI } from '../lib/api';
 
 /* ── Coffee-themed color palette matching the dashboard ── */
 export const T = {
@@ -157,6 +158,8 @@ export default function Sidebar({ animate = true }: { animate?: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+  const [userName, setUserName] = useState('User');
+  const [notificationCount, setNotificationCount] = useState(0);
 
   const AsideComponent = 'aside'; // Always use static aside, never motion.aside
   const asideProps = {};
@@ -358,7 +361,7 @@ export default function Sidebar({ animate = true }: { animate?: boolean }) {
               </AnimatePresence>
 
               {/* Notification badge for Alerts */}
-              {item.id === "alerts" && !collapsed && (
+              {item.id === "alerts" && !collapsed && notificationCount > 0 && (
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -378,7 +381,7 @@ export default function Sidebar({ animate = true }: { animate?: boolean }) {
                     boxShadow: "0 2px 8px rgba(255, 107, 53, 0.4)",
                   }}
                 >
-                  3
+                  {notificationCount}
                 </motion.div>
               )}
             </ButtonComponent>

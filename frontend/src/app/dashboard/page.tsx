@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../../components/Sidebar';
 import WelcomeHeader from './components/WelcomeHeader';
 import StatsGrid from './components/StatsGrid';
@@ -14,6 +14,7 @@ import TopSellers from './components/TopSellers';
 import ActivityFeed from './components/ActivityFeed';
 import EventSchedulerModal from './components/EventSchedulerModal';
 import { motion } from 'framer-motion';
+import { marketplaceAPI } from '../../lib/api';
 
 export interface CalendarEvent {
   date: string;
@@ -48,13 +49,8 @@ export default function DashboardPage() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [showScheduler, setShowScheduler] = useState(false);
   
-  const [marketplaceItems, setMarketplaceItems] = useState<MarketplaceItem[]>([
-    { id: 1, title: 'Engineering Textbook', price: 'रु 500', image: '📚', wishlisted: false },
-    { id: 2, title: 'Scientific Calculator', price: 'Exchange', image: '🔢', wishlisted: false },
-    { id: 3, title: 'Lab Coat', price: 'रु 300', image: '🥼', wishlisted: true },
-    { id: 4, title: 'Geometry Set', price: 'रु 150', image: '📐', wishlisted: false },
-    { id: 5, title: 'Drawing Board', price: 'रु 400', image: '🎨', wishlisted: false },
-  ]);
+  const [marketplaceItems, setMarketplaceItems] = useState<MarketplaceItem[]>([]);
+  const [loadingItems, setLoadingItems] = useState(true);
 
   const [events] = useState<CalendarEvent[]>([
     { date: '2026-02-10', type: 'mentorship', title: 'Math Tutoring', time: '2:00 PM' },
@@ -76,7 +72,70 @@ export default function DashboardPage() {
     { id: 4, type: 'achievement', message: 'You earned "5 Day Streak" badge! 🎉', time: '3h ago' },
   ];
 
-  const firstName = "Aarav";
+  // Get user's first name from localStorage
+  const [firstName, setFirstName] = React.useState<string>("Guest");
+
+  React.useEffect(() => {
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        const name = user.name || "Guest";
+        setFirstName(name.split(" ")[0]); // Get first name only
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+      }
+    }
+  }, []);
+
+  // Fetch recently added items from backend
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        setLoadingItems(true);
+        const response = await marketplaceAPI.getItems();
+        if (response.success && response.data) {
+          // Take only the 5 most recent items
+          const recentItems = response.data.slice(0, 5).map((item: any) => ({
+            id: parseInt(item.id),
+            title: item.title,
+            price: `रु ${item.price}`,
+            image: getItemEmoji(item.category),
+            wishlisted: false
+          }));
+          setMarketplaceItems(recentItems);
+        }
+      } catch (error) {
+        console.error('Error fetching items:', error);
+        // Keep empty array on error
+        setMarketplaceItems([]);
+      } finally {
+        setLoadingItems(false);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
+  // Helper function to get emoji based on category
+  const getItemEmoji = (category: string): string => {
+    const emojiMap: Record<string, string> = {
+      'Books': '📚',
+      'Electronics': '📱',
+      'Stationery': '✏️',
+      'Clothing': '👕',
+      'Sports': '⚽',
+      'Lab Equipment': '🔬',
+      'Furniture': '🪑',
+      'Musical Instruments': '🎸',
+      'Art Supplies': '🎨',
+      'Calculator': '🔢',
+      'Textbooks': '📖',
+      'Lab Coat': '🥼',
+      'Geometry': '📐'
+    };
+    return emojiMap[category] || '📦';
+  };
 
   const toggleWishlist = (id: number) => {
     setMarketplaceItems(items =>

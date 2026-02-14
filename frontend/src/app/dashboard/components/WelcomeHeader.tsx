@@ -62,7 +62,7 @@ export default function WelcomeHeader({ firstName }: WelcomeHeaderProps) {
           {/* CoffeeCupSVG removed as requested */}
           <div>
             <h1 className="text-4xl md:text-5xl font-bold text-[#6b4423]">
-              Good morning <span className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-[#8b5a3c] to-[#6b4423] bg-clip-text text-transparent">{firstName}</span>
+              Hello <span className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-[#8b5a3c] to-[#6b4423] bg-clip-text text-transparent">{firstName}</span>
             </h1>
             <p className="text-xl text-[#6b4423] mt-2 font-medium">Ready to brew some knowledge today? ☕</p>
           </div>

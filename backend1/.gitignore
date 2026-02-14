@@ -1,0 +1,15 @@
+node_modules/
+.env
+*.db
+*.db-journal
+dist/
+build/
+.DS_Store
+*.log
+coverage/
+.vscode/
+.idea/
+
+# Gmail API OAuth2 credentials
+credentials.json
+token.json

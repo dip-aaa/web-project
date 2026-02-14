@@ -3,12 +3,26 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+interface UserData {
+  id: number;
+  name: string;
+  email: string;
+  phoneNumber?: string;
+  department?: string;
+  collegeId: number;
+}
+
 interface ProfileHeaderProps {
   isEditMode: boolean;
   onEditToggle: () => void;
+  userData: UserData | null;
+  onLogout: () => void;
 }
 
-export default function ProfileHeader({ isEditMode, onEditToggle }: ProfileHeaderProps) {
+export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLogout }: ProfileHeaderProps) {
+  const displayName = userData?.name || 'Guest User';
+  const displayEmail = userData?.email || 'user@khwopa.edu.np';
+  const displayDepartment = userData?.department || 'Not specified';
   return (
     <div style={{ position: 'relative' }}>
       {/* Cover Banner */}
@@ -138,14 +152,14 @@ export default function ProfileHeader({ isEditMode, onEditToggle }: ProfileHeade
                     color: '#6b4423',
                     marginBottom: 5
                   }}>
-                    Aarav Nepal
+                    {displayName}
                   </h1>
                   <p style={{ 
                     fontSize: 18, 
                     color: '#8b6f47',
                     marginBottom: 12
                   }}>
-                    @Aarav • Senior Developer & Mentor
+                    {displayEmail} • {displayDepartment}
                   </p>
                   <p style={{ 
                     fontSize: 16, 
@@ -154,9 +168,7 @@ export default function ProfileHeader({ isEditMode, onEditToggle }: ProfileHeade
                     maxWidth: 600,
                     marginBottom: 15
                   }}>
-                    Passionate about teaching web development and helping students grow. 
-                    Specializing in React, Node.js, and full-stack development. 
-                    Coffee enthusiast ☕ | 5+ years mentoring
+                    Welcome to your profile! Edit your information and manage your marketplace listings.
                   </p>
                   
                   {/* Meta Info */}
@@ -198,25 +210,46 @@ export default function ProfileHeader({ isEditMode, onEditToggle }: ProfileHeade
                   </div>
                 </div>
 
-                {/* Edit Profile Button */}
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={onEditToggle}
-                  style={{
-                    background: isEditMode ? '#6b4423' : 'linear-gradient(135deg, #ffd89b, #f5c77e)',
-                    color: isEditMode ? '#fff' : '#6b4423',
-                    border: 'none',
-                    borderRadius: 12,
-                    padding: '12px 28px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    fontSize: 15,
-                    boxShadow: '0 4px 15px rgba(107, 68, 35, 0.2)'
-                  }}
-                >
-                  {isEditMode ? '✓ Save Profile' : '✏️ Edit Profile'}
-                </motion.button>
+                {/* Edit Profile & Logout Buttons */}
+                <div style={{ display: 'flex', gap: 10, flexDirection: 'column' }}>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={onEditToggle}
+                    style={{
+                      background: isEditMode ? '#6b4423' : 'linear-gradient(135deg, #ffd89b, #f5c77e)',
+                      color: isEditMode ? '#fff' : '#6b4423',
+                      border: 'none',
+                      borderRadius: 12,
+                      padding: '12px 28px',
+                      cursor: 'pointer',
+                      fontWeight: 'bold',
+                      fontSize: 15,
+                      boxShadow: '0 4px 15px rgba(107, 68, 35, 0.2)'
+                    }}
+                  >
+                    {isEditMode ? '✓ Save Profile' : '✏️ Edit Profile'}
+                  </motion.button>
+                  
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={onLogout}
+                    style={{
+                      background: '#fff',
+                      color: '#d9534f',
+                      border: '2px solid #d9534f',
+                      borderRadius: 12,
+                      padding: '12px 28px',
+                      cursor: 'pointer',
+                      fontWeight: 'bold',
+                      fontSize: 15,
+                      boxShadow: '0 4px 15px rgba(217, 83, 79, 0.2)'
+                    }}
+                  >
+                    🚪 Logout
+                  </motion.button>
+                </div>
               </div>
             </div>
           </div>

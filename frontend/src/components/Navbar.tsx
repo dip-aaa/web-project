@@ -15,7 +15,9 @@ export const Navbar = () => {
         <Link href="/setup/login" passHref legacyBehavior>
           <a className={styles.login}>Login</a>
         </Link>
-        <button className={styles.joinHub}>Sign Up</button>
+        <Link href="/setup/signup" passHref legacyBehavior>
+          <a className={styles.joinHub}>Sign Up</a>
+        </Link>
       </div>
     </nav>
   );
