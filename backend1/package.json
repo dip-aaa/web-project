@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@imagekit/nodejs": "^7.3.0",
     "@prisma/client": "^6.1.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -23,6 +24,7 @@
     "express-rate-limit": "^7.5.0",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.15",
+    "react-easy-crop": "^5.5.6",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {

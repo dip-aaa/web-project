@@ -1,4 +1,38 @@
 const prisma = require('../config/database');
+const imagekit = require('../config/imagekit');
+const { createNotification } = require('./notificationController');
+
+/**
+ * Upload image to ImageKit
+ */
+const uploadImage = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'No image file provided'
+      });
+    }
+
+    // Upload to ImageKit
+    const result = await imagekit.files.upload({
+      file: req.file.buffer.toString('base64'),
+      fileName: `marketplace_${Date.now()}_${req.file.originalname}`,
+      folder: '/marketplace'
+    });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        url: result.url,
+        fileId: result.fileId
+      }
+    });
+  } catch (error) {
+    console.error('Image upload error:', error);
+    next(error);
+  }
+};
 
 /**
  * Get all marketplace items
@@ -55,7 +89,7 @@ const getItems = async (req, res, next) => {
         seller: item.seller.user.name,
         conditionLabel: item.condition,
         category: item.category.name,
-        imageUrl: `https://placehold.co/800x600/png?text=${encodeURIComponent(item.itemName)}`,
+        imageUrl: item.imageUrl || `https://placehold.co/800x600/png?text=${encodeURIComponent(item.itemName)}`,
         description: `Contact ${item.seller.user.name} for more details.`
       }))
     });
@@ -70,7 +104,7 @@ const getItems = async (req, res, next) => {
  */
 const createItem = async (req, res, next) => {
   try {
-    const { title, price, category, condition, description } = req.body;
+    const { title, price, category, condition, description, imageUrl } = req.body;
     const userId = req.user.id;
 
     // Validate required fields
@@ -112,6 +146,7 @@ const createItem = async (req, res, next) => {
         itemName: title,
         cost: parseFloat(price),
         condition,
+        imageUrl: imageUrl || null,
         sellerId: seller.userId,
         categoryId: categoryRecord.id
       },
@@ -130,6 +165,28 @@ const createItem = async (req, res, next) => {
       }
     });
 
+    // Notify all users about new item (in background)
+    try {
+      const allUsers = await prisma.user.findMany({
+        where: { id: { not: userId } },
+        select: { id: true }
+      });
+      
+      // Create notifications for all users except the seller
+      for (const user of allUsers) {
+        await createNotification({
+          userId: user.id,
+          type: 'new_item',
+          title: '🛍️ New Item Listed',
+          message: `${item.seller.user.name} listed "${item.itemName}" for Rs ${item.cost}`,
+          data: { itemId: item.id, itemName: item.itemName, price: item.cost, category: category }
+        });
+      }
+    } catch (notifError) {
+      console.error('Error creating notifications:', notifError);
+      // Don't fail the request if notifications fail
+    }
+
     res.status(201).json({
       success: true,
       message: 'Item created successfully',
@@ -140,7 +197,7 @@ const createItem = async (req, res, next) => {
         seller: item.seller.user.name,
         conditionLabel: item.condition,
         category: item.category.name,
-        imageUrl: `https://placehold.co/800x600/png?text=${encodeURIComponent(item.itemName)}`,
+        imageUrl: item.imageUrl || `https://placehold.co/800x600/png?text=${encodeURIComponent(item.itemName)}`,
         description: description || `Contact ${item.seller.user.name} for more details.`
       }
     });
@@ -188,7 +245,7 @@ const getMyItems = async (req, res, next) => {
         price: item.cost,
         conditionLabel: item.condition,
         category: item.category.name,
-        imageUrl: `https://placehold.co/800x600/png?text=${encodeURIComponent(item.itemName)}`
+        imageUrl: item.imageUrl || `https://placehold.co/800x600/png?text=${encodeURIComponent(item.itemName)}`
       }))
     });
   } catch (error) {
@@ -326,6 +383,26 @@ const addComment = async (req, res, next) => {
       }
     });
 
+    // Notify seller about the comment (if commenter is not the seller)
+    if (item.sellerId !== userId) {
+      try {
+        const itemWithDetails = await prisma.item.findUnique({
+          where: { id: parseInt(itemId) },
+          include: { seller: { include: { user: true } } }
+        });
+        
+        await createNotification({
+          userId: item.sellerId,
+          type: 'item_comment',
+          title: '💬 New Comment on Your Item',
+          message: `${comment.user.name} commented on "${itemWithDetails.itemName}": ${text.substring(0, 50)}${text.length > 50 ? '...' : ''}`,
+          data: { itemId: item.id, commentId: comment.id, commenterName: comment.user.name }
+        });
+      } catch (notifError) {
+        console.error('Error creating notification:', notifError);
+      }
+    }
+
     res.status(201).json({
       success: true,
       message: 'Comment added successfully',
@@ -387,6 +464,7 @@ const deleteComment = async (req, res, next) => {
 };
 
 module.exports = {
+  uploadImage,
   getItems,
   createItem,
   getMyItems,

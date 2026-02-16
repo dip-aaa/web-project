@@ -9,6 +9,7 @@ import AboutSection from './components/AboutSection';
 import ListingsGrid from './components/ListingsGrid';
 import ReviewsSection from './components/ReviewsSection';
 import ActivityTimeline from './components/ActivityTimeline';
+import EditProfileModal from './components/EditProfileModal';
 import { motion } from 'framer-motion';
 import { authAPI } from '../../lib/api';
 
@@ -20,29 +21,60 @@ interface UserData {
   email: string;
   phoneNumber?: string;
   department?: string;
+  profileImageUrl?: string;
+  coverImageUrl?: string;
   collegeId: number;
 }
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<ProfileTab>('overview');
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    // Get user data from localStorage
-    const userStr = localStorage.getItem('user');
-    if (userStr) {
-      try {
-        const user = JSON.parse(userStr);
-        setUserData(user);
-      } catch (error) {
-        console.error('Error parsing user data:', error);
-      }
-    }
-    setLoading(false);
+    fetchUserProfile();
   }, []);
+
+  const fetchUserProfile = async () => {
+    try {
+      setLoading(true);
+      // Fetch fresh user data from the server
+      const response = await authAPI.getProfile();
+      if (response.success && response.data.user) {
+        const userFromServer = response.data.user;
+        setUserData(userFromServer);
+        // Update localStorage with fresh data
+        localStorage.setItem('user', JSON.stringify(userFromServer));
+      } else {
+        // Fallback to localStorage if API call fails
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+          try {
+            const user = JSON.parse(userStr);
+            setUserData(user);
+          } catch (error) {
+            console.error('Error parsing user data:', error);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+      // Fallback to localStorage if API call fails
+      const userStr = localStorage.getItem('user');
+      if (userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          setUserData(user);
+        } catch (error) {
+          console.error('Error parsing user data:', error);
+        }
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -61,12 +93,13 @@ export default function ProfilePage() {
   const handleProfileUpdate = async (updatedData: Partial<UserData>) => {
     try {
       const response = await authAPI.updateProfile(updatedData);
-      if (response.success) {
-        const newUserData = { ...userData, ...updatedData };
-        setUserData(newUserData as UserData);
-        localStorage.setItem('user', JSON.stringify(newUserData));
+      if (response.success && response.data.user) {
+        // Use the user data returned from the server
+        const updatedUser = response.data.user;
+        setUserData(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
         alert('Profile updated successfully! ✨');
-        setIsEditMode(false);
+        setIsModalOpen(false);
       } else {
         alert('Failed to update profile: ' + response.message);
       }
@@ -110,8 +143,8 @@ export default function ProfilePage() {
         >
           {/* Profile Header with Cover & Avatar */}
           <ProfileHeader 
-            isEditMode={isEditMode}
-            onEditToggle={() => setIsEditMode(!isEditMode)}
+            isEditMode={false}
+            onEditToggle={() => setIsModalOpen(true)}
             userData={userData}
             onLogout={handleLogout}
           />
@@ -134,9 +167,7 @@ export default function ProfilePage() {
                   transition={{ duration: 0.3 }}
                 >
                   <AboutSection 
-                    isEditMode={isEditMode} 
                     userData={userData}
-                    onUpdate={handleProfileUpdate}
                   />
                 </motion.div>
               )}
@@ -173,6 +204,14 @@ export default function ProfilePage() {
             </div>
           </div>
         </motion.div>
+
+        {/* Edit Profile Modal */}
+        <EditProfileModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          userData={userData}
+          onUpdate={handleProfileUpdate}
+        />
       </div>
     </div>
   );

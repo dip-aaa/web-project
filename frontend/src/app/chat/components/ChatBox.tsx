@@ -10,11 +10,20 @@ interface ChatBoxProps {
 const ChatBox: React.FC<ChatBoxProps> = ({ messages, isLoading = false }) => {
   const chatEndRef = useRef<HTMLDivElement>(null);
   const chatBoxRef = useRef<HTMLDivElement>(null);
+  const prevMessageCountRef = useRef(messages.length);
 
-  // Auto-scroll to bottom when new messages arrive
+  // Auto-scroll to bottom only when new messages arrive (not when updating existing)
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isLoading]);
+    const shouldScroll = messages.length > prevMessageCountRef.current;
+    prevMessageCountRef.current = messages.length;
+    
+    if (shouldScroll || isLoading) {
+      // Use requestAnimationFrame to ensure DOM has updated
+      requestAnimationFrame(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+  }, [messages.length, isLoading]);
 
   return (
     <div 

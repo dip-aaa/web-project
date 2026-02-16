@@ -20,6 +20,22 @@ const getAuthHeaders = () => {
 
 // Marketplace API
 export const marketplaceAPI = {
+  // Upload image
+  uploadImage: async (file: File) => {
+    const token = getAuthToken();
+    const formData = new FormData();
+    formData.append('image', file);
+    
+    const response = await fetch(`${API_URL}/marketplace/upload-image`, {
+      method: 'POST',
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: formData
+    });
+    return response.json();
+  },
+
   // Get all items
   getItems: async (filters?: { category?: string; condition?: string; minPrice?: number; maxPrice?: number }) => {
     const params = new URLSearchParams();
@@ -41,6 +57,7 @@ export const marketplaceAPI = {
     category: string;
     condition: string;
     description?: string;
+    imageUrl?: string;
   }) => {
     const response = await fetch(`${API_URL}/marketplace/items`, {
       method: 'POST',
@@ -306,6 +323,62 @@ export const taskAPI = {
   // Delete a task
   deleteTask: async (id: number) => {
     const response = await fetch(`${API_URL}/tasks/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    });
+    return response.json();
+  }
+};
+
+// Notification API
+export const notificationAPI = {
+  // Get all notifications
+  getNotifications: async (unreadOnly?: boolean) => {
+    const params = unreadOnly ? '?unreadOnly=true' : '';
+    const response = await fetch(`${API_URL}/notifications${params}`, {
+      headers: getAuthHeaders()
+    });
+    return response.json();
+  },
+
+  // Get unread count
+  getUnreadCount: async () => {
+    const response = await fetch(`${API_URL}/notifications/unread/count`, {
+      headers: getAuthHeaders()
+    });
+    return response.json();
+  },
+
+  // Mark notification as read
+  markAsRead: async (id: number) => {
+    const response = await fetch(`${API_URL}/notifications/${id}/read`, {
+      method: 'PATCH',
+      headers: getAuthHeaders()
+    });
+    return response.json();
+  },
+
+  // Mark all as read
+  markAllAsRead: async () => {
+    const response = await fetch(`${API_URL}/notifications/read-all`, {
+      method: 'PATCH',
+      headers: getAuthHeaders()
+    });
+    return response.json();
+  },
+
+  // Delete notification
+  deleteNotification: async (id: number) => {
+    const response = await fetch(`${API_URL}/notifications/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    });
+    return response.json();
+  },
+
+  // Clear read notifications
+  clearReadNotifications: async () => {
+    const response = await fetch(`${API_URL}/notifications/clear/read`, {
       method: 'DELETE',
       headers: getAuthHeaders()
     });

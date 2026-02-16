@@ -2,6 +2,7 @@
 
 import React from "react";
 import { marketplaceAPI } from "../../../lib/api";
+import ImageCropModal from "../../profile/components/ImageCropModal";
 
 export type MarketplaceItem = {
 	id: string;
@@ -299,7 +300,8 @@ export function MarketplaceView() {
 				price: payload.price,
 				category: payload.category,
 				condition: payload.conditionLabel,
-				description: payload.description
+				description: payload.description,
+				imageUrl: payload.imageUrl
 			});
 
 			if (response.success) {
@@ -728,34 +730,110 @@ function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) =>
 	const [seller, setSeller] = React.useState("You");
 	const [category, setCategory] = React.useState("Books");
 	const [condition, setCondition] = React.useState<Condition>("Like New");
-	const [imageUrl, setImageUrl] = React.useState("https://placehold.co/800x600/png?text=Your+Item");
 	const [description, setDescription] = React.useState("");
+	const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
+	const [imagePreview, setImagePreview] = React.useState<string>("");
+	const [uploading, setUploading] = React.useState(false);
+	
+	// Crop modal states
+	const [cropModalOpen, setCropModalOpen] = React.useState(false);
+	const [tempImageSrc, setTempImageSrc] = React.useState('');
+
+	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (file) {
+			if (file.size > 10 * 1024 * 1024) {
+				alert('File size must be less than 10MB');
+				return;
+			}
+			if (!file.type.startsWith('image/')) {
+				alert('Please select an image file');
+				return;
+			}
+			// Open crop modal instead of directly showing preview
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setTempImageSrc(reader.result as string);
+				setCropModalOpen(true);
+			};
+			reader.readAsDataURL(file);
+		}
+		// Reset input so same file can be selected again
+		e.target.value = '';
+	};
+
+	const handleCropComplete = (croppedImageBlob: Blob) => {
+		// Convert blob to file
+		const croppedFile = new File([croppedImageBlob], 'marketplace-item.jpg', { type: 'image/jpeg' });
+		
+		// Create preview URL
+		const reader = new FileReader();
+		reader.onloadend = () => {
+			setSelectedImage(croppedFile);
+			setImagePreview(reader.result as string);
+		};
+		reader.readAsDataURL(croppedFile);
+		
+		// Close crop modal
+		setCropModalOpen(false);
+	};
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		const numericPrice = Number(price);
+		if (!title.trim() || Number.isNaN(numericPrice)) return;
+		
+		setUploading(true);
+		let imageUrl = "";
+
+		try {
+			// Upload image if selected
+			if (selectedImage) {
+				const uploadResponse = await marketplaceAPI.uploadImage(selectedImage);
+				if (uploadResponse.success) {
+					imageUrl = uploadResponse.data.url;
+				} else {
+					alert('Failed to upload image: ' + uploadResponse.message);
+					setUploading(false);
+					return;
+				}
+			}
+
+			// Call onAdd with image URL
+			onAdd({
+				title: title.trim(),
+				price: numericPrice,
+				seller: seller.trim() || "You",
+				category,
+				conditionLabel: condition,
+				imageUrl: imageUrl || "https://placehold.co/800x600/png?text=Item",
+				description: description.trim() || undefined,
+			});
+
+			// Reset form
+			setTitle("");
+			setPrice("15");
+			setDescription("");
+			setSelectedImage(null);
+			setImagePreview("");
+		} catch (error) {
+			console.error('Error uploading image:', error);
+			alert('Failed to upload image. Please try again.');
+		} finally {
+			setUploading(false);
+		}
+	};
 
 	return (
-		<form
-			style={{
-				display: "grid",
-				gridTemplateColumns: "1fr 1fr",
-				gap: 16,
-				fontFamily: "system-ui, -apple-system, sans-serif"
+		<>
+			<form
+				style={{
+					display: "grid",
+					gridTemplateColumns: "1fr 1fr",
+					gap: 16,
+					fontFamily: "system-ui, -apple-system, sans-serif"
 			}}
-			onSubmit={(e) => {
-				e.preventDefault();
-				const numericPrice = Number(price);
-				if (!title.trim() || Number.isNaN(numericPrice)) return;
-				onAdd({
-					title: title.trim(),
-					price: numericPrice,
-					seller: seller.trim() || "You",
-					category,
-					conditionLabel: condition,
-					imageUrl: imageUrl.trim() || "https://placehold.co/800x600/png?text=Item",
-					description: description.trim() || undefined,
-				});
-				setTitle("");
-				setPrice("15");
-				setDescription("");
-			}}
+			onSubmit={handleSubmit}
 		>
 			<div style={{gridColumn: "1 / -1"}}>
 				<label className="mk-filter-label">TITLE</label>
@@ -821,13 +899,40 @@ function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) =>
 			</div>
 
 			<div style={{gridColumn: "1 / -1"}}>
-				<label className="mk-filter-label">IMAGE URL</label>
+				<label className="mk-filter-label">ITEM PHOTO</label>
 				<input
-					className="mk-select"
-					value={imageUrl}
-					onChange={(e) => setImageUrl(e.target.value)}
-					placeholder="https://..."
+					type="file"
+					accept="image/*"
+					onChange={handleImageChange}
+					style={{
+						width: "100%",
+						borderRadius: 16,
+						border: "1px solid #f0e6dc",
+						background: "rgba(255, 255, 255, 0.9)",
+						padding: "12px 16px",
+						fontSize: 14,
+						color: "#6b4423",
+						boxShadow: "0 2px 12px rgba(139, 111, 71, 0.06)",
+						outline: "none",
+						transition: "all 0.2s ease",
+						fontFamily: "system-ui, -apple-system, sans-serif",
+						cursor: "pointer"
+					}}
 				/>
+				{imagePreview && (
+					<div style={{ marginTop: 12 }}>
+						<img 
+							src={imagePreview} 
+							alt="Preview" 
+							style={{
+								maxWidth: "100%",
+								maxHeight: 200,
+								borderRadius: 12,
+								border: "2px solid #f0e6dc"
+							}}
+						/>
+					</div>
+				)}
 			</div>
 
 			<div style={{gridColumn: "1 / -1"}}>
@@ -854,13 +959,33 @@ function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) =>
 			</div>
 
 			<div style={{gridColumn: "1 / -1"}}>
-				<button type="submit" className="mk-btn">
-					Add Item
+				<button 
+					type="submit" 
+					className="mk-btn"
+					disabled={uploading}
+					style={{
+						opacity: uploading ? 0.6 : 1,
+						cursor: uploading ? 'not-allowed' : 'pointer'
+					}}
+				>
+					{uploading ? 'Uploading...' : 'Add Item'}
 				</button>
 				<div style={{marginTop: 8, fontSize: 12, color: "#a0826d", fontFamily: "system-ui, -apple-system, sans-serif"}}>
 					Tip: After adding, use filters to find it.
 				</div>
 			</div>
 		</form>
+		
+		{/* Image Crop Modal */}
+		<ImageCropModal
+			isOpen={cropModalOpen}
+			imageSrc={tempImageSrc}
+			onClose={() => setCropModalOpen(false)}
+			onCropComplete={handleCropComplete}
+			aspectRatio={4 / 3}
+			cropShape="rect"
+			title="🖼️ Adjust Item Photo"
+		/>
+		</>
 	);
 }

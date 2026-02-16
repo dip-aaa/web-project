@@ -114,12 +114,14 @@ const ChatPageComponent: React.FC = () => {
   const sendMessage = useCallback(async (text: string) => {
     if (!text.trim() || !selectedUser || !currentUserIdRef.current || isSending) return;
 
+    const tempId = `temp-${Date.now()}`;
+
     try {
       setIsSending(true);
 
       // Optimistically add message to UI
       const tempMessage: Message = {
-        id: `temp-${Date.now()}`,
+        id: tempId,
         text: text.trim(),
         sender: 'user',
         timestamp: new Date()
@@ -139,15 +141,17 @@ const ChatPageComponent: React.FC = () => {
           timestamp: new Date(response.data.message.createdAt)
         };
         
-        setMessages(prev => 
-          prev.map(msg => msg.id === tempMessage.id ? realMessage : msg)
-        );
+        setMessages(prev => {
+          // Replace temp message with real one, maintaining scroll position
+          const newMessages = prev.map(msg => msg.id === tempId ? realMessage : msg);
+          return newMessages;
+        });
       }
     } catch (error) {
       console.error('Error sending message:', error);
       alert('Failed to send message. Please try again.');
       // Remove failed message
-      setMessages(prev => prev.filter(msg => msg.id !== `temp-${Date.now()}`));
+      setMessages(prev => prev.filter(msg => msg.id !== tempId));
     } finally {
       setIsSending(false);
     }

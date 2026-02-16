@@ -125,6 +125,8 @@ exports.Prisma.UserScalarFieldEnum = {
   name: 'name',
   phoneNumber: 'phoneNumber',
   department: 'department',
+  profileImageUrl: 'profileImageUrl',
+  coverImageUrl: 'coverImageUrl',
   isVerified: 'isVerified',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -204,6 +206,7 @@ exports.Prisma.ItemScalarFieldEnum = {
   itemName: 'itemName',
   cost: 'cost',
   condition: 'condition',
+  imageUrl: 'imageUrl',
   sellerId: 'sellerId',
   buyerId: 'buyerId',
   categoryId: 'categoryId'
@@ -250,9 +253,9 @@ exports.Prisma.NotificationScalarFieldEnum = {
   title: 'title',
   message: 'message',
   read: 'read',
+  data: 'data',
   createdAt: 'createdAt',
-  userId: 'userId',
-  itemId: 'itemId'
+  userId: 'userId'
 };
 
 exports.Prisma.SortOrder = {

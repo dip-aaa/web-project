@@ -1,4 +1,5 @@
 const prisma = require('../config/database');
+const { createNotification } = require('./notificationController');
 
 /**
  * Get all users who can be mentors
@@ -146,6 +147,19 @@ const sendConnectionRequest = async (req, res, next) => {
         }
       }
     });
+
+    // Notify mentor about new connection request
+    try {
+      await createNotification({
+        userId: mentor.userId,
+        type: 'mentorship_request',
+        title: '🤝 New Connection Request',
+        message: `${request.mentee.user.name} wants to connect with you as a mentor`,
+        data: { requestId: request.id, menteeId: mentee.userId, menteeName: request.mentee.user.name }
+      });
+    } catch (notifError) {
+      console.error('Error creating notification:', notifError);
+    }
 
     res.status(201).json({
       success: true,
@@ -312,6 +326,21 @@ const respondToRequest = async (req, res, next) => {
         requestReceived: new Date()
       }
     });
+
+    // Notify mentee about response
+    try {
+      await createNotification({
+        userId: request.menteeId,
+        type: 'mentorship_response',
+        title: action === 'accept' ? '✅ Request Accepted!' : '❌ Request Declined',
+        message: action === 'accept' 
+          ? `${request.mentor.user.name} accepted your mentorship request`
+          : `${request.mentor.user.name} declined your mentorship request`,
+        data: { requestId: request.id, mentorId: request.mentorId, mentorName: request.mentor.user.name, action }
+      });
+    } catch (notifError) {
+      console.error('Error creating notification:', notifError);
+    }
 
     res.status(200).json({
       success: true,

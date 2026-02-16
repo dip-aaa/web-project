@@ -253,11 +253,6 @@ export function MentorBrowse() {
             Showing <strong style={{ color: T.text }}>{filtered.length}</strong> student{filtered.length !== 1 ? "s" : ""} from your college
           </>
         )}
-              key={mentor.id} 
-              mentor={mentor} 
-              pendingRequestId={pendingRequests.get(mentor.id)}
-              onRequestChange={refreshPendingRequests}
-           
       </div>
 
       {/* Cards Grid */}
@@ -272,9 +267,13 @@ export function MentorBrowse() {
           gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
           gap: 24,
           justifyItems: "center"
-        }}>
-          {filtered.map((mentor) => (
-            <MentorCard key={mentor.id} mentor={mentor} />
+        }}>          {filtered.map((mentor) => (
+            <MentorCard 
+              key={mentor.id} 
+              mentor={mentor} 
+              pendingRequestId={pendingRequests.get(mentor.id)}
+              onRequestChange={refreshPendingRequests}
+            />
           ))}
         </div>
       ) : (

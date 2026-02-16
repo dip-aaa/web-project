@@ -1,4 +1,5 @@
 const prisma = require('../config/database');
+const { createNotification } = require('./notificationController');
 
 /**
  * Get user's conversations (list of users they've chatted with)
@@ -213,6 +214,19 @@ const sendMessage = async (req, res, next) => {
         }
       }
     });
+
+    // Notify receiver about new message
+    try {
+      await createNotification({
+        userId: parseInt(receiverId),
+        type: 'message',
+        title: '💬 New Message',
+        message: `${message.sender.name}: ${content.substring(0, 50)}${content.length > 50 ? '...' : ''}`,
+        data: { senderId, senderName: message.sender.name, messageId: message.id }
+      });
+    } catch (notifError) {
+      console.error('Error creating notification:', notifError);
+    }
 
     res.status(201).json({
       success: true,

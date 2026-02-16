@@ -413,6 +413,8 @@ const login = async (req, res, next) => {
           name: user.name,
           phoneNumber: user.phoneNumber,
           department: user.department,
+          profileImageUrl: user.profileImageUrl,
+          coverImageUrl: user.coverImageUrl,
           collegeId: user.collegeId
         },
         accessToken,
@@ -524,6 +526,8 @@ const getProfile = async (req, res, next) => {
         name: true,
         phoneNumber: true,
         department: true,
+        profileImageUrl: true,
+        coverImageUrl: true,
         collegeId: true,
         isVerified: true,
         createdAt: true,
@@ -551,12 +555,14 @@ const getProfile = async (req, res, next) => {
  */
 const updateProfile = async (req, res, next) => {
   try {
-    const { name, phoneNumber, department } = req.body;
+    const { name, phoneNumber, department, profileImageUrl, coverImageUrl } = req.body;
 
     const updateData = {};
     if (name) updateData.name = sanitizeInput(name);
     if (phoneNumber) updateData.phoneNumber = sanitizeInput(phoneNumber);
     if (department) updateData.department = sanitizeInput(department);
+    if (profileImageUrl !== undefined) updateData.profileImageUrl = profileImageUrl;
+    if (coverImageUrl !== undefined) updateData.coverImageUrl = coverImageUrl;
 
     const user = await prisma.user.update({
       where: { id: req.user.id },
@@ -567,6 +573,8 @@ const updateProfile = async (req, res, next) => {
         name: true,
         phoneNumber: true,
         department: true,
+        profileImageUrl: true,
+        coverImageUrl: true,
         collegeId: true,
         createdAt: true
       }

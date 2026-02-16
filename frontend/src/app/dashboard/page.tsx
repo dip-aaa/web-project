@@ -97,7 +97,7 @@ export default function DashboardPage() {
             id: parseInt(item.id),
             title: item.title,
             price: `रु ${item.price}`,
-            image: getItemEmoji(item.category),
+            image: item.imageUrl || `https://placehold.co/400x300/f0e6dc/6b4423?text=${encodeURIComponent(item.title)}`,
             wishlisted: false
           }));
           setMarketplaceItems(recentItems);
@@ -195,6 +195,7 @@ export default function DashboardPage() {
           <MarketplacePreview 
             items={marketplaceItems}
             toggleWishlist={toggleWishlist}
+            loading={loadingItems}
           />
         </div>
       </div>

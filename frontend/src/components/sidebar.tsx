@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { mentorshipAPI } from '../lib/api';
+import { mentorshipAPI, notificationAPI } from '../lib/api';
 
 /* ── Coffee-themed color palette matching the dashboard ── */
 export const T = {
@@ -179,6 +179,27 @@ export default function Sidebar({ animate = true }: { animate?: boolean }) {
     };
     
     fetchUserData();
+  }, [pathname]);
+
+  // Fetch notification count
+  useEffect(() => {
+    const fetchNotificationCount = async () => {
+      try {
+        const response = await notificationAPI.getUnreadCount();
+        if (response.success) {
+          setNotificationCount(response.data.count);
+        }
+      } catch (error) {
+        console.error('Error fetching notification count:', error);
+      }
+    };
+
+    fetchNotificationCount();
+
+    // Poll for updates every 30 seconds
+    const interval = setInterval(fetchNotificationCount, 30000);
+
+    return () => clearInterval(interval);
   }, [pathname]);
 
   const AsideComponent = 'aside'; // Always use static aside, never motion.aside

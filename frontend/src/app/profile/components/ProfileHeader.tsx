@@ -9,6 +9,8 @@ interface UserData {
   email: string;
   phoneNumber?: string;
   department?: string;
+  profileImageUrl?: string;
+  coverImageUrl?: string;
   collegeId: number;
 }
 
@@ -23,6 +25,9 @@ export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLo
   const displayName = userData?.name || 'Guest User';
   const displayEmail = userData?.email || 'user@khwopa.edu.np';
   const displayDepartment = userData?.department || 'Not specified';
+  const coverImage = userData?.coverImageUrl || '';
+  const profileImage = userData?.profileImageUrl || '/6.png';
+
   return (
     <div style={{ position: 'relative' }}>
       {/* Cover Banner */}
@@ -31,41 +36,22 @@ export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLo
         animate={{ opacity: 1 }}
         style={{
           height: 280,
-          background: 'linear-gradient(135deg, #6b4423 0%, #8b5a3c 50%, #d4a574 100%)',
+          background: coverImage ? `url(${coverImage})` : 'linear-gradient(135deg, #6b4423 0%, #8b5a3c 50%, #d4a574 100%)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
           position: 'relative',
           overflow: 'hidden'
         }}
       >
-        {/* Decorative Pattern */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: 'url("/coffee-pattern.svg")',
-          backgroundSize: '200px',
-          opacity: 0.1
-        }} />
-        
-        {/* Edit Cover Button */}
-        {isEditMode && (
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            style={{
-              position: 'absolute',
-              top: 20,
-              right: 20,
-              background: 'rgba(255, 255, 255, 0.9)',
-              border: 'none',
-              borderRadius: 12,
-              padding: '10px 20px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              color: '#6b4423',
-              fontSize: 14
-            }}
-          >
-            📷 Change Cover
-          </motion.button>
+        {/* Decorative Pattern (only show if no cover image) */}
+        {!coverImage && (
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: 'url("/coffee-pattern.svg")',
+            backgroundSize: '200px',
+            opacity: 0.1
+          }} />
         )}
       </motion.div>
 
@@ -110,36 +96,12 @@ export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLo
                   overflow: 'hidden'
                 }}>
                   <img 
-                    src="/6.png" 
+                    src={profileImage} 
                     alt="Profile" 
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 </div>
               </div>
-              
-              {isEditMode && (
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    right: 0,
-                    background: '#6b4423',
-                    border: '3px solid #fff',
-                    borderRadius: '50%',
-                    width: 40,
-                    height: 40,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: 18
-                  }}
-                >
-                  📷
-                </motion.button>
-              )}
             </motion.div>
 
             {/* User Info */}
@@ -217,8 +179,8 @@ export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLo
                     whileTap={{ scale: 0.95 }}
                     onClick={onEditToggle}
                     style={{
-                      background: isEditMode ? '#6b4423' : 'linear-gradient(135deg, #ffd89b, #f5c77e)',
-                      color: isEditMode ? '#fff' : '#6b4423',
+                      background: 'linear-gradient(135deg, #ffd89b, #f5c77e)',
+                      color: '#6b4423',
                       border: 'none',
                       borderRadius: 12,
                       padding: '12px 28px',
@@ -228,7 +190,7 @@ export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLo
                       boxShadow: '0 4px 15px rgba(107, 68, 35, 0.2)'
                     }}
                   >
-                    {isEditMode ? '✓ Save Profile' : '✏️ Edit Profile'}
+                    ✏️ Edit Profile
                   </motion.button>
                   
                   <motion.button

@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Sidebar from '../../components/sidebar';
-import AlertsSection from '../profile/components/AlertsSection';
+import NotificationsList from './components/NotificationsList';
 
 export default function AlertsPage() {
   return (
@@ -50,7 +50,7 @@ export default function AlertsPage() {
                 color: '#6b4423',
                 fontFamily: 'system-ui, -apple-system, sans-serif'
               }}>
-                Alerts & Notifications
+                Notifications
               </h1>
             </div>
             <p style={{
@@ -60,12 +60,12 @@ export default function AlertsPage() {
               paddingLeft: 64,
               fontFamily: 'system-ui, -apple-system, sans-serif'
             }}>
-              Manage your connection requests and notifications
+              Stay updated with messages, marketplace activity, and connections
             </p>
           </div>
 
-          {/* Alerts Section */}
-          <AlertsSection />
+          {/* Notifications List */}
+          <NotificationsList />
         </motion.div>
       </div>
     </div>

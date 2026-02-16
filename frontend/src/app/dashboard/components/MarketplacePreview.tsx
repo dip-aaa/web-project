@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { MarketplaceItem } from '../page';
 
@@ -41,9 +42,10 @@ const HeartSVG = ({ filled = false, className = "" }: { filled?: boolean; classN
 interface MarketplacePreviewProps {
   items: MarketplaceItem[];
   toggleWishlist: (id: number) => void;
+  loading?: boolean;
 }
 
-export default function MarketplacePreview({ items, toggleWishlist }: MarketplacePreviewProps) {
+export default function MarketplacePreview({ items, toggleWishlist, loading = false }: MarketplacePreviewProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -58,34 +60,53 @@ export default function MarketplacePreview({ items, toggleWishlist }: Marketplac
             Recently Added
           </h2>
         </div>
-        <motion.button 
-          whileHover={{ x: 5 }}
-          className="text-sm text-[#8b6f47] hover:text-[#6b4423] font-bold transition-colors flex items-center gap-2 bg-[#f9f6f3] px-4 py-2 rounded-full"
-        >
-          View All
-          <motion.span
-            animate={{ x: [0, 5, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
+        <Link href="/marketplace">
+          <motion.button 
+            whileHover={{ x: 5 }}
+            className="text-sm text-[#8b6f47] hover:text-[#6b4423] font-bold transition-colors flex items-center gap-2 bg-[#f9f6f3] px-4 py-2 rounded-full"
           >
-            →
-          </motion.span>
-        </motion.button>
+            View All
+            <motion.span
+              animate={{ x: [0, 5, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              →
+            </motion.span>
+          </motion.button>
+        </Link>
       </div>
 
-      <div className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide">
-        {items.map((item, idx) => (
+      {loading ? (
+        <div className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide">
+          {[1, 2, 3, 4, 5].map((idx) => (
+            <div
+              key={idx}
+              className="w-[240px] flex-shrink-0 bg-gradient-to-br from-[#fdfcfa] to-[#f5f0eb] rounded-3xl p-6 snap-start shadow-lg border-2 border-[#d4a574]/20 animate-pulse"
+            >
+              <div className="mb-4 rounded-2xl overflow-hidden bg-[#e8ddd4] aspect-video" />
+              <div className="h-6 bg-[#e8ddd4] rounded-lg mb-3" />
+              <div className="flex items-center justify-between">
+                <div className="h-10 w-20 bg-[#e8ddd4] rounded-full" />
+                <div className="w-10 h-10 bg-[#e8ddd4] rounded-full" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : items.length === 0 ? (
+        <div className="text-center py-16">
+          <div className="text-6xl mb-4">📦</div>
+          <p className="text-[#8b6f47] text-lg">No items available yet</p>
+          <p className="text-[#a0826d] text-sm mt-2">Be the first to list an item!</p>
+        </div>
+      ) : (
+        <div className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide">
+          {items.map((item, idx) => (
           <motion.div
             key={item.id}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.7 + idx * 0.1 }}
-            whileHover={{
-              scale: 1.05,
-              y: -10,
-              rotate: idx % 2 === 0 ? 2 : -2,
-              transition: { type: "spring", stiffness: 400 }
-            }}
-            className="min-w-[240px] bg-gradient-to-br from-[#fdfcfa] to-[#f5f0eb] rounded-3xl p-6 snap-start shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[#d4a574]/20 group relative overflow-hidden"
+            className="w-[240px] flex-shrink-0 bg-gradient-to-br from-[#fdfcfa] to-[#f5f0eb] rounded-3xl p-6 snap-start shadow-lg transition-all duration-300 border-2 border-[#d4a574]/20 group relative overflow-hidden"
           >
             {/* Shine effect */}
             <motion.div
@@ -95,8 +116,13 @@ export default function MarketplacePreview({ items, toggleWishlist }: Marketplac
             />
             
             <div className="relative z-10">
-              <div className="text-8xl mb-4 text-center group-hover:scale-110 transition-transform duration-300">
-                {item.image}
+              <div className="mb-4 rounded-2xl overflow-hidden bg-white/50 aspect-video w-full">
+                <img 
+                  src={item.image} 
+                  alt={item.title}
+                  className="w-full h-full object-cover transition-transform duration-300"
+                  style={{ maxWidth: '100%' }}
+                />
               </div>
               <h3 className="font-bold text-[#6b4423] mb-3 text-center line-clamp-2 min-h-[3rem]">
                 {item.title}
@@ -125,6 +151,7 @@ export default function MarketplacePreview({ items, toggleWishlist }: Marketplac
           </motion.div>
         ))}
       </div>
+      )}
     </motion.div>
   );
 }
