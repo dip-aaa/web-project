@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CalendarEvent } from '../page';
+import { taskAPI } from '../../../lib/api';
 
 const CalendarSVG = ({ className = "" }: { className?: string }) => (
   <svg viewBox="0 0 200 200" className={className}>
@@ -28,6 +29,13 @@ const CalendarSVG = ({ className = "" }: { className?: string }) => (
   </svg>
 );
 
+interface Task {
+  id: number;
+  title: string;
+  date: string;
+  completed: boolean;
+}
+
 interface CalendarSectionProps {
   events: CalendarEvent[];
   getDayEvents: (day: number) => CalendarEvent[];
@@ -41,6 +49,55 @@ export default function CalendarSection({
   setSelectedDate, 
   setShowScheduler 
 }: CalendarSectionProps) {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                      'July', 'August', 'September', 'October', 'November', 'December'];
+  
+  // Get first day of month and number of days
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const today = new Date();
+  const isCurrentMonth = today.getMonth() === currentMonth && today.getFullYear() === currentYear;
+  const todayDate = today.getDate();
+
+  // Fetch tasks from database
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        setLoading(true);
+        const response = await taskAPI.getTasks();
+        if (response.success && response.data) {
+          setTasks(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
+  // Get tasks for a specific day
+  const getDayTasks = (day: number): Task[] => {
+    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    return tasks.filter(task => task.date === dateStr);
+  };
+
+  // Navigate months
+  const previousMonth = () => {
+    setCurrentDate(new Date(currentYear, currentMonth - 1, 1));
+  };
+
+  const nextMonth = () => {
+    setCurrentDate(new Date(currentYear, currentMonth + 1, 1));
+  };
   return (
     <div className="bg-white/90 backdrop-blur-xl rounded-[2.5rem] p-8 shadow-2xl border-2 border-[#d4a574]/20 h-full">
       <div className="flex items-center gap-4 mb-6">
@@ -48,6 +105,30 @@ export default function CalendarSection({
         <h3 className="text-2xl font-bold bg-gradient-to-r from-[#6b4423] to-[#8b5a3c] bg-clip-text text-transparent">
           Study Calendar
         </h3>
+      </div>
+
+      {/* Month/Year Navigation */}
+      <div className="flex items-center justify-between mb-4">
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={previousMonth}
+          className="p-2 rounded-xl bg-gradient-to-r from-[#8b6f47] to-[#6b4423] text-white font-bold hover:shadow-lg transition-all"
+        >
+          ←
+        </motion.button>
+        <div className="text-center">
+          <div className="text-lg font-bold text-[#6b4423]">{monthNames[currentMonth]}</div>
+          <div className="text-sm text-[#8b6f47]">{currentYear}</div>
+        </div>
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={nextMonth}
+          className="p-2 rounded-xl bg-gradient-to-r from-[#8b6f47] to-[#6b4423] text-white font-bold hover:shadow-lg transition-all"
+        >
+          →
+        </motion.button>
       </div>
 
       {/* Day headers */}
@@ -66,70 +147,85 @@ export default function CalendarSection({
       </div>
 
       {/* Calendar grid */}
-      <div className="grid grid-cols-7 gap-2">
-        {Array.from({ length: 28 }, (_, i) => i + 1).map((day, idx) => {
-          const dayEvents = getDayEvents(day);
-          const hasEvent = dayEvents.length > 0;
-          const isToday = day === 9;
+      {loading ? (
+        <div className="text-center py-12 text-[#8b6f47]">
+          <div className="text-3xl mb-2">⏳</div>
+          <div className="text-sm">Loading...</div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-7 gap-2">
+          {/* Empty cells for days before month starts */}
+          {Array.from({ length: firstDayOfMonth }).map((_, idx) => (
+            <div key={`empty-${idx}`} className="aspect-square" />
+          ))}
           
-          return (
-            <motion.button
-              key={day}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4 + idx * 0.01 }}
-              whileHover={{ scale: 1.15, zIndex: 10 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                if (hasEvent) {
-                  setSelectedDate(`2026-02-${day.toString().padStart(2, '0')}`);
-                  setShowScheduler(true);
-                }
-              }}
-              className={`
-                aspect-square rounded-2xl flex flex-col items-center justify-center font-bold
-                transition-all duration-300 relative group
-                ${isToday
-                  ? 'bg-gradient-to-br from-[#8b6f47] to-[#6b4423] text-white shadow-lg scale-110'
-                  : hasEvent
-                  ? 'bg-gradient-to-br from-[#f9f6f3] to-[#f5f0eb] text-[#6b5444] shadow-md'
-                  : 'bg-gradient-to-br from-[#fdfcfa] to-[#f9f6f3] text-[#8b6f47] hover:shadow-md'
-                }
-                ${hasEvent ? 'ring-2 ring-[#a8c9a6]' : ''}
-              `}
-            >
-              <span className="relative z-10 text-sm">{day}</span>
-              {hasEvent && (
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="flex gap-1 mt-1"
-                >
-                  {dayEvents.slice(0, 2).map((event, idx) => (
-                    <motion.div
-                      key={idx}
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        event.type === 'mentorship' ? 'bg-emerald-500' :
-                        event.type === 'study' ? 'bg-amber-500' :
-                        'bg-orange-500'
-                      }`}
-                      animate={{ scale: [1, 1.3, 1] }}
-                      transition={{ duration: 1.5, repeat: Infinity, delay: idx * 0.3 }}
-                    />
-                  ))}
-                </motion.div>
-              )}
-            </motion.button>
-          );
-        })}
-      </div>
+          {/* Days of the month */}
+          {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((day, idx) => {
+            const dayTasks = getDayTasks(day);
+            const hasTasks = dayTasks.length > 0;
+            const isToday = isCurrentMonth && day === todayDate;
+            
+            return (
+              <motion.button
+                key={day}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4 + idx * 0.01 }}
+                whileHover={{ scale: 1.15, zIndex: 10 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  if (hasTasks) {
+                    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    setSelectedDate(dateStr);
+                    setShowScheduler(true);
+                  }
+                }}
+                className={`
+                  aspect-square rounded-2xl flex flex-col items-center justify-center font-bold
+                  transition-all duration-300 relative group
+                  ${isToday
+                    ? 'bg-gradient-to-br from-[#8b6f47] to-[#6b4423] text-white shadow-lg scale-110'
+                    : hasTasks
+                    ? 'bg-gradient-to-br from-[#f9f6f3] to-[#f5f0eb] text-[#6b5444] shadow-md'
+                    : 'bg-gradient-to-br from-[#fdfcfa] to-[#f9f6f3] text-[#8b6f47] hover:shadow-md'
+                  }
+                  ${hasTasks ? 'ring-2 ring-[#8b6f47]' : ''}
+                `}
+              >
+                <span className="relative z-10 text-sm">{day}</span>
+                {hasTasks && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="flex gap-0.5 mt-1 flex-wrap justify-center px-1"
+                  >
+                    {dayTasks.slice(0, 3).map((task, idx) => (
+                      <motion.div
+                        key={task.id}
+                        className={`w-1 h-1 rounded-full ${
+                          task.completed ? 'bg-emerald-500' : 'bg-amber-500'
+                        }`}
+                        title={task.title}
+                        animate={{ scale: [1, 1.3, 1] }}
+                        transition={{ duration: 1.5, repeat: Infinity, delay: idx * 0.3 }}
+                      />
+                    ))}
+                  </motion.div>
+                )}
+                {hasTasks && dayTasks.length > 3 && (
+                  <span className="text-[8px] text-[#8b6f47]">+{dayTasks.length - 3}</span>
+                )}
+              </motion.button>
+            );
+          })}
+        </div>
+      )}
 
       {/* Legend */}
       <div className="flex flex-wrap gap-4 mt-6">
         {[
-          { color: 'bg-emerald-500', label: 'Mentor', icon: '🎓' },
-          { color: 'bg-amber-500', label: 'Study', icon: '📖' },
-          { color: 'bg-orange-500', label: 'Market', icon: '🛍️' }
+          { color: 'bg-amber-500', label: 'Pending', icon: '📝' },
+          { color: 'bg-emerald-500', label: 'Completed', icon: '✓' }
         ].map((item, idx) => (
           <motion.div
             key={idx}

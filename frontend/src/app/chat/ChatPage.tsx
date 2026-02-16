@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import Sidebar from '../../components/Sidebar';
+import Sidebar from '../../components/sidebar';
 import Header from './components/Header';
 import ChatBox from './components/ChatBox';
 import ChatInput from './components/ChatInput';

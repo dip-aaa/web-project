@@ -76,6 +76,28 @@ export default function AlertsSection() {
     }
   };
 
+  const handleCancelRequest = async (requestId: number) => {
+    if (!confirm('Are you sure you want to cancel this connection request?')) return;
+
+    try {
+      setProcessing(requestId);
+      const response = await mentorshipAPI.cancelConnectionRequest(requestId);
+      
+      if (response.success) {
+        alert('Connection request canceled successfully!');
+        // Refresh requests
+        await fetchRequests();
+      } else {
+        alert(response.message || 'Failed to cancel request');
+      }
+    } catch (error: any) {
+      console.error('Error canceling request:', error);
+      alert(error.message || 'An error occurred while canceling the request');
+    } finally {
+      setProcessing(null);
+    }
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -305,6 +327,40 @@ export default function AlertsSection() {
                       }}
                     >
                       {processing === request.id ? '...' : 'Reject'}
+                    </button>
+                  </div>
+                )}
+
+                {/* Cancel action for sent pending requests */}
+                {activeView === 'sent' && request.status === 'pending' && (
+                  <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+                    <button
+                      onClick={() => handleCancelRequest(request.id)}
+                      disabled={processing === request.id}
+                      style={{
+                        padding: '8px 16px',
+                        borderRadius: 10,
+                        border: '1.5px solid #dc2626',
+                        background: 'white',
+                        color: '#dc2626',
+                        fontWeight: 'bold',
+                        fontSize: 13,
+                        cursor: processing === request.id ? 'not-allowed' : 'pointer',
+                        opacity: processing === request.id ? 0.6 : 1,
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseOver={(e) => {
+                        if (processing !== request.id) {
+                          e.currentTarget.style.background = '#dc2626';
+                          e.currentTarget.style.color = 'white';
+                        }
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.background = 'white';
+                        e.currentTarget.style.color = '#dc2626';
+                      }}
+                    >
+                      {processing === request.id ? 'Canceling...' : 'Cancel Request'}
                     </button>
                   </div>
                 )}

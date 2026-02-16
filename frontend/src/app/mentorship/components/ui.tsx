@@ -254,6 +254,7 @@ export function Button({
   fullWidth = false,
   icon,
   style = {},
+  disabled = false,
 }: {
   children: React.ReactNode;
   variant?: "primary" | "secondary" | "ghost" | "danger";
@@ -262,6 +263,7 @@ export function Button({
   fullWidth?: boolean;
   icon?: React.ReactNode;
   style?: React.CSSProperties;
+  disabled?: boolean;
 }) {
   const styles = {
     primary: {
@@ -298,16 +300,18 @@ export function Button({
 
   return (
     <motion.button
-      whileHover={{ scale: 1.03, y: -1 }}
-      whileTap={{ scale: 0.97 }}
-      onClick={onClick}
+      whileHover={disabled ? {} : { scale: 1.03, y: -1 }}
+      whileTap={disabled ? {} : { scale: 0.97 }}
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
       style={{
         ...styles[variant],
         ...sizes[size],
         borderRadius: 14,
         fontFamily: "'Inter', sans-serif",
         fontWeight: 700,
-        cursor: "pointer",
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.5 : 1,
         display: "inline-flex",
         alignItems: "center",
         gap: 8,
@@ -316,7 +320,6 @@ export function Button({
         letterSpacing: "0.3px",
         transition: "all 0.2s ease",
         visibility: "visible", // Ensure button is always visible
-        opacity: 1, // Ensure button is not transparent
         zIndex: 1, // Ensure button is above other elements
         ...style, // Allow custom styles to override
       }}

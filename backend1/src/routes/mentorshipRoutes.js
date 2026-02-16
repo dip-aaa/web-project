@@ -6,6 +6,7 @@ const {
   sendConnectionRequest,
   getConnectionRequests,
   respondToRequest,
+  cancelConnectionRequest,
   getUserProfile,
   getConnectedUsers,
   checkMentorStatus,
@@ -32,6 +33,9 @@ router.get('/requests', getConnectionRequests);
 
 // Respond to connection request (accept/reject)
 router.post('/requests/:requestId/respond', respondToRequest);
+
+// Cancel connection request (for mentees)
+router.delete('/requests/:requestId/cancel', cancelConnectionRequest);
 
 // Get user profile by ID
 router.get('/profile/:userId', getUserProfile);

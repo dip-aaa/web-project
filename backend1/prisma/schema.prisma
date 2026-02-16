@@ -10,32 +10,33 @@ datasource db {
 
 /// User authentication and profile
 model User {
-  id           Int       @id @default(autoincrement())
-  email        String    @unique
-  password     String
-  name         String
-  phoneNumber  String?
-  department   String?
-  isVerified   Boolean   @default(false)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  
-  collegeId    Int
-  college      College   @relation(fields: [collegeId], references: [id], onDelete: Cascade)
-  
-  otps         OTP[]
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  password    String
+  name        String
+  phoneNumber String?
+  department  String?
+  isVerified  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  collegeId Int
+  college   College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  otps          OTP[]
   refreshTokens RefreshToken[]
-  
-  buyer        Buyer?
-  seller       Seller?
-  mentor       Mentor?
-  mentee       Mentee?
-  
+
+  buyer  Buyer?
+  seller Seller?
+  mentor Mentor?
+  mentee Mentee?
+
   sentMessages     Message[] @relation("SentMessages")
   receivedMessages Message[] @relation("ReceivedMessages")
-  
+
   itemComments ItemComment[]
-  
+  tasks        Task[]
+
   @@index([email])
 }
 
@@ -46,10 +47,10 @@ model OTP {
   expiresAt DateTime
   used      Boolean  @default(false)
   createdAt DateTime @default(now())
-  
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
   @@index([code])
 }
@@ -60,10 +61,10 @@ model RefreshToken {
   token     String   @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
-  
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
   @@index([token])
 }
@@ -74,13 +75,13 @@ model Message {
   content   String
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
-  
-  senderId    Int
-  sender      User    @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
-  
-  receiverId  Int
-  receiver    User    @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
-  
+
+  senderId Int
+  sender   User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+
+  receiverId Int
+  receiver   User @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+
   @@index([senderId])
   @@index([receiverId])
   @@index([createdAt])
@@ -117,9 +118,9 @@ model Student {
 model Buyer {
   studentId Int?     @unique
   student   Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  
-  userId    Int      @id
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  userId Int  @id
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   purchases Item[]   @relation("BuyerPurchases")
   reviews   Review[]
@@ -129,20 +130,20 @@ model Buyer {
 model Seller {
   studentId Int?     @unique
   student   Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  
-  userId    Int      @id
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  userId Int  @id
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   items Item[] @relation("SellerItems")
 }
 
 /// ERD subtype: Mentor (ISA Student/User)
 model Mentor {
-  studentId     Int?     @unique
-  student       Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  
-  userId        Int      @id
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  studentId Int?     @unique
+  student   Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  userId        Int     @id
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   expertiseArea String?
 
   requestsReceived Request[]
@@ -150,11 +151,11 @@ model Mentor {
 
 /// ERD subtype: Mentee (ISA Student/User)
 model Mentee {
-  studentId    Int?     @unique
-  student      Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  
-  userId       Int      @id
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  studentId Int?     @unique
+  student   Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  userId       Int     @id
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   interestArea String?
 
   requestsSent Request[]
@@ -235,4 +236,20 @@ model Request {
 
   @@index([mentorId])
   @@index([menteeId])
+}
+
+/// Task management for students
+model Task {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String // Date in YYYY-MM-DD format
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([date])
 }

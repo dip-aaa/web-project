@@ -230,23 +230,62 @@ export const MOCK_SESSIONS = [
   { id: "s3", mentor: "Kabir Bose", topic: "PM Case Interview Prep", date: "Feb 18, 4 PM", status: "upcoming" },
 ];
 
-export const MY_PROFILE: MentorProfile = {
-  id: "me",
-  name: "Aarav Singh",
-  year: "2nd Year",
-  branch: "Computer Science",
-  role: "both",
-  skills: ["React", "Python", "UI/UX Design"],
-  lookingFor: ["3rd Year", "4th Year", "Alumni"],
-  bio: "2nd year CS student passionate about frontend and design. Mentor for freshers, mentee for seniors.",
-  rating: 4.3,
-  sessions: 5,
-  followers: 38,
-  online: true,
-  badges: ["Rising Star"],
-  linkedinStyle: "Frontend Dev · CS 2nd Year · Mentor & Learner",
-  achievements: ["Built college fest website", "1st in UI Hackathon"],
-  openFor: ["React help for freshers", "Looking for ML mentor"],
-  fee: 25,
-  verified: false,
+// Helper to get current user profile from localStorage
+export const getMyProfile = (): MentorProfile => {
+  if (typeof window !== 'undefined') {
+    const user = localStorage.getItem('user');
+    if (user) {
+      try {
+        const userData = JSON.parse(user);
+        return {
+          id: userData.id?.toString() || "me",
+          name: userData.name || "User",
+          year: "Student",
+          branch: userData.department || "Not specified",
+          role: "both",
+          skills: [],
+          lookingFor: [],
+          bio: `Student from ${userData.department || 'the college'}`,
+          rating: 0,
+          sessions: 0,
+          followers: 0,
+          online: true,
+          badges: [],
+          linkedinStyle: `${userData.department || 'Student'} · ${userData.email || ''}`,
+          achievements: [],
+          openFor: [],
+          fee: 0,
+          verified: false,
+        };
+      } catch (e) {
+        console.error('Error parsing user data:', e);
+      }
+    }
+  }
+  
+  // Fallback for server-side rendering or missing user
+  return {
+    id: "me",
+    name: "User",
+    year: "Student",
+    branch: "Not specified",
+    role: "both",
+    skills: [],
+    lookingFor: [],
+    bio: "Student profile",
+    rating: 0,
+    sessions: 0,
+    followers: 0,
+    online: true,
+    badges: [],
+    linkedinStyle: "Student",
+    achievements: [],
+    openFor: [],
+    fee: 0,
+    verified: false,
+  };
 };
+
+// For backward compatibility, export as MY_PROFILE
+export const MY_PROFILE = getMyProfile();
+

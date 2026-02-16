@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { T } from "./theme";
 import { Avatar, RoleBadge, StarRating, SkillTag, Button, Card, SectionHeading, CoffeeDivider } from "./ui";
-import { MentorCard } from "./MentorCard";
+import MentorCard from "./MentorCard";
 import { MOCK_CALLOUTS, MOCK_MENTORS, MY_PROFILE, type MentorProfile } from "./data";
 import { mentorshipAPI } from "../../../lib/api";
 
@@ -12,17 +12,25 @@ import { mentorshipAPI } from "../../../lib/api";
 function FeaturedMentors() {
   const [featured, setFeatured] = useState<MentorProfile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [connectingId, setConnectingId] = useState<string | null>(null);
+  const [connectedIds, setConnectedIds] = useState<Set<string>>(new Set());
+  const [pendingRequests, setPendingRequests] = useState<Map<string, number>>(new Map()); // Mentor ID -> Request ID
+  const [cancelingId, setCancelingId] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMentors = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await mentorshipAPI.getMentors();
         
-        if (response.success && response.data) {
+        // Fetch mentors
+        const mentorsResponse = await mentorshipAPI.getMentors();
+        
+        // Fetch sent requests to check for pending requests
+        const sentRequestsResponse = await mentorshipAPI.getConnectionRequests('sent');
+        
+        if (mentorsResponse.success && mentorsResponse.data) {
           // Transform and take first 3 mentors
-          // Backend now only returns actual mentors
-          const transformedMentors: MentorProfile[] = response.data
+          const transformedMentors: MentorProfile[] = mentorsResponse.data
             .slice(0, 3)
             .map((user: any) => ({
               id: user.id.toString(),
@@ -46,6 +54,17 @@ function FeaturedMentors() {
             }));
           setFeatured(transformedMentors);
         }
+
+        // Map pending requests to mentor IDs
+        if (sentRequestsResponse.success && sentRequestsResponse.data) {
+          const pendingMap = new Map<string, number>();
+          sentRequestsResponse.data.forEach((request: any) => {
+            if (request.status === 'pending' && request.mentor) {
+              pendingMap.set(request.mentor.id.toString(), request.id);
+            }
+          });
+          setPendingRequests(pendingMap);
+        }
       } catch (error) {
         console.error('Error fetching featured mentors:', error);
         setFeatured([]);
@@ -54,8 +73,59 @@ function FeaturedMentors() {
       }
     };
 
-    fetchMentors();
+    fetchData();
   }, []);
+
+  const handleConnect = async (mentorId: string, mentorName: string) => {
+    if (connectingId || connectedIds.has(mentorId) || pendingRequests.has(mentorId)) return;
+
+    try {
+      setConnectingId(mentorId);
+      const response = await mentorshipAPI.sendConnectionRequest(parseInt(mentorId));
+      
+      if (response.success) {
+        // Add to pending requests
+        setPendingRequests(prev => new Map(prev).set(mentorId, response.data.id));
+        alert(`Connection request sent to ${mentorName}! They will be notified in their alerts section.`);
+      } else {
+        alert(response.message || 'Failed to send connection request');
+      }
+    } catch (error: any) {
+      console.error('Error sending connection request:', error);
+      alert(error.message || 'An error occurred while sending the connection request');
+    } finally {
+      setConnectingId(null);
+    }
+  };
+
+  const handleCancelRequest = async (mentorId: string, mentorName: string) => {
+    const requestId = pendingRequests.get(mentorId);
+    if (!requestId || cancelingId) return;
+
+    if (!confirm(`Cancel connection request to ${mentorName}?`)) return;
+
+    try {
+      setCancelingId(mentorId);
+      const response = await mentorshipAPI.cancelConnectionRequest(requestId);
+      
+      if (response.success) {
+        // Remove from pending requests
+        setPendingRequests(prev => {
+          const newMap = new Map(prev);
+          newMap.delete(mentorId);
+          return newMap;
+        });
+        alert('Connection request canceled successfully');
+      } else {
+        alert(response.message || 'Failed to cancel connection request');
+      }
+    } catch (error: any) {
+      console.error('Error canceling connection request:', error);
+      alert(error.message || 'An error occurred while canceling the connection request');
+    } finally {
+      setCancelingId(null);
+    }
+  };
 
   return (
     <Card>
@@ -70,39 +140,76 @@ function FeaturedMentors() {
         </div>
       ) : featured.length > 0 ? (
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          {featured.map((mentor, i) => (
-            <motion.div
-              key={mentor.id}
-              initial={{ opacity: 0, x: -16 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 + i * 0.1 }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 14,
-                padding: "14px 16px",
-                background: "linear-gradient(135deg, #fdf8f4, #f5ede4)",
-                borderRadius: 16,
-                border: `1.5px solid ${T.borderLight}`,
-                cursor: "pointer",
-              }}
-            >
-              <Avatar name={mentor.name} size={44} online={mentor.online} />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 14, fontWeight: 800, color: T.textDark, fontFamily: "'Playfair Display', serif" }}>{mentor.name}</div>
-                <div style={{ fontSize: 11, color: T.textMuted, fontFamily: "'Inter', sans-serif" }}>{mentor.year} · {mentor.branch}</div>
-                <div style={{ marginTop: 4, display: "flex", gap: 5 }}>
-                  {mentor.skills.slice(0, 2).map((s) => <SkillTag key={s} label={s} small />)}
+          {featured.map((mentor, i) => {
+            const isConnecting = connectingId === mentor.id;
+            const isConnected = connectedIds.has(mentor.id);
+            const hasPendingRequest = pendingRequests.has(mentor.id);
+            const isCanceling = cancelingId === mentor.id;
+
+            return (
+              <motion.div
+                key={mentor.id}
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 + i * 0.1 }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 14,
+                  padding: "14px 16px",
+                  background: "linear-gradient(135deg, #fdf8f4, #f5ede4)",
+                  borderRadius: 16,
+                  border: `1.5px solid ${T.borderLight}`,
+                  cursor: "pointer",
+                }}
+              >
+                <Avatar name={mentor.name} size={44} online={mentor.online} />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 14, fontWeight: 800, color: T.textDark, fontFamily: "'Playfair Display', serif" }}>{mentor.name}</div>
+                  <div style={{ fontSize: 11, color: T.textMuted, fontFamily: "'Inter', sans-serif" }}>{mentor.year} · {mentor.branch}</div>
+                  <div style={{ marginTop: 4, display: "flex", gap: 5 }}>
+                    {mentor.skills.slice(0, 2).map((s) => <SkillTag key={s} label={s} small />)}
+                  </div>
                 </div>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6, flexShrink: 0 }}>
-                <StarRating rating={mentor.rating} />
-                <span style={{ fontSize: 11, color: "#f7931e", fontWeight: 700, fontFamily: "'Inter', sans-serif" }}>
-                  ☕ {mentor.fee} coins
-                </span>
-              </div>
-            </motion.div>
-          ))}
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8, flexShrink: 0 }}>
+                  <StarRating rating={mentor.rating} />
+                  {hasPendingRequest ? (
+                    <div style={{ display: "flex", gap: 6 }}>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => handleCancelRequest(mentor.id, mentor.name)}
+                        disabled={isCanceling}
+                      >
+                        {isCanceling ? "Canceling..." : "Cancel Request"}
+                      </Button>
+                      <div style={{
+                        padding: "6px 12px",
+                        background: "#fef3c7",
+                        color: "#92400e",
+                        fontSize: 12,
+                        fontWeight: 700,
+                        borderRadius: 8,
+                        display: "flex",
+                        alignItems: "center"
+                      }}>
+                        Pending
+                      </div>
+                    </div>
+                  ) : (
+                    <Button
+                      variant={isConnected ? "secondary" : "primary"}
+                      size="sm"
+                      onClick={() => handleConnect(mentor.id, mentor.name)}
+                      disabled={isConnecting || isConnected}
+                    >
+                      {isConnecting ? "Connecting..." : isConnected ? "✓ Connected" : "Connect"}
+                    </Button>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       ) : (
         <div style={{ textAlign: 'center', padding: '20px', color: T.textMuted }}>

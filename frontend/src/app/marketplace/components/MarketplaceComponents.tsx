@@ -480,10 +480,6 @@ export function MarketplaceView() {
 				}}
 			/>
 			<MarketplacePagination />
-			<button type="button" className="mk-fab" onClick={() => setShowSellForm(true)}>
-				<span aria-hidden>＋</span>
-				<span>Sell Item</span>
-			</button>
 				</>
 			)}
 		</main>

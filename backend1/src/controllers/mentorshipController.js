@@ -328,6 +328,61 @@ const respondToRequest = async (req, res, next) => {
 };
 
 /**
+ * Cancel a pending connection request (for mentees who sent the request)
+ */
+const cancelConnectionRequest = async (req, res, next) => {
+  try {
+    const { requestId } = req.params;
+    const userId = req.user.id;
+
+    // Get request
+    const request = await prisma.request.findUnique({
+      where: { id: parseInt(requestId) },
+      include: {
+        mentor: { include: { user: true } },
+        mentee: { include: { user: true } }
+      }
+    });
+
+    if (!request) {
+      return res.status(404).json({
+        success: false,
+        message: 'Request not found'
+      });
+    }
+
+    // Verify user is the mentee who sent the request
+    if (request.menteeId !== userId) {
+      return res.status(403).json({
+        success: false,
+        message: 'You are not authorized to cancel this request'
+      });
+    }
+
+    // Only pending requests can be canceled
+    if (request.requestStatus !== 'pending') {
+      return res.status(400).json({
+        success: false,
+        message: 'Only pending requests can be canceled'
+      });
+    }
+
+    // Delete the request
+    await prisma.request.delete({
+      where: { id: parseInt(requestId) }
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Connection request canceled successfully'
+    });
+  } catch (error) {
+    console.error('Cancel connection request error:', error);
+    next(error);
+  }
+};
+
+/**
  * Get user profile by ID
  */
 const getUserProfile = async (req, res, next) => {
@@ -587,6 +642,7 @@ module.exports = {
   sendConnectionRequest,
   getConnectionRequests,
   respondToRequest,
+  cancelConnectionRequest,
   getUserProfile,
   getConnectedUsers,
   checkMentorStatus,

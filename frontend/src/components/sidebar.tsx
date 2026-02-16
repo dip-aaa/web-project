@@ -159,7 +159,27 @@ export default function Sidebar({ animate = true }: { animate?: boolean }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [userName, setUserName] = useState('User');
+  const [userInitial, setUserInitial] = useState('U');
   const [notificationCount, setNotificationCount] = useState(0);
+
+  // Fetch user data from localStorage - refresh on pathname change
+  useEffect(() => {
+    const fetchUserData = () => {
+      const userStr = localStorage.getItem('user');
+      if (userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          const name = user.name || 'User';
+          setUserName(name);
+          setUserInitial(name.charAt(0).toUpperCase());
+        } catch (error) {
+          console.error('Error parsing user data:', error);
+        }
+      }
+    };
+    
+    fetchUserData();
+  }, [pathname]);
 
   const AsideComponent = 'aside'; // Always use static aside, never motion.aside
   const asideProps = {};
@@ -451,7 +471,7 @@ export default function Sidebar({ animate = true }: { animate?: boolean }) {
               border: "3px solid rgba(255, 255, 255, 0.4)",
             }}
           >
-            A
+            {userInitial}
           </motion.div>
           <AnimatePresence>
             {!collapsed && (
@@ -469,7 +489,7 @@ export default function Sidebar({ animate = true }: { animate?: boolean }) {
                     fontFamily: "'Inter', sans-serif",
                   }}
                 >
-                  Aarav
+                  {userName}
                 </div>
                 <div
                   style={{

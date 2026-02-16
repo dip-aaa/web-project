@@ -12,23 +12,29 @@ export function MentorBrowse() {
   const [query, setQuery] = useState("");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>("");
+  const [roleFilter, setRoleFilter] = useState<string>("all");
   const [showFilters, setShowFilters] = useState(false);
   const [mentors, setMentors] = useState<MentorProfile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [pendingRequests, setPendingRequests] = useState<Map<string, number>>(new Map()); // Mentor ID -> Request ID
 
-  // Fetch mentors from backend
+  // Fetch mentors and sent requests from backend
   useEffect(() => {
-    const fetchMentors = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await mentorshipAPI.getMentors({
+        
+        // Fetch mentors
+        const mentorsResponse = await mentorshipAPI.getMentors({
           search: query || undefined
         });
         
-        if (response.success && response.data) {
+        // Fetch sent requests
+        const sentRequestsResponse = await mentorshipAPI.getConnectionRequests('sent');
+        
+        if (mentorsResponse.success && mentorsResponse.data) {
           // Transform backend data to MentorProfile format
-          // Backend now only returns actual mentors (users with Mentor records)
-          const transformedMentors: MentorProfile[] = response.data.map((user: any) => ({
+          const transformedMentors: MentorProfile[] = mentorsResponse.data.map((user: any) => ({
             id: user.id.toString(),
             name: user.name,
             year: "Mentor", 
@@ -50,6 +56,17 @@ export function MentorBrowse() {
           }));
           setMentors(transformedMentors);
         }
+
+        // Map pending requests to mentor IDs
+        if (sentRequestsResponse.success && sentRequestsResponse.data) {
+          const pendingMap = new Map<string, number>();
+          sentRequestsResponse.data.forEach((request: any) => {
+            if (request.status === 'pending' && request.mentor) {
+              pendingMap.set(request.mentor.id.toString(), request.id);
+            }
+          });
+          setPendingRequests(pendingMap);
+        }
       } catch (error) {
         console.error('Error fetching mentors:', error);
         setMentors([]);
@@ -58,8 +75,25 @@ export function MentorBrowse() {
       }
     };
 
-    fetchMentors();
+    fetchData();
   }, [query]);
+
+  const refreshPendingRequests = async () => {
+    try {
+      const sentRequestsResponse = await mentorshipAPI.getConnectionRequests('sent');
+      if (sentRequestsResponse.success && sentRequestsResponse.data) {
+        const pendingMap = new Map<string, number>();
+        sentRequestsResponse.data.forEach((request: any) => {
+          if (request.status === 'pending' && request.mentor) {
+            pendingMap.set(request.mentor.id.toString(), request.id);
+          }
+        });
+        setPendingRequests(pendingMap);
+      }
+    } catch (error) {
+      console.error('Error refreshing pending requests:', error);
+    }
+  };
 
   const filtered = useMemo(() => {
     return mentors.filter((m) => {
@@ -219,6 +253,11 @@ export function MentorBrowse() {
             Showing <strong style={{ color: T.text }}>{filtered.length}</strong> student{filtered.length !== 1 ? "s" : ""} from your college
           </>
         )}
+              key={mentor.id} 
+              mentor={mentor} 
+              pendingRequestId={pendingRequests.get(mentor.id)}
+              onRequestChange={refreshPendingRequests}
+           
       </div>
 
       {/* Cards Grid */}

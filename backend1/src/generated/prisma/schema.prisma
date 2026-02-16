@@ -34,6 +34,9 @@ model User {
   sentMessages     Message[] @relation("SentMessages")
   receivedMessages Message[] @relation("ReceivedMessages")
 
+  itemComments ItemComment[]
+  tasks        Task[]
+
   @@index([email])
 }
 
@@ -182,9 +185,27 @@ model Item {
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 
+  comments ItemComment[]
+
   @@index([sellerId])
   @@index([buyerId])
   @@index([categoryId])
+}
+
+/// Comments on marketplace items
+model ItemComment {
+  id        Int      @id @default(autoincrement())
+  text      String
+  createdAt DateTime @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  itemId Int
+  item   Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([itemId])
 }
 
 /// ERD: Buyer 1..* Review
@@ -215,4 +236,20 @@ model Request {
 
   @@index([mentorId])
   @@index([menteeId])
+}
+
+/// Task management for students
+model Task {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String // Date in YYYY-MM-DD format
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([date])
 }

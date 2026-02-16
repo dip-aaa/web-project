@@ -234,6 +234,27 @@ exports.Prisma.RequestScalarFieldEnum = {
   menteeId: 'menteeId'
 };
 
+exports.Prisma.TaskScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  date: 'date',
+  completed: 'completed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  title: 'title',
+  message: 'message',
+  read: 'read',
+  createdAt: 'createdAt',
+  userId: 'userId',
+  itemId: 'itemId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -260,7 +281,9 @@ exports.Prisma.ModelName = {
   Item: 'Item',
   ItemComment: 'ItemComment',
   Review: 'Review',
-  Request: 'Request'
+  Request: 'Request',
+  Task: 'Task',
+  Notification: 'Notification'
 };
 
 /**

@@ -13,8 +13,7 @@ const tabs = [
   { id: 'overview' as ProfileTab, label: 'Overview', icon: '🏠' },
   { id: 'listings' as ProfileTab, label: 'My Listings', icon: '📦' },
   { id: 'reviews' as ProfileTab, label: 'Reviews', icon: '⭐' },
-  { id: 'activity' as ProfileTab, label: 'Activity', icon: '📊' },
-  { id: 'alerts' as ProfileTab, label: 'Alerts', icon: '🔔' }
+  { id: 'activity' as ProfileTab, label: 'Activity', icon: '📊' }
 ];
 
 export default function ProfileTabs({ activeTab, onTabChange }: ProfileTabsProps) {

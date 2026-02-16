@@ -2,16 +2,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../../components/Sidebar';
+import Sidebar from '../../components/sidebar';
 import WelcomeHeader from './components/WelcomeHeader';
 import StatsGrid from './components/StatsGrid';
 import CalendarSection from './components/CalendarSection';
 import TodoList from './components/TodoList';
 // import StreakTracker from './components/StreakTracker';
 import MarketplacePreview from './components/MarketplacePreview';
-import SuggestedMentors from './components/SuggestedMentors';
-import TopSellers from './components/TopSellers';
-import ActivityFeed from './components/ActivityFeed';
 import EventSchedulerModal from './components/EventSchedulerModal';
 import { motion } from 'framer-motion';
 import { marketplaceAPI } from '../../lib/api';
@@ -199,32 +196,6 @@ export default function DashboardPage() {
             items={marketplaceItems}
             toggleWishlist={toggleWishlist}
           />
-
-          {/* Mentorship & Top Sellers - Asymmetric Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            {/* Suggested Mentors - Takes 3 columns */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6 }}
-              className="lg:col-span-3"
-            >
-              <SuggestedMentors />
-            </motion.div>
-
-            {/* Top Sellers - Takes 2 columns */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.7 }}
-              className="lg:col-span-2"
-            >
-              <TopSellers />
-            </motion.div>
-          </div>
-
-          {/* Activity Feed */}
-          <ActivityFeed activities={activities} />
         </div>
       </div>
 

@@ -9,11 +9,10 @@ import AboutSection from './components/AboutSection';
 import ListingsGrid from './components/ListingsGrid';
 import ReviewsSection from './components/ReviewsSection';
 import ActivityTimeline from './components/ActivityTimeline';
-import AlertsSection from './components/AlertsSection';
 import { motion } from 'framer-motion';
 import { authAPI } from '../../lib/api';
 
-export type ProfileTab = 'overview' | 'listings' | 'reviews' | 'activity' | 'alerts';
+export type ProfileTab = 'overview' | 'listings' | 'reviews' | 'activity';
 
 interface UserData {
   id: number;
@@ -169,16 +168,6 @@ export default function ProfilePage() {
                   transition={{ duration: 0.3 }}
                 >
                   <ActivityTimeline />
-                </motion.div>
-              )}
-
-              {activeTab === 'alerts' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <AlertsSection />
                 </motion.div>
               )}
             </div>

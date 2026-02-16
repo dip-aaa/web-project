@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import Sidebar from '../../components/Sidebar';
+import Sidebar from '../../components/sidebar';
 import AlertsSection from '../profile/components/AlertsSection';
 
 export default function AlertsPage() {

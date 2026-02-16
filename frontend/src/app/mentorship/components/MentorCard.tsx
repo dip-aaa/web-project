@@ -8,23 +8,31 @@ import { MentorProfile } from "./data";
 import { Avatar, RoleBadge, StarRating, SkillTag } from "./ui";
 import { mentorshipAPI } from "../../../lib/api";
 
-export default function MentorCard({ mentor }: { mentor: MentorProfile }) {
+interface MentorCardProps {
+  mentor: MentorProfile;
+  pendingRequestId?: number;
+  onRequestChange?: () => void;
+}
+
+export default function MentorCard({ mentor, pendingRequestId, onRequestChange }: MentorCardProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const [connected, setConnected] = useState(false);
+  const [canceling, setCanceling] = useState(false);
+  const hasPendingRequest = !!pendingRequestId;
 
   const handleConnect = async (e: React.MouseEvent) => {
     e.stopPropagation();
     
-    if (connecting || connected) return;
+    if (connecting || connected || hasPendingRequest) return;
     
     try {
       setConnecting(true);
       const response = await mentorshipAPI.sendConnectionRequest(parseInt(mentor.id));
       
       if (response.success) {
-        setConnected(true);
         alert(`Connection request sent to ${mentor.name}! They will be notified in their alerts section.`);
+        if (onRequestChange) onRequestChange();
       } else {
         alert(response.message || 'Failed to send connection request');
       }
@@ -33,6 +41,31 @@ export default function MentorCard({ mentor }: { mentor: MentorProfile }) {
       alert(error.message || 'An error occurred while sending the connection request');
     } finally {
       setConnecting(false);
+    }
+  };
+
+  const handleCancelRequest = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    if (!pendingRequestId || canceling) return;
+    
+    if (!confirm(`Cancel connection request to ${mentor.name}?`)) return;
+
+    try {
+      setCanceling(true);
+      const response = await mentorshipAPI.cancelConnectionRequest(pendingRequestId);
+      
+      if (response.success) {
+        alert('Connection request canceled successfully');
+        if (onRequestChange) onRequestChange();
+      } else {
+        alert(response.message || 'Failed to cancel connection request');
+      }
+    } catch (error: any) {
+      console.error('Error canceling connection request:', error);
+      alert(error.message || 'An error occurred while canceling the connection request');
+    } finally {
+      setCanceling(false);
     }
   };
 
@@ -158,15 +191,42 @@ export default function MentorCard({ mentor }: { mentor: MentorProfile }) {
             marginTop: "auto",
             paddingTop: 8
           }}>
-            <Button 
-              variant="primary" 
-              size="md" 
-              fullWidth
-              onClick={handleConnect}
-              disabled={connecting || connected}
-            >
-              {connecting ? "Connecting..." : connected ? "Request Sent" : "Connect"}
-            </Button>
+            {hasPendingRequest ? (
+              <>
+                <Button 
+                  variant="secondary" 
+                  size="md" 
+                  fullWidth
+                  onClick={handleCancelRequest}
+                  disabled={canceling}
+                >
+                  {canceling ? "Canceling..." : "Cancel Request"}
+                </Button>
+                <div style={{
+                  padding: "8px 14px",
+                  background: "#fef3c7",
+                  color: "#92400e",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  borderRadius: 10,
+                  display: "flex",
+                  alignItems: "center",
+                  whiteSpace: "nowrap"
+                }}>
+                  Pending
+                </div>
+              </>
+            ) : (
+              <Button 
+                variant="primary" 
+                size="md" 
+                fullWidth
+                onClick={handleConnect}
+                disabled={connecting || connected}
+              >
+                {connecting ? "Connecting..." : connected ? "Request Sent" : "Connect"}
+              </Button>
+            )}
             <Button 
               variant="secondary" 
               size="md" 

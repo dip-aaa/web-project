@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Task } from '../page';
+import { taskAPI } from '../../../lib/api';
 
 interface TodoListProps {
   tasks: Task[];
@@ -12,28 +13,91 @@ interface TodoListProps {
 export default function TodoList({ tasks, setTasks }: TodoListProps) {
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newTaskDate, setNewTaskDate] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
-  const addTask = () => {
-    if (newTaskTitle.trim() && newTaskDate) {
-      setTasks([...tasks, {
-        id: tasks.length + 1,
-        title: newTaskTitle,
-        date: newTaskDate,
-        completed: false
-      }]);
-      setNewTaskTitle('');
-      setNewTaskDate('');
+  // Fetch tasks from database on mount
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        setLoading(true);
+        const response = await taskAPI.getTasks();
+        if (response.success && response.data) {
+          setTasks(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
+  }, [setTasks]);
+
+  const addTask = async () => {
+    if (newTaskTitle.trim() && newTaskDate && !submitting) {
+      try {
+        setSubmitting(true);
+        const response = await taskAPI.createTask({
+          title: newTaskTitle.trim(),
+          date: newTaskDate
+        });
+
+        if (response.success && response.data) {
+          // Add the new task to the list
+          setTasks([...tasks, response.data]);
+          setNewTaskTitle('');
+          setNewTaskDate('');
+        } else {
+          alert('Failed to create task: ' + response.message);
+        }
+      } catch (error) {
+        console.error('Error creating task:', error);
+        alert('Failed to create task. Please make sure you are logged in.');
+      } finally {
+        setSubmitting(false);
+      }
     }
   };
   
-  const toggleTask = (id: number) => {
-    setTasks(tasks.map(task => 
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
+  const toggleTask = async (id: number) => {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+
+    try {
+      const response = await taskAPI.updateTask(id, {
+        completed: !task.completed
+      });
+
+      if (response.success) {
+        setTasks(tasks.map(task => 
+          task.id === id ? { ...task, completed: !task.completed } : task
+        ));
+      } else {
+        alert('Failed to update task: ' + response.message);
+      }
+    } catch (error) {
+      console.error('Error updating task:', error);
+      alert('Failed to update task');
+    }
   };
   
-  const deleteTask = (id: number) => {
-    setTasks(tasks.filter(task => task.id !== id));
+  const deleteTask = async (id: number) => {
+    if (!confirm('Are you sure you want to delete this task?')) return;
+
+    try {
+      const response = await taskAPI.deleteTask(id);
+
+      if (response.success) {
+        setTasks(tasks.filter(task => task.id !== id));
+      } else {
+        alert('Failed to delete task: ' + response.message);
+      }
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      alert('Failed to delete task');
+    }
   };
 
   return (
@@ -61,44 +125,54 @@ export default function TodoList({ tasks, setTasks }: TodoListProps) {
           value={newTaskTitle}
           onChange={(e) => setNewTaskTitle(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && addTask()}
-          className="w-full bg-gradient-to-r from-[#f9f6f3] to-[#fdfcfa] border-2 border-[#d4a574]/30 rounded-2xl px-5 py-3 text-[#6b4423] placeholder-[#8b6f47]/50 focus:outline-none focus:ring-2 focus:ring-[#8b6f47]/40 focus:border-[#8b6f47] transition-all"
+          disabled={submitting}
+          className="w-full bg-gradient-to-r from-[#f9f6f3] to-[#fdfcfa] border-2 border-[#d4a574]/30 rounded-2xl px-5 py-3 text-[#6b4423] placeholder-[#8b6f47]/50 focus:outline-none focus:ring-2 focus:ring-[#8b6f47]/40 focus:border-[#8b6f47] transition-all disabled:opacity-50"
         />
         <div className="flex gap-3">
           <input
             type="date"
             value={newTaskDate}
             onChange={(e) => setNewTaskDate(e.target.value)}
-            className="flex-1 bg-gradient-to-r from-[#f9f6f3] to-[#fdfcfa] border-2 border-[#d4a574]/30 rounded-2xl px-4 py-2 text-[#6b4423] focus:outline-none focus:ring-2 focus:ring-[#8b6f47]/40 transition-all"
+            disabled={submitting}
+            className="flex-1 bg-gradient-to-r from-[#f9f6f3] to-[#fdfcfa] border-2 border-[#d4a574]/30 rounded-2xl px-4 py-2 text-[#6b4423] focus:outline-none focus:ring-2 focus:ring-[#8b6f47]/40 transition-all disabled:opacity-50"
           />
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: submitting ? 1 : 1.05 }}
+            whileTap={{ scale: submitting ? 1 : 0.95 }}
             onClick={addTask}
-            className="bg-gradient-to-r from-[#8b6f47] to-[#6b4423] text-white rounded-2xl px-6 py-2 font-bold shadow-lg hover:shadow-xl transition-all"
+            disabled={submitting}
+            className="bg-gradient-to-r from-[#8b6f47] to-[#6b4423] text-white rounded-2xl px-6 py-2 font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Add
+            {submitting ? 'Adding...' : 'Add'}
           </motion.button>
         </div>
       </div>
 
       {/* Task List */}
-      <style jsx>{`
-        .scrollbar-custom {
-          scrollbar-width: thin;
-          scrollbar-color: #d4a574 #f9f6f3;
-        }
-        .scrollbar-custom::-webkit-scrollbar {
-          width: 8px;
-        }
-        .scrollbar-custom::-webkit-scrollbar-thumb {
-          background: #d4a574;
-          border-radius: 8px;
-        }
-        .scrollbar-custom::-webkit-scrollbar-track {
-          background: #f9f6f3;
-        }
-      `}</style>
-      {tasks.length > 2 ? (
+      {loading ? (
+        <div className="text-center py-12 text-[#8b6f47]">
+          <div className="text-5xl mb-3">⏳</div>
+          <div className="font-semibold">Loading tasks...</div>
+        </div>
+      ) : (
+        <>
+          <style jsx>{`
+            .scrollbar-custom {
+              scrollbar-width: thin;
+              scrollbar-color: #d4a574 #f9f6f3;
+            }
+            .scrollbar-custom::-webkit-scrollbar {
+              width: 8px;
+            }
+            .scrollbar-custom::-webkit-scrollbar-thumb {
+              background: #d4a574;
+              border-radius: 8px;
+            }
+            .scrollbar-custom::-webkit-scrollbar-track {
+              background: #f9f6f3;
+            }
+          `}</style>
+          {tasks.length > 2 ? (
         <div className="space-y-3 pr-2 overflow-y-scroll scrollbar-custom h-48">
           {tasks.map((task, idx) => (
             <motion.div
@@ -195,6 +269,8 @@ export default function TodoList({ tasks, setTasks }: TodoListProps) {
             ))
           )}
         </div>
+      )}
+        </>
       )}
     </div>
   );

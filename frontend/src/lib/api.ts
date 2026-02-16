@@ -182,6 +182,15 @@ export const mentorshipAPI = {
     return response.json();
   },
 
+  // Cancel connection request (for mentees)
+  cancelConnectionRequest: async (requestId: number) => {
+    const response = await fetch(`${API_URL}/mentorship/requests/${requestId}/cancel`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    });
+    return response.json();
+  },
+
   // Get user profile by ID
   getUserProfile: async (userId: number) => {
     const response = await fetch(`${API_URL}/mentorship/profile/${userId}`, {
@@ -250,6 +259,54 @@ export const chatAPI = {
   // Get conversations
   getConversations: async () => {
     const response = await fetch(`${API_URL}/chat/conversations`, {
+      headers: getAuthHeaders()
+    });
+    return response.json();
+  }
+};
+
+// Task API
+export const taskAPI = {
+  // Get all tasks for the user
+  getTasks: async () => {
+    const response = await fetch(`${API_URL}/tasks`, {
+      headers: getAuthHeaders()
+    });
+    return response.json();
+  },
+
+  // Get tasks by specific date
+  getTasksByDate: async (date: string) => {
+    const response = await fetch(`${API_URL}/tasks/date/${date}`, {
+      headers: getAuthHeaders()
+    });
+    return response.json();
+  },
+
+  // Create a new task
+  createTask: async (taskData: { title: string; date: string }) => {
+    const response = await fetch(`${API_URL}/tasks`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(taskData)
+    });
+    return response.json();
+  },
+
+  // Update a task
+  updateTask: async (id: number, taskData: { title?: string; date?: string; completed?: boolean }) => {
+    const response = await fetch(`${API_URL}/tasks/${id}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(taskData)
+    });
+    return response.json();
+  },
+
+  // Delete a task
+  deleteTask: async (id: number) => {
+    const response = await fetch(`${API_URL}/tasks/${id}`, {
+      method: 'DELETE',
       headers: getAuthHeaders()
     });
     return response.json();
