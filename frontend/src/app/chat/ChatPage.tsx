@@ -81,10 +81,10 @@ const ChatPageComponent: React.FC = () => {
       try {
         setIsLoadingMessages(true);
         const response = await chatAPI.getMessages(selectedUser.id);
-        
+
         if (response.success && response.data) {
           const chatMessages: ChatMessage[] = response.data.messages || [];
-          
+
           // Transform to Message format
           const transformedMessages: Message[] = chatMessages.map((msg) => ({
             id: msg.id.toString(),
@@ -92,7 +92,7 @@ const ChatPageComponent: React.FC = () => {
             sender: msg.senderId === currentUserIdRef.current ? 'user' : 'bot',
             timestamp: new Date(msg.createdAt)
           }));
-          
+
           setMessages(transformedMessages);
         }
       } catch (error) {
@@ -104,10 +104,10 @@ const ChatPageComponent: React.FC = () => {
     };
 
     fetchMessages();
-    
+
     // Poll for new messages every 3 seconds
     const interval = setInterval(fetchMessages, 3000);
-    
+
     return () => clearInterval(interval);
   }, [selectedUser]);
 
@@ -126,12 +126,12 @@ const ChatPageComponent: React.FC = () => {
         sender: 'user',
         timestamp: new Date()
       };
-      
+
       setMessages(prev => [...prev, tempMessage]);
 
       // Send to backend
       const response = await chatAPI.sendMessage(selectedUser.id, text.trim());
-      
+
       if (response.success && response.data) {
         // Replace temporary message with real one
         const realMessage: Message = {
@@ -140,7 +140,7 @@ const ChatPageComponent: React.FC = () => {
           sender: 'user',
           timestamp: new Date(response.data.message.createdAt)
         };
-        
+
         setMessages(prev => {
           // Replace temp message with real one, maintaining scroll position
           const newMessages = prev.map(msg => msg.id === tempId ? realMessage : msg);
@@ -187,38 +187,33 @@ const ChatPageComponent: React.FC = () => {
                   <button
                     key={user.id}
                     onClick={() => setSelectedUser(user)}
-                    className={`w-full p-3 rounded-xl mb-2 text-left transition-all ${
-                      selectedUser?.id === user.id
+                    className={`w-full p-3 rounded-xl mb-2 text-left transition-all ${selectedUser?.id === user.id
                         ? 'bg-gradient-to-r from-[#ffd89b] to-[#f5c77e] shadow-md'
                         : 'bg-[#f9f6f3] hover:bg-[#f5f0eb]'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold ${
-                          selectedUser?.id === user.id
+                        className={`w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold ${selectedUser?.id === user.id
                             ? 'bg-[#6b4423] text-white'
                             : 'bg-[#e8ddd4] text-[#6b4423]'
-                        }`}
+                          }`}
                       >
                         {user.name.charAt(0).toUpperCase()}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className={`font-semibold truncate ${
-                          selectedUser?.id === user.id ? 'text-[#6b4423]' : 'text-[#6b4423]'
-                        }`}>
+                        <h3 className={`font-semibold truncate ${selectedUser?.id === user.id ? 'text-[#6b4423]' : 'text-[#6b4423]'
+                          }`}>
                           {user.name}
                         </h3>
-                        <p className={`text-xs truncate ${
-                          selectedUser?.id === user.id ? 'text-[#8b6f47]' : 'text-[#a0826d]'
-                        }`}>
+                        <p className={`text-xs truncate ${selectedUser?.id === user.id ? 'text-[#8b6f47]' : 'text-[#a0826d]'
+                          }`}>
                           {user.department || 'Student'}
                         </p>
-                        <span className={`text-xs px-2 py-0.5 rounded-full ${
-                          user.connectionType === 'mentor'
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${user.connectionType === 'mentor'
                             ? 'bg-green-100 text-green-700'
                             : 'bg-blue-100 text-blue-700'
-                        }`}>
+                          }`}>
                           {user.connectionType === 'mentor' ? '🧑‍🏫 Mentor' : '📚 Mentee'}
                         </span>
                       </div>
@@ -235,9 +230,7 @@ const ChatPageComponent: React.FC = () => {
           {selectedUser ? (
             <>
               <Header username={selectedUser.name} status="online" />
-              <div className="flex-1 min-h-0">
-                <ChatBox messages={messages} isLoading={isLoadingMessages} />
-              </div>
+              <ChatBox messages={messages} isLoading={isLoadingMessages} />
               <ChatInput onSendMessage={sendMessage} disabled={isSending} />
             </>
           ) : (

@@ -29,7 +29,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
   return (
     <div className="bg-[#f5f0eb] px-4 py-4 border-t border-[#e8ddd4] shadow-lg">
-      <div className="max-w-4xl mx-auto flex gap-3 items-end">
+      <div className="max-w-4xl mx-auto flex gap-3 items-center">
         {/* Emoji/Attachment buttons */}
         <button 
           disabled={disabled}
