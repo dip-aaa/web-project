@@ -21,13 +21,13 @@ function FeaturedMentors() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        
+
         // Fetch mentors
         const mentorsResponse = await mentorshipAPI.getMentors();
-        
+
         // Fetch sent requests to check for pending requests
         const sentRequestsResponse = await mentorshipAPI.getConnectionRequests('sent');
-        
+
         if (mentorsResponse.success && mentorsResponse.data) {
           // Transform and take first 3 mentors
           const transformedMentors: MentorProfile[] = mentorsResponse.data
@@ -41,16 +41,11 @@ function FeaturedMentors() {
               skills: user.expertiseArea ? [user.expertiseArea] : ["General Guidance"],
               lookingFor: [],
               bio: `Mentor from ${user.department || 'the college'}`,
-              rating: 4.5,
-              sessions: 0,
-              followers: 0,
-              online: false,
-              badges: [],
-              linkedinStyle: `${user.department || 'Student'} · ${user.email}`,
-              achievements: [],
               openFor: ["1-on-1 mentoring"],
               fee: 0,
-              verified: true
+              verified: true,
+              rating: user.avgRating || 0,
+              reviewCount: user.reviewCount || 0
             }));
           setFeatured(transformedMentors);
         }
@@ -82,7 +77,7 @@ function FeaturedMentors() {
     try {
       setConnectingId(mentorId);
       const response = await mentorshipAPI.sendConnectionRequest(parseInt(mentorId));
-      
+
       if (response.success) {
         // Add to pending requests
         setPendingRequests(prev => new Map(prev).set(mentorId, response.data.id));
@@ -107,7 +102,7 @@ function FeaturedMentors() {
     try {
       setCancelingId(mentorId);
       const response = await mentorshipAPI.cancelConnectionRequest(requestId);
-      
+
       if (response.success) {
         // Remove from pending requests
         setPendingRequests(prev => {
@@ -254,7 +249,7 @@ function BecomeMentorCard() {
     try {
       setSubmitting(true);
       const response = await mentorshipAPI.becomeMentor(expertiseArea.trim() || undefined);
-      
+
       if (response.success) {
         setIsMentor(true);
         setShowForm(false);

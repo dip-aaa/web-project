@@ -226,12 +226,16 @@ const ChatPageComponent: React.FC = () => {
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1 flex flex-col bg-white rounded-2xl shadow-lg border border-[#e8ddd4] overflow-hidden min-w-0">
+        <div className="flex-1 flex flex-col bg-white rounded-2xl shadow-lg border border-[#e8ddd4] overflow-hidden min-w-0 relative">
           {selectedUser ? (
             <>
               <Header username={selectedUser.name} status="online" />
-              <ChatBox messages={messages} isLoading={isLoadingMessages} />
-              <ChatInput onSendMessage={sendMessage} disabled={isSending} />
+              <div className="flex-1 overflow-hidden">
+                <ChatBox messages={messages} isLoading={isLoadingMessages} />
+              </div>
+              <div className="absolute bottom-0 left-0 right-0">
+                <ChatInput onSendMessage={sendMessage} disabled={isSending} />
+              </div>
             </>
           ) : (
             <div className="flex-1 flex items-center justify-center text-center p-8">

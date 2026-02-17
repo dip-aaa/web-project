@@ -6,6 +6,7 @@ const marketplaceRoutes = require('./marketplaceRoutes');
 const mentorshipRoutes = require('./mentorshipRoutes');
 const taskRoutes = require('./taskRoutes');
 const notificationRoutes = require('./notificationRoutes');
+const reviewRoutes = require('./reviewRoutes');
 
 // Health check
 router.get('/health', (req, res) => {
@@ -23,5 +24,6 @@ router.use('/marketplace', marketplaceRoutes);
 router.use('/mentorship', mentorshipRoutes);
 router.use('/tasks', taskRoutes);
 router.use('/notifications', notificationRoutes);
+router.use('/reviews', reviewRoutes);
 
 module.exports = router;

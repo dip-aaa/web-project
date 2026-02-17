@@ -8,12 +8,12 @@ import ProfileTabs from './components/ProfileTabs';
 import AboutSection from './components/AboutSection';
 import ListingsGrid from './components/ListingsGrid';
 import ReviewsSection from './components/ReviewsSection';
-import ActivityTimeline from './components/ActivityTimeline';
+
 import EditProfileModal from './components/EditProfileModal';
 import { motion } from 'framer-motion';
 import { authAPI } from '../../lib/api';
 
-export type ProfileTab = 'overview' | 'listings' | 'reviews' | 'activity';
+export type ProfileTab = 'overview' | 'listings' | 'reviews';
 
 interface UserData {
   id: number;
@@ -24,6 +24,8 @@ interface UserData {
   profileImageUrl?: string;
   coverImageUrl?: string;
   collegeId: number;
+  avgRating?: number;
+  reviewCount?: number;
 }
 
 export default function ProfilePage() {
@@ -123,12 +125,12 @@ export default function ProfilePage() {
   return (
     <div style={{ height: '100vh', display: 'flex', background: '#f9f6f3', overflow: 'hidden' }}>
       {/* Sidebar */}
-      <div style={{ 
-        minWidth: 220, 
-        maxWidth: 260, 
-        background: '#fff', 
-        borderRight: '1.5px solid #e8ddd4', 
-        zIndex: 2, 
+      <div style={{
+        minWidth: 220,
+        maxWidth: 260,
+        background: '#fff',
+        borderRight: '1.5px solid #e8ddd4',
+        zIndex: 2,
         flexShrink: 0
       }}>
         <Sidebar animate={false} />
@@ -142,7 +144,7 @@ export default function ProfilePage() {
           transition={{ duration: 0.5 }}
         >
           {/* Profile Header with Cover & Avatar */}
-          <ProfileHeader 
+          <ProfileHeader
             isEditMode={false}
             onEditToggle={() => setIsModalOpen(true)}
             userData={userData}
@@ -155,7 +157,7 @@ export default function ProfilePage() {
           </div>
 
           {/* Content Area */}
-          <div style={{ 
+          <div style={{
             padding: '30px 40px'
           }}>
             {/* Dynamic Content */}
@@ -166,7 +168,7 @@ export default function ProfilePage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <AboutSection 
+                  <AboutSection
                     userData={userData}
                   />
                 </motion.div>
@@ -192,15 +194,7 @@ export default function ProfilePage() {
                 </motion.div>
               )}
 
-              {activeTab === 'activity' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <ActivityTimeline />
-                </motion.div>
-              )}
+
             </div>
           </div>
         </motion.div>

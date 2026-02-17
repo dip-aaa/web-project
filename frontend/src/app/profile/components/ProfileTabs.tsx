@@ -12,8 +12,7 @@ interface ProfileTabsProps {
 const tabs = [
   { id: 'overview' as ProfileTab, label: 'Overview', icon: '🏠' },
   { id: 'listings' as ProfileTab, label: 'My Listings', icon: '📦' },
-  { id: 'reviews' as ProfileTab, label: 'Reviews', icon: '⭐' },
-  { id: 'activity' as ProfileTab, label: 'Activity', icon: '📊' }
+  { id: 'reviews' as ProfileTab, label: 'Reviews', icon: '⭐' }
 ];
 
 export default function ProfileTabs({ activeTab, onTabChange }: ProfileTabsProps) {
@@ -41,8 +40,8 @@ export default function ProfileTabs({ activeTab, onTabChange }: ProfileTabsProps
               padding: '14px 24px',
               border: 'none',
               borderRadius: 12,
-              background: isActive 
-                ? 'linear-gradient(135deg, #ffd89b, #f5c77e)' 
+              background: isActive
+                ? 'linear-gradient(135deg, #ffd89b, #f5c77e)'
                 : 'transparent',
               color: isActive ? '#6b4423' : '#8b6f47',
               fontWeight: isActive ? 'bold' : '600',

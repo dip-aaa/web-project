@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { marketplaceAPI } from "../../../lib/api";
+import { marketplaceAPI, reviewAPI } from "../../../lib/api";
 import ImageCropModal from "../../profile/components/ImageCropModal";
+import StarRating from "../../components/StarRating";
 
 export type MarketplaceItem = {
 	id: string;
@@ -13,6 +14,8 @@ export type MarketplaceItem = {
 	category: string;
 	imageUrl: string;
 	description?: string;
+	avgRating?: number;
+	reviewCount?: number;
 };
 
 type PriceRange = "Any Price" | "Under Rs 500" | "Rs 500 - Rs 1000" | "Rs 1000 - Rs 2000" | "Rs 2000+";
@@ -54,9 +57,14 @@ function filterItems(items: MarketplaceItem[], filters: Filters): MarketplaceIte
 
 export function MarketplaceHeader({
 	onReset,
+	onCartClick,
 }: {
 	onReset: () => void;
+	onCartClick?: () => void;
 }) {
+	const { getCartCount } = require('../../../hooks/useCart').useCart();
+	const cartCount = getCartCount();
+
 	return (
 		<section className="mk-container pt-8">
 			<div className="flex flex-col gap-3">
@@ -64,14 +72,32 @@ export function MarketplaceHeader({
 					<div>
 						<h1 className="mk-title">Stationery Marketplace</h1>
 					</div>
-					<button type="button" className="mk-subtle-link" onClick={onReset}>
-						Reset Filters
-					</button>
+					<div className="flex items-center gap-4">
+						{onCartClick && (
+							<button
+								type="button"
+								onClick={onCartClick}
+								className="relative bg-[#6b4423] text-white font-extrabold px-6 py-3 rounded-xl hover:bg-[#573217] transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
+							>
+								<span className="text-xl">🛒</span>
+								My Cart
+								{cartCount > 0 && (
+									<span className="absolute -top-2 -right-2 bg-[#d32f2f] text-white text-xs font-extrabold w-6 h-6 rounded-full flex items-center justify-center shadow-md">
+										{cartCount}
+									</span>
+								)}
+							</button>
+						)}
+						<button type="button" className="mk-subtle-link" onClick={onReset}>
+							Reset Filters
+						</button>
+					</div>
 				</div>
 			</div>
 		</section>
 	);
 }
+
 
 export function MarketplaceFilters({
 	filters,
@@ -114,10 +140,10 @@ export function MarketplaceFilters({
 							}
 						>
 							<option value="Any Price">Any Price</option>
-					<option value="Under Rs 500">Under Rs 500</option>
-					<option value="Rs 500 - Rs 1000">Rs 500 - Rs 1000</option>
-					<option value="Rs 1000 - Rs 2000">Rs 1000 - Rs 2000</option>
-					<option value="Rs 2000+">Rs 2000+</option>
+							<option value="Under Rs 500">Under Rs 500</option>
+							<option value="Rs 500 - Rs 1000">Rs 500 - Rs 1000</option>
+							<option value="Rs 1000 - Rs 2000">Rs 1000 - Rs 2000</option>
+							<option value="Rs 2000+">Rs 2000+</option>
 						</select>
 						<span className="mk-select-icon">▾</span>
 					</div>
@@ -174,6 +200,12 @@ export function ProductCard({
 						<span aria-hidden>👤</span>
 						<span>{item.seller}</span>
 					</span>
+					{item.reviewCount !== undefined && (
+						<div className="flex items-center gap-1">
+							<StarRating rating={item.avgRating || 0} size={14} />
+							<span className="text-[10px] text-gray-500">({item.reviewCount})</span>
+						</div>
+					)}
 				</div>
 				<button type="button" className="mk-btn" onClick={() => onViewDetails(item)}>
 					View Details
@@ -254,6 +286,355 @@ export function SellItemButton() {
 	);
 }
 
+// Product Details Component
+function ProductDetails({ item, onBack }: { item: MarketplaceItem; onBack: () => void }) {
+	const { addToCart, isInCart } = require('../../../hooks/useCart').useCart();
+	const [isWishlisted, setIsWishlisted] = React.useState(false);
+	const [reviews, setReviews] = React.useState<any[]>([]);
+	const [avgRating, setAvgRating] = React.useState(item.avgRating || 0);
+	const [reviewCount, setReviewCount] = React.useState(item.reviewCount || 0);
+	const [isSubmitting, setIsSubmitting] = React.useState(false);
+	const [newRating, setNewRating] = React.useState(5);
+	const [newComment, setNewComment] = React.useState("");
+	const router = require('next/navigation').useRouter();
+
+	const fetchReviews = React.useCallback(async () => {
+		try {
+			const response = await reviewAPI.getItemReviews(parseInt(item.id));
+			if (response.success) {
+				setReviews(response.data);
+				setAvgRating(response.averageRating);
+				setReviewCount(response.count);
+			}
+		} catch (error) {
+			console.error('Error fetching reviews:', error);
+		}
+	}, [item.id]);
+
+	React.useEffect(() => {
+		setIsWishlisted(isInCart(item.id));
+		fetchReviews();
+	}, [isInCart, item.id, fetchReviews]);
+
+	const details = {
+		...item,
+		originalPrice: item.price * 1.2,
+		rating: 4.8,
+		reviews: 12,
+		sellerResponse: "within 2 hours",
+		sellerJoined: "2023",
+		sellerDept: "Computer Engineering",
+		features: [
+			"Like New Condition",
+			"No highlighting or marks",
+			"Latest Edition",
+			"Includes protective cover"
+		]
+	};
+
+	const handleAddToCart = () => {
+		addToCart({
+			id: item.id,
+			title: item.title,
+			price: item.price,
+			seller: item.seller,
+			imageUrl: item.imageUrl,
+			category: item.category,
+			conditionLabel: item.conditionLabel
+		});
+		alert('✅ Added to cart!');
+	};
+
+	const handleWishlist = () => {
+		if (!isWishlisted) {
+			addToCart({
+				id: item.id,
+				title: item.title,
+				price: item.price,
+				seller: item.seller,
+				imageUrl: item.imageUrl,
+				category: item.category,
+				conditionLabel: item.conditionLabel
+			});
+			setIsWishlisted(true);
+			alert('❤️ Added to cart!');
+		}
+	};
+
+	const handleChatWithSeller = () => {
+		router.push(`/chat?seller=${encodeURIComponent(item.seller)}`);
+	};
+
+	const handleRequest = async () => {
+		try {
+			const response = await marketplaceAPI.sendBuyRequest(item.id);
+			if (response.success) {
+				alert('✅ Request sent to seller! They will be notified of your interest.');
+			} else {
+				alert('❌ Failed to send request: ' + response.message);
+			}
+		} catch (error) {
+			console.error('Error sending buy request:', error);
+			alert('❌ Error sending request. Please try again.');
+		}
+	};
+
+	const handleSubmitReview = async (e: React.FormEvent) => {
+		e.preventDefault();
+		if (isSubmitting) return;
+
+		try {
+			setIsSubmitting(true);
+			const response = await reviewAPI.createReview({
+				rating: newRating,
+				comments: newComment,
+				itemId: parseInt(item.id)
+			});
+
+			if (response.success) {
+				setNewComment("");
+				setNewRating(5);
+				fetchReviews();
+				alert('✨ Thank you for your review!');
+			} else {
+				alert('❌ Failed to submit review: ' + response.message);
+			}
+		} catch (error) {
+			console.error('Error submitting review:', error);
+			alert('❌ Error submitting review.');
+		} finally {
+			setIsSubmitting(false);
+		}
+	};
+
+	return (
+		<div className="mk-container animate-fade-in" style={{ maxWidth: 1400, margin: '0 auto' }}>
+			{/* Breadcrumbs */}
+			<div className="flex items-center gap-4 text-xl text-[#8b6f47] mb-10 mt-8 font-semibold">
+				<button onClick={onBack} className="hover:underline hover:text-[#6b4423] transition-colors">Marketplace</button>
+				<span className="text-[#d4b896] text-2xl">›</span>
+				<span className="hover:text-[#6b4423] transition-colors">{item.category}</span>
+				<span className="text-[#d4b896] text-2xl">›</span>
+				<span className="font-bold text-[#6b4423]">{item.title}</span>
+			</div>
+
+			<div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+				{/* Left Column: Images */}
+				<div className="lg:col-span-7 space-y-6">
+					<div className="aspect-[4/3] bg-white rounded-3xl overflow-hidden shadow-md border-2 border-[#e8ddd4] relative group">
+						<img
+							src={item.imageUrl}
+							alt={item.title}
+							className="w-full h-full object-contain p-8 transition-transform duration-500 group-hover:scale-105"
+						/>
+						<div className="absolute top-6 left-6">
+							<span className="bg-[#5a9e6f] text-white text-sm font-extrabold px-4 py-2 rounded-full shadow-lg">
+								{item.conditionLabel}
+							</span>
+						</div>
+						<button
+							onClick={handleWishlist}
+							className={`absolute top-6 right-6 p-3 bg-white/90 backdrop-blur-sm rounded-full transition-all shadow-lg hover:scale-110 ${isWishlisted ? 'text-[#d32f2f]' : 'text-[#8b6f47] hover:text-[#d32f2f]'}`}
+						>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={isWishlisted ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+								<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+							</svg>
+						</button>
+					</div>
+
+					{/* Thumbnails */}
+					<div className="flex gap-4 overflow-x-auto pb-2">
+						{[item.imageUrl, item.imageUrl, item.imageUrl].map((img, i) => (
+							<button key={i} className={`flex-shrink-0 w-24 h-24 rounded-xl border-3 ${i === 0 ? 'border-[#6b4423] shadow-md' : 'border-[#e8ddd4]'} overflow-hidden hover:border-[#6b4423] transition-all`}>
+								<img src={img} alt="" className="w-full h-full object-cover" />
+							</button>
+						))}
+					</div>
+				</div>
+
+				{/* Right Column: Details */}
+				<div className="lg:col-span-5 space-y-8">
+					<div>
+						<h1 className="text-2xl font-bold text-[#6b4423] mb-3 leading-tight">{item.title}</h1>
+						<div className="flex items-center gap-4 mb-4">
+							<div className="flex items-center gap-1">
+								<StarRating rating={avgRating} size={16} />
+								<span className="text-xs text-[#8b6f47] font-semibold ml-1">({reviewCount} reviews)</span>
+							</div>
+							<span className="text-[#e8ddd4]">|</span>
+							<span className="text-[#5a9e6f] text-xs font-semibold flex items-center gap-1">
+								<span className="w-2 h-2 rounded-full bg-[#5a9e6f]"></span>
+								Verified Seller
+							</span>
+						</div>
+
+						<div className="p-4 bg-gradient-to-br from-white to-[#f9f6f3] rounded-xl border border-[#e8ddd4] shadow-md">
+							<div className="flex items-end gap-3 mb-2">
+								<span className="text-3xl font-bold text-[#6b4423]">Rs. {item.price}</span>
+								<span className="text-base text-[#a0826d] line-through mb-1">Rs. {details.originalPrice.toFixed(0)}</span>
+								<span className="text-sm font-bold text-[#d32f2f] bg-[#ffebee] px-2 py-0.5 rounded mb-1">
+									{Math.round(((details.originalPrice - item.price) / details.originalPrice) * 100)}% OFF
+								</span>
+							</div>
+							<p className="text-xs text-[#8b6f47] font-medium mb-4">Inclusive of all taxes</p>
+
+							<div className="flex gap-4">
+								<button
+									onClick={handleAddToCart}
+									className="flex-1 bg-[#8b6f47] text-white font-bold text-sm py-2.5 px-5 rounded-xl hover:bg-[#6b4423] transition-all transform hover:-translate-y-0.5 shadow-md flex items-center justify-center gap-2"
+								>
+									<span className="text-base">🛒</span> Add to Cart
+								</button>
+								<button
+									onClick={handleRequest}
+									className="flex-1 bg-[#f5f0eb] text-[#6b4423] font-bold text-sm py-2.5 px-5 rounded-xl hover:bg-[#e8ddd4] transition-all border border-[#e8ddd4] flex items-center justify-center gap-2 hover:shadow-md"
+								>
+									<span className="text-base">⚡</span> Request
+								</button>
+							</div>
+						</div>
+					</div>
+
+					{/* Seller Card */}
+					<div className="bg-gradient-to-br from-[#f9f6f3] to-[#f5f0eb] p-4 rounded-xl border border-[#e8ddd4] shadow-sm">
+						<div className="flex items-center justify-between mb-3">
+							<h3 className="font-bold text-[#6b4423] text-xs uppercase tracking-wide">Seller Details</h3>
+							<button className="text-xs text-[#8b6f47] hover:text-[#6b4423] hover:underline font-semibold">View Store ›</button>
+						</div>
+						<div className="flex items-center gap-3 mb-3">
+							<div className="w-10 h-10 rounded-full bg-[#dcc6b0] flex items-center justify-center text-[#6b4423] font-bold text-base shadow-sm">
+								{item.seller.charAt(0)}
+							</div>
+							<div className="flex-1">
+								<div className="font-bold text-[#6b4423] text-sm">{item.seller}</div>
+								<div className="text-xs text-[#8b6f47] font-medium">{details.sellerDept} • {details.sellerJoined}</div>
+							</div>
+							<button
+								onClick={handleChatWithSeller}
+								className="bg-[#6b4423] text-white text-xs font-bold px-3 py-1.5 rounded-full hover:bg-[#573217] transition-all shadow-sm"
+							>
+								💬 Chat
+							</button>
+						</div>
+						<div className="grid grid-cols-3 gap-2 text-center">
+							<div className="bg-white p-2 rounded-lg border border-[#f0e6dc] shadow-sm">
+								<div className="font-bold text-[#6b4423] text-sm">24</div>
+								<div className="text-[10px] text-[#a0826d] uppercase font-semibold">Sold</div>
+							</div>
+							<div className="bg-white p-2 rounded-lg border border-[#f0e6dc] shadow-sm">
+								<div className="font-bold text-[#6b4423] text-sm">{avgRating}</div>
+								<div className="text-[10px] text-[#a0826d] uppercase font-semibold">Rating</div>
+							</div>
+							<div className="bg-white p-2 rounded-lg border border-[#f0e6dc] shadow-sm">
+								<div className="font-bold text-[#6b4423] text-sm">100%</div>
+								<div className="text-[10px] text-[#a0826d] uppercase font-semibold">Response</div>
+							</div>
+						</div>
+					</div>
+
+					{/* Features/Description */}
+					<div>
+						<h3 className="font-bold text-[#6b4423] mb-3 text-base">About this item</h3>
+						<ul className="space-y-2">
+							{details.features.map((feature, i) => (
+								<li key={i} className="flex gap-2 text-sm text-[#4a3b32] font-medium">
+									<span className="text-[#8b6f47] mt-0.5 font-semibold">•</span>
+									{feature}
+								</li>
+							))}
+						</ul>
+						<div className="mt-3 text-sm text-[#8b6f47] leading-relaxed font-medium">
+							{item.description || "No detailed description provided by the seller."}
+						</div>
+					</div>
+
+					{/* Trust/Delivery */}
+					<div className="bg-[#fff9c4] border-2 border-[#fbc02d] rounded-2xl p-5 flex gap-4 shadow-md">
+						<div className="text-3xl">🚚</div>
+						<div>
+							<div className="font-extrabold text-[#f57f17] text-base">Campus Handover Available</div>
+							<div className="text-sm text-[#f9a825] mt-1 font-medium">Available for pickup at Library Circle or Main Gate. Cash on delivery preferred.</div>
+						</div>
+					</div>
+
+					<div className="flex gap-6 text-sm font-bold text-[#8b6f47]">
+						<div className="flex items-center gap-2">
+							<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+							48h Handover
+						</div>
+						<div className="flex items-center gap-2">
+							<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+							KOSH Verified
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{/* Reviews Section */}
+			<div className="mt-10 border-t border-[#e8ddd4] pt-8">
+				<div className="flex items-center justify-between mb-6">
+					<h2 className="text-xl font-bold text-[#6b4423]">Student Reviews</h2>
+				</div>
+
+				{/* Write a Review */}
+				<div className="bg-[#fdfbf9] p-6 rounded-2xl border border-[#e8ddd4] mb-8 shadow-sm">
+					<h3 className="font-bold text-[#6b4423] mb-4 text-sm">Rate this product</h3>
+					<form onSubmit={handleSubmitReview} className="space-y-4">
+						<div className="flex items-center gap-4">
+							<span className="text-xs font-semibold text-[#8b6f47]">Your Rating:</span>
+							<StarRating rating={newRating} interactive onChange={setNewRating} size={24} />
+						</div>
+						<textarea
+							value={newComment}
+							onChange={(e) => setNewComment(e.target.value)}
+							placeholder="Share your experience with this item..."
+							className="w-full p-4 rounded-xl border border-[#e8ddd4] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#8b6f47] min-h-[100px]"
+						/>
+						<button
+							type="submit"
+							disabled={isSubmitting}
+							className="bg-[#6b4423] text-white px-6 py-2 rounded-xl text-sm font-bold hover:bg-[#573217] transition-all disabled:opacity-50"
+						>
+							{isSubmitting ? "Submitting..." : "Submit Review"}
+						</button>
+					</form>
+				</div>
+
+				{reviews.length === 0 ? (
+					<div className="text-center py-10 text-[#8b6f47]">
+						<p className="text-sm italic">No reviews yet. Be the first to review!</p>
+					</div>
+				) : (
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						{reviews.map((rev) => (
+							<div key={rev.id} className="bg-white p-4 rounded-xl border border-[#e8ddd4] shadow-sm hover:shadow-md transition-shadow">
+								<div className="flex items-center gap-2 mb-2">
+									<div className="w-8 h-8 rounded-full bg-[#e8ddd4] flex items-center justify-center text-[#6b4423] text-xs font-bold shadow-sm">
+										{rev.buyer.user.profileImageUrl ? (
+											<img src={rev.buyer.user.profileImageUrl} alt="" className="w-full h-full rounded-full object-cover" />
+										) : (
+											rev.buyer.user.name.charAt(0)
+										)}
+									</div>
+									<div>
+										<div className="text-sm font-bold text-[#6b4423]">{rev.buyer.user.name}</div>
+										<div className="text-[10px] text-[#8b6f47] font-medium">{new Date(rev.date).toLocaleDateString()}</div>
+									</div>
+									<div className="ml-auto">
+										<StarRating rating={rev.rating} size={12} />
+									</div>
+								</div>
+								<p className="text-xs text-[#4a3b32] italic leading-relaxed">{rev.comments || "No comment provided."}</p>
+							</div>
+						))}
+					</div>
+				)}
+			</div>
+		</div>
+	);
+}
+
+
 export function MarketplaceView() {
 	const [items, setItems] = React.useState<MarketplaceItem[]>([]);
 	const [loading, setLoading] = React.useState(true);
@@ -264,6 +645,7 @@ export function MarketplaceView() {
 	});
 	const [selectedItem, setSelectedItem] = React.useState<MarketplaceItem | null>(null);
 	const [showSellForm, setShowSellForm] = React.useState(false);
+	const [showCart, setShowCart] = React.useState(false);
 
 	// Fetch items from API
 	const fetchItems = React.useCallback(async () => {
@@ -291,6 +673,7 @@ export function MarketplaceView() {
 	function resetAll() {
 		setFilters({ category: "Select Category", priceRange: "Any Price", condition: "All Conditions" });
 		setSelectedItem(null);
+		setShowCart(false);
 	}
 
 	async function handleAddItem(payload: Omit<MarketplaceItem, "id">) {
@@ -319,410 +702,58 @@ export function MarketplaceView() {
 		}
 	}
 
+	// Import CartView dynamically
+	const CartView = require('./CartView').CartView;
+
 	return (
 		<main className="mk-page min-h-[calc(100vh-4rem)] pb-24">
-			<MarketplaceHeader onReset={resetAll} />
-			<MarketplaceFilters
-				filters={filters}
-				onChange={(patch) => {
-					setFilters((prev) => ({ ...prev, ...patch }));
-					setSelectedItem(null);
-				}}
-			/>
-
-			{loading ? (
-				<section className="mk-container mt-4">
-					<div style={{
-						padding: '60px 20px',
-						textAlign: 'center',
-						color: '#8b6f47'
-					}}>
-						<div style={{ fontSize: 48, marginBottom: 16 }}>⏳</div>
-						<h3 style={{ fontSize: 20, fontWeight: 'bold' }}>Loading items...</h3>
-					</div>
-				</section>
+			{showCart ? (
+				<CartView onBack={() => setShowCart(false)} />
+			) : selectedItem ? (
+				<ProductDetails item={selectedItem} onBack={() => setSelectedItem(null)} />
+			) : showSellForm ? (
+				<SellItemForm onAdd={handleAddItem} />
 			) : (
 				<>
-					<section className="mk-container mt-4">
-				<div 
-					style={{
-						display: "flex",
-						flexDirection: "column",
-						gap: 12,
-						borderRadius: 24,
-						background: "rgba(255, 255, 255, 0.9)",
-						border: "1px solid #f0e6dc",
-						padding: 24,
-						boxShadow: "0 4px 20px rgba(139, 111, 71, 0.08)",
-						backdropFilter: "blur(10px)",
-						fontFamily: "system-ui, -apple-system, sans-serif"
-					}}
-				>
-					<div 
-						style={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "space-between",
-							gap: 12
-						}}
-					>
-						<div 
-							style={{
-								fontSize: 16,
-								fontWeight: 600,
-								color: "#6b4423",
-								fontFamily: "system-ui, -apple-system, sans-serif"
-							}}
-						>
-							Showing {filteredItems.length} items
-						</div>
-						<button
-							type="button"
-							className="mk-subtle-link"
-							style={{
-								padding: "8px 16px",
-								borderRadius: 12,
-								background: showSellForm ? "linear-gradient(135deg, #f0e6dc, #e8ddd4)" : "transparent",
-								border: "1px solid #f0e6dc",
-								transition: "all 0.2s ease"
-							}}
-							onClick={() => setShowSellForm((v) => !v)}
-						>
-							{showSellForm ? "Close Sell Form" : "Sell an Item"}
-						</button>
-					</div>
-
-					{showSellForm ? <SellItemForm onAdd={handleAddItem} /> : null}
-				</div>
-			</section>
-
-			{selectedItem ? (
-				<section className="mk-container mt-4">
-					<div 
-						style={{
-							display: "grid",
-							gridTemplateColumns: "1fr",
-							gap: 16,
-							borderRadius: 24,
-							background: "rgba(255, 255, 255, 0.9)",
-							border: "1px solid #f0e6dc",
-							padding: 24,
-							boxShadow: "0 4px 20px rgba(139, 111, 71, 0.08)",
-							backdropFilter: "blur(10px)",
-							fontFamily: "system-ui, -apple-system, sans-serif"
-						}}
-					>
-						<div className="overflow-hidden rounded-xl" style={{background: "linear-gradient(135deg, #f9f6f3, #f5f0eb)"}}>
-							<img
-								src={selectedItem.imageUrl}
-								alt={selectedItem.title}
-								style={{
-									height: 280,
-									width: "100%",
-									objectFit: "cover"
-								}}
-							/>
-						</div>
-						<div>
-							<div style={{display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12}}>
-								<div>
-									<div style={{fontSize: 24, fontWeight: 700, color: "#6b4423", fontFamily: "system-ui, -apple-system, sans-serif"}}>{selectedItem.title}</div>
-									<div style={{marginTop: 4, fontSize: 20, fontWeight: 700, color: "#8b6f47", fontFamily: "system-ui, -apple-system, sans-serif"}}>
-										Rs {selectedItem.price.toFixed(2)}
-									</div>
-									<div style={{marginTop: 16, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, fontSize: 12, color: "#a0826d"}}>
-										<span style={{borderRadius: 16, background: "rgba(240, 230, 220, 0.6)", padding: "6px 12px", color: "#6b4423", fontWeight: 600}}>
-											{selectedItem.conditionLabel}
-										</span>
-										<span style={{borderRadius: 16, background: "rgba(240, 230, 220, 0.6)", padding: "6px 12px", color: "#6b4423", fontWeight: 600}}>
-											{selectedItem.category}
-										</span>
-										<span style={{borderRadius: 16, background: "rgba(240, 230, 220, 0.6)", padding: "6px 12px", color: "#6b4423", fontWeight: 600}}>
-											Seller: {selectedItem.seller}
-										</span>
-									</div>
-								</div>
-								<button
-									type="button"
-									className="mk-subtle-link"
-									style={{
-										padding: "8px 16px",
-										borderRadius: 12,
-										background: "linear-gradient(135deg, #f0e6dc, #e8ddd4)",
-										border: "1px solid #f0e6dc",
-										transition: "all 0.2s ease"
-									}}
-									onClick={() => setSelectedItem(null)}
-								>
-									Close
-								</button>
-							</div>
-							<div style={{marginTop: 16, fontSize: 15, color: "#8b6f47", lineHeight: 1.6, fontFamily: "system-ui, -apple-system, sans-serif"}}>
-								{selectedItem.description ??
-									"No description provided. Ask the seller for details."}
-							</div>
-							<div style={{marginTop: 20, display: "flex", justifyContent: "flex-end"}}>
-								<button type="button" className="mk-btn" onClick={() => setSelectedItem(null)}>
-									Back to Grid
-								</button>
-							</div>
+					<MarketplaceHeader onReset={resetAll} onCartClick={() => setShowCart(true)} />
+					<MarketplaceFilters filters={filters} onChange={(patch) => setFilters((prev) => ({ ...prev, ...patch }))} />
+					<section className="mk-container mt-8">
+						<div className="flex items-center justify-between mb-6">
+							<p className="text-[#8b6f47] font-medium">
+								{loading ? "Loading..." : `${filteredItems.length} items available`}
+							</p>
+							<button
+								type="button"
+								className="mk-btn"
+								onClick={() => setShowSellForm(true)}
+							>
+								+ Sell an Item
+							</button>
 						</div>
 
-						{/* Comments Section */}
-						<CommentsSection itemId={selectedItem.id} />
-					</div>
-				</section>
-			) : null}
-
-			<ProductGrid
-				items={filteredItems}
-				onViewDetails={(item) => {
-					setSelectedItem(item);
-					setShowSellForm(false);
-				}}
-			/>
-			<MarketplacePagination />
+						{loading ? (
+							<div className="text-center py-12 text-[#8b6f47]">Loading items...</div>
+						) : filteredItems.length === 0 ? (
+							<div className="text-center py-12 text-[#8b6f47]">No items found matching your filters.</div>
+						) : (
+							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+								{filteredItems.map((item) => (
+									<ProductCard
+										key={item.id}
+										item={item}
+										onViewDetails={() => setSelectedItem(item)}
+									/>
+								))}
+							</div>
+						)}
+					</section>
 				</>
 			)}
-		</main>
+		</main >
 	);
 }
 
-function CommentsSection({ itemId }: { itemId: string }) {
-	const [comments, setComments] = React.useState<Array<{
-		id: number;
-		text: string;
-		createdAt: string;
-		user: {
-			id: number;
-			name: string;
-			email: string;
-		};
-	}>>([]);
-	const [newComment, setNewComment] = React.useState("");
-	const [loading, setLoading] = React.useState(true);
-	const [submitting, setSubmitting] = React.useState(false);
 
-	// Fetch comments
-	const fetchComments = React.useCallback(async () => {
-		try {
-			setLoading(true);
-			const response = await marketplaceAPI.getComments(itemId);
-			if (response.success) {
-				setComments(response.data);
-			}
-		} catch (error) {
-			console.error('Error fetching comments:', error);
-		} finally {
-			setLoading(false);
-		}
-	}, [itemId]);
-
-	React.useEffect(() => {
-		fetchComments();
-	}, [fetchComments]);
-
-	const handleAddComment = async (e: React.FormEvent) => {
-		e.preventDefault();
-		if (!newComment.trim() || submitting) return;
-
-		try {
-			setSubmitting(true);
-			const response = await marketplaceAPI.addComment(itemId, newComment.trim());
-			if (response.success) {
-				setNewComment("");
-				await fetchComments();
-			} else {
-				alert('Failed to add comment: ' + response.message);
-			}
-		} catch (error) {
-			console.error('Error adding comment:', error);
-			alert('Failed to add comment. Please make sure you are logged in.');
-		} finally {
-			setSubmitting(false);
-		}
-	};
-
-	const handleDeleteComment = async (commentId: number) => {
-		if (!confirm('Are you sure you want to delete this comment?')) return;
-
-		try {
-			const response = await marketplaceAPI.deleteComment(commentId);
-			if (response.success) {
-				await fetchComments();
-			} else {
-				alert('Failed to delete comment: ' + response.message);
-			}
-		} catch (error) {
-			console.error('Error deleting comment:', error);
-			alert('Failed to delete comment.');
-		}
-	};
-
-	const formatDate = (dateString: string) => {
-		const date = new Date(dateString);
-		const now = new Date();
-		const diff = now.getTime() - date.getTime();
-		const minutes = Math.floor(diff / 60000);
-		const hours = Math.floor(minutes / 60);
-		const days = Math.floor(hours / 24);
-
-		if (minutes < 1) return 'Just now';
-		if (minutes < 60) return `${minutes}m ago`;
-		if (hours < 24) return `${hours}h ago`;
-		if (days < 7) return `${days}d ago`;
-		return date.toLocaleDateString();
-	};
-
-	const currentUserId = typeof window !== 'undefined' ? 
-		JSON.parse(localStorage.getItem('user') || '{}').id : null;
-
-	return (
-		<div style={{
-			marginTop: 24,
-			paddingTop: 24,
-			borderTop: '2px solid #f0e6dc'
-		}}>
-			<h3 style={{
-				fontSize: 20,
-				fontWeight: 700,
-				color: '#6b4423',
-				marginBottom: 16,
-				fontFamily: 'system-ui, -apple-system, sans-serif'
-			}}>
-				Comments ({comments.length})
-			</h3>
-
-			{/* Add Comment Form */}
-			<form onSubmit={handleAddComment} style={{ marginBottom: 20 }}>
-				<textarea
-					style={{
-						width: '100%',
-						borderRadius: 12,
-						border: '1px solid #f0e6dc',
-						background: 'rgba(255, 255, 255, 0.9)',
-						padding: '12px 16px',
-						fontSize: 14,
-						color: '#6b4423',
-						boxShadow: '0 2px 12px rgba(139, 111, 71, 0.06)',
-						outline: 'none',
-						transition: 'all 0.2s ease',
-						fontFamily: 'system-ui, -apple-system, sans-serif',
-						resize: 'vertical',
-						minHeight: '80px'
-					}}
-					value={newComment}
-					onChange={(e) => setNewComment(e.target.value)}
-					placeholder="Add a comment..."
-					disabled={submitting}
-				/>
-				<button
-					type="submit"
-					className="mk-btn"
-					disabled={!newComment.trim() || submitting}
-					style={{
-						marginTop: 8,
-						opacity: (!newComment.trim() || submitting) ? 0.5 : 1
-					}}
-				>
-					{submitting ? 'Posting...' : 'Post Comment'}
-				</button>
-			</form>
-
-			{/* Comments List */}
-			{loading ? (
-				<div style={{
-					textAlign: 'center',
-					padding: '20px',
-					color: '#8b6f47',
-					fontSize: 14
-				}}>
-					Loading comments...
-				</div>
-			) : comments.length === 0 ? (
-				<div style={{
-					textAlign: 'center',
-					padding: '40px 20px',
-					color: '#a0826d',
-					fontSize: 14
-				}}>
-					No comments yet. Be the first to comment!
-				</div>
-			) : (
-				<div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-					{comments.map((comment) => (
-						<div
-							key={comment.id}
-							style={{
-								background: 'rgba(249, 246, 243, 0.6)',
-								borderRadius: 12,
-								padding: 16,
-								border: '1px solid #f0e6dc'
-							}}
-						>
-							<div style={{
-								display: 'flex',
-								justifyContent: 'space-between',
-								alignItems: 'flex-start',
-								marginBottom: 8
-							}}>
-								<div>
-									<div style={{
-										fontSize: 14,
-										fontWeight: 600,
-										color: '#6b4423',
-										fontFamily: 'system-ui, -apple-system, sans-serif'
-									}}>
-										{comment.user.name}
-									</div>
-									<div style={{
-										fontSize: 12,
-										color: '#a0826d',
-										marginTop: 2
-									}}>
-										{formatDate(comment.createdAt)}
-									</div>
-								</div>
-								{currentUserId === comment.user.id && (
-									<button
-										type="button"
-										onClick={() => handleDeleteComment(comment.id)}
-										style={{
-											background: 'transparent',
-											border: 'none',
-											color: '#d32f2f',
-											cursor: 'pointer',
-											fontSize: 12,
-											padding: '4px 8px',
-											borderRadius: 6,
-											transition: 'background 0.2s ease'
-										}}
-										onMouseEnter={(e) => {
-											e.currentTarget.style.background = 'rgba(211, 47, 47, 0.1)';
-										}}
-										onMouseLeave={(e) => {
-											e.currentTarget.style.background = 'transparent';
-										}}
-									>
-										Delete
-									</button>
-								)}
-							</div>
-							<div style={{
-								fontSize: 14,
-								color: '#6b4423',
-								lineHeight: 1.5,
-								fontFamily: 'system-ui, -apple-system, sans-serif'
-							}}>
-								{comment.text}
-							</div>
-						</div>
-					))}
-				</div>
-			)}
-		</div>
-	);
-}
 
 function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) => void }) {
 	const [title, setTitle] = React.useState("");
@@ -734,7 +765,7 @@ function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) =>
 	const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
 	const [imagePreview, setImagePreview] = React.useState<string>("");
 	const [uploading, setUploading] = React.useState(false);
-	
+
 	// Crop modal states
 	const [cropModalOpen, setCropModalOpen] = React.useState(false);
 	const [tempImageSrc, setTempImageSrc] = React.useState('');
@@ -765,7 +796,7 @@ function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) =>
 	const handleCropComplete = (croppedImageBlob: Blob) => {
 		// Convert blob to file
 		const croppedFile = new File([croppedImageBlob], 'marketplace-item.jpg', { type: 'image/jpeg' });
-		
+
 		// Create preview URL
 		const reader = new FileReader();
 		reader.onloadend = () => {
@@ -773,7 +804,7 @@ function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) =>
 			setImagePreview(reader.result as string);
 		};
 		reader.readAsDataURL(croppedFile);
-		
+
 		// Close crop modal
 		setCropModalOpen(false);
 	};
@@ -782,7 +813,7 @@ function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) =>
 		e.preventDefault();
 		const numericPrice = Number(price);
 		if (!title.trim() || Number.isNaN(numericPrice)) return;
-		
+
 		setUploading(true);
 		let imageUrl = "";
 
@@ -832,160 +863,160 @@ function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) =>
 					gridTemplateColumns: "1fr 1fr",
 					gap: 16,
 					fontFamily: "system-ui, -apple-system, sans-serif"
-			}}
-			onSubmit={handleSubmit}
-		>
-			<div style={{gridColumn: "1 / -1"}}>
-				<label className="mk-filter-label">TITLE</label>
-				<input
-					className="mk-select"
-					value={title}
-					onChange={(e) => setTitle(e.target.value)}
-					placeholder="e.g., Calculus Notes Pack"
-				/>
-			</div>
-
-			<div>
-				<label className="mk-filter-label">PRICE</label>
-				<input
-					className="mk-select"
-					value={price}
-					onChange={(e) => setPrice(e.target.value)}
-					inputMode="decimal"
-					placeholder="e.g., 25"
-				/>
-			</div>
-
-			<div>
-				<label className="mk-filter-label">SELLER</label>
-				<input
-					className="mk-select"
-					value={seller}
-					onChange={(e) => setSeller(e.target.value)}
-					placeholder="Your name"
-				/>
-			</div>
-
-			<div>
-				<label className="mk-filter-label">CATEGORY</label>
-				<div className="mk-select-wrap">
-					<select className="mk-select" value={category} onChange={(e) => setCategory(e.target.value)}>
-						<option>Books</option>
-						<option>Notes</option>
-						<option>Calculators</option>
-						<option>Lab Gear</option>
-						<option>Art Supplies</option>
-					</select>
-					<span className="mk-select-icon">▾</span>
-				</div>
-			</div>
-
-			<div>
-				<label className="mk-filter-label">CONDITION</label>
-				<div className="mk-select-wrap">
-					<select
+				}}
+				onSubmit={handleSubmit}
+			>
+				<div style={{ gridColumn: "1 / -1" }}>
+					<label className="mk-filter-label">TITLE</label>
+					<input
 						className="mk-select"
-						value={condition}
-						onChange={(e) => setCondition(e.target.value as Condition)}
-					>
-						<option value="Brand New">Brand New</option>
-						<option value="Like New">Like New</option>
-						<option value="Gently Used">Gently Used</option>
-						<option value="Well Loved">Well Loved</option>
-						<option value="High Quality">High Quality</option>
-					</select>
-					<span className="mk-select-icon">▾</span>
+						value={title}
+						onChange={(e) => setTitle(e.target.value)}
+						placeholder="e.g., Calculus Notes Pack"
+					/>
 				</div>
-			</div>
 
-			<div style={{gridColumn: "1 / -1"}}>
-				<label className="mk-filter-label">ITEM PHOTO</label>
-				<input
-					type="file"
-					accept="image/*"
-					onChange={handleImageChange}
-					style={{
-						width: "100%",
-						borderRadius: 16,
-						border: "1px solid #f0e6dc",
-						background: "rgba(255, 255, 255, 0.9)",
-						padding: "12px 16px",
-						fontSize: 14,
-						color: "#6b4423",
-						boxShadow: "0 2px 12px rgba(139, 111, 71, 0.06)",
-						outline: "none",
-						transition: "all 0.2s ease",
-						fontFamily: "system-ui, -apple-system, sans-serif",
-						cursor: "pointer"
-					}}
-				/>
-				{imagePreview && (
-					<div style={{ marginTop: 12 }}>
-						<img 
-							src={imagePreview} 
-							alt="Preview" 
-							style={{
-								maxWidth: "100%",
-								maxHeight: 200,
-								borderRadius: 12,
-								border: "2px solid #f0e6dc"
-							}}
-						/>
+				<div>
+					<label className="mk-filter-label">PRICE</label>
+					<input
+						className="mk-select"
+						value={price}
+						onChange={(e) => setPrice(e.target.value)}
+						inputMode="decimal"
+						placeholder="e.g., 25"
+					/>
+				</div>
+
+				<div>
+					<label className="mk-filter-label">SELLER</label>
+					<input
+						className="mk-select"
+						value={seller}
+						onChange={(e) => setSeller(e.target.value)}
+						placeholder="Your name"
+					/>
+				</div>
+
+				<div>
+					<label className="mk-filter-label">CATEGORY</label>
+					<div className="mk-select-wrap">
+						<select className="mk-select" value={category} onChange={(e) => setCategory(e.target.value)}>
+							<option>Books</option>
+							<option>Notes</option>
+							<option>Calculators</option>
+							<option>Lab Gear</option>
+							<option>Art Supplies</option>
+						</select>
+						<span className="mk-select-icon">▾</span>
 					</div>
-				)}
-			</div>
-
-			<div style={{gridColumn: "1 / -1"}}>
-				<label className="mk-filter-label">DESCRIPTION</label>
-				<textarea
-					style={{
-						width: "100%",
-						borderRadius: 16,
-						border: "1px solid #f0e6dc",
-						background: "rgba(255, 255, 255, 0.9)",
-						padding: "12px 16px",
-						fontSize: 14,
-						color: "#6b4423",
-						boxShadow: "0 2px 12px rgba(139, 111, 71, 0.06)",
-						outline: "none",
-						transition: "all 0.2s ease",
-						fontFamily: "system-ui, -apple-system, sans-serif"
-					}}
-					value={description}
-					onChange={(e) => setDescription(e.target.value)}
-					rows={3}
-					placeholder="Add a short description (optional)"
-				/>
-			</div>
-
-			<div style={{gridColumn: "1 / -1"}}>
-				<button 
-					type="submit" 
-					className="mk-btn"
-					disabled={uploading}
-					style={{
-						opacity: uploading ? 0.6 : 1,
-						cursor: uploading ? 'not-allowed' : 'pointer'
-					}}
-				>
-					{uploading ? 'Uploading...' : 'Add Item'}
-				</button>
-				<div style={{marginTop: 8, fontSize: 12, color: "#a0826d", fontFamily: "system-ui, -apple-system, sans-serif"}}>
-					Tip: After adding, use filters to find it.
 				</div>
-			</div>
-		</form>
-		
-		{/* Image Crop Modal */}
-		<ImageCropModal
-			isOpen={cropModalOpen}
-			imageSrc={tempImageSrc}
-			onClose={() => setCropModalOpen(false)}
-			onCropComplete={handleCropComplete}
-			aspectRatio={4 / 3}
-			cropShape="rect"
-			title="🖼️ Adjust Item Photo"
-		/>
+
+				<div>
+					<label className="mk-filter-label">CONDITION</label>
+					<div className="mk-select-wrap">
+						<select
+							className="mk-select"
+							value={condition}
+							onChange={(e) => setCondition(e.target.value as Condition)}
+						>
+							<option value="Brand New">Brand New</option>
+							<option value="Like New">Like New</option>
+							<option value="Gently Used">Gently Used</option>
+							<option value="Well Loved">Well Loved</option>
+							<option value="High Quality">High Quality</option>
+						</select>
+						<span className="mk-select-icon">▾</span>
+					</div>
+				</div>
+
+				<div style={{ gridColumn: "1 / -1" }}>
+					<label className="mk-filter-label">ITEM PHOTO</label>
+					<input
+						type="file"
+						accept="image/*"
+						onChange={handleImageChange}
+						style={{
+							width: "100%",
+							borderRadius: 16,
+							border: "1px solid #f0e6dc",
+							background: "rgba(255, 255, 255, 0.9)",
+							padding: "12px 16px",
+							fontSize: 14,
+							color: "#6b4423",
+							boxShadow: "0 2px 12px rgba(139, 111, 71, 0.06)",
+							outline: "none",
+							transition: "all 0.2s ease",
+							fontFamily: "system-ui, -apple-system, sans-serif",
+							cursor: "pointer"
+						}}
+					/>
+					{imagePreview && (
+						<div style={{ marginTop: 12 }}>
+							<img
+								src={imagePreview}
+								alt="Preview"
+								style={{
+									maxWidth: "100%",
+									maxHeight: 200,
+									borderRadius: 12,
+									border: "2px solid #f0e6dc"
+								}}
+							/>
+						</div>
+					)}
+				</div>
+
+				<div style={{ gridColumn: "1 / -1" }}>
+					<label className="mk-filter-label">DESCRIPTION</label>
+					<textarea
+						style={{
+							width: "100%",
+							borderRadius: 16,
+							border: "1px solid #f0e6dc",
+							background: "rgba(255, 255, 255, 0.9)",
+							padding: "12px 16px",
+							fontSize: 14,
+							color: "#6b4423",
+							boxShadow: "0 2px 12px rgba(139, 111, 71, 0.06)",
+							outline: "none",
+							transition: "all 0.2s ease",
+							fontFamily: "system-ui, -apple-system, sans-serif"
+						}}
+						value={description}
+						onChange={(e) => setDescription(e.target.value)}
+						rows={3}
+						placeholder="Add a short description (optional)"
+					/>
+				</div>
+
+				<div style={{ gridColumn: "1 / -1" }}>
+					<button
+						type="submit"
+						className="mk-btn"
+						disabled={uploading}
+						style={{
+							opacity: uploading ? 0.6 : 1,
+							cursor: uploading ? 'not-allowed' : 'pointer'
+						}}
+					>
+						{uploading ? 'Uploading...' : 'Add Item'}
+					</button>
+					<div style={{ marginTop: 8, fontSize: 12, color: "#a0826d", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+						Tip: After adding, use filters to find it.
+					</div>
+				</div>
+			</form>
+
+			{/* Image Crop Modal */}
+			<ImageCropModal
+				isOpen={cropModalOpen}
+				imageSrc={tempImageSrc}
+				onClose={() => setCropModalOpen(false)}
+				onCropComplete={handleCropComplete}
+				aspectRatio={4 / 3}
+				cropShape="rect"
+				title="🖼️ Adjust Item Photo"
+			/>
 		</>
 	);
 }

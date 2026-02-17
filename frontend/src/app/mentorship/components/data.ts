@@ -9,6 +9,7 @@ export interface MentorProfile {
   bio: string;
   rating: number;
   sessions: number;
+  reviewCount?: number;
   followers: number;
   online: boolean;
   badges: string[];
@@ -262,7 +263,7 @@ export const getMyProfile = (): MentorProfile => {
       }
     }
   }
-  
+
   // Fallback for server-side rendering or missing user
   return {
     id: "me",

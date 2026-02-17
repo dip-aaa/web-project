@@ -12,6 +12,8 @@ interface UserData {
   profileImageUrl?: string;
   coverImageUrl?: string;
   collegeId: number;
+  avgRating?: number;
+  reviewCount?: number;
 }
 
 interface ProfileHeaderProps {
@@ -56,14 +58,14 @@ export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLo
       </motion.div>
 
       {/* Profile Info Section */}
-      <div style={{ 
-        padding: '0 40px', 
+      <div style={{
+        padding: '0 40px',
         transform: 'translateY(-60px)',
         position: 'relative'
       }}>
-        <div style={{ 
-          background: '#fff', 
-          borderRadius: 20, 
+        <div style={{
+          background: '#fff',
+          borderRadius: 20,
           padding: 30,
           boxShadow: '0 8px 30px rgba(107, 68, 35, 0.15)',
           border: '2px solid #f0e6dc'
@@ -95,9 +97,9 @@ export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLo
                   color: '#6b4423',
                   overflow: 'hidden'
                 }}>
-                  <img 
-                    src={profileImage} 
-                    alt="Profile" 
+                  <img
+                    src={profileImage}
+                    alt="Profile"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 </div>
@@ -108,23 +110,23 @@ export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLo
             <div style={{ flex: 1, paddingTop: 10 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
-                  <h1 style={{ 
-                    fontSize: 36, 
-                    fontWeight: 'bold', 
+                  <h1 style={{
+                    fontSize: 36,
+                    fontWeight: 'bold',
                     color: '#6b4423',
                     marginBottom: 5
                   }}>
                     {displayName}
                   </h1>
-                  <p style={{ 
-                    fontSize: 18, 
+                  <p style={{
+                    fontSize: 18,
                     color: '#8b6f47',
                     marginBottom: 12
                   }}>
                     {displayEmail} • {displayDepartment}
                   </p>
-                  <p style={{ 
-                    fontSize: 16, 
+                  <p style={{
+                    fontSize: 16,
                     color: '#6b4423',
                     lineHeight: 1.6,
                     maxWidth: 600,
@@ -132,18 +134,18 @@ export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLo
                   }}>
                     Welcome to your profile! Edit your information and manage your marketplace listings.
                   </p>
-                  
+
                   {/* Meta Info */}
-                  <div style={{ 
-                    display: 'flex', 
-                    gap: 20, 
-                    fontSize: 14, 
+                  <div style={{
+                    display: 'flex',
+                    gap: 20,
+                    fontSize: 14,
                     color: '#8b6f47',
                     marginBottom: 15
                   }}>
                     <span>📍 Kathmandu, Nepal</span>
                     <span>📅 Joined January 2024</span>
-                    <span>⭐ 4.9 Rating</span>
+                    <span>⭐ {userData?.avgRating || "0.0"} Rating</span>
                   </div>
 
                   {/* Social Links */}
@@ -192,7 +194,7 @@ export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLo
                   >
                     ✏️ Edit Profile
                   </motion.button>
-                  
+
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}

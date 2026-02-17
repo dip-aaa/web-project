@@ -10,11 +10,14 @@ const {
   deleteItem,
   getComments,
   addComment,
-  deleteComment
+  deleteComment,
+  requestToBuy,
+  acceptBuyRequest,
+  rejectBuyRequest
 } = require('../controllers/marketplaceController');
 
 // Configure multer for memory storage
-const upload = multer({ 
+const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
     fileSize: 10 * 1024 * 1024 // 10MB limit
@@ -40,5 +43,10 @@ router.get('/my-items', authMiddleware, getMyItems);
 router.delete('/items/:id', authMiddleware, deleteItem);
 router.post('/items/:itemId/comments', authMiddleware, addComment);
 router.delete('/comments/:commentId', authMiddleware, deleteComment);
+
+// Request to buy routes
+router.post('/request-to-buy/:itemId', authMiddleware, requestToBuy);
+router.post('/accept-buy-request/:notificationId', authMiddleware, acceptBuyRequest);
+router.post('/reject-buy-request/:notificationId', authMiddleware, rejectBuyRequest);
 
 module.exports = router;

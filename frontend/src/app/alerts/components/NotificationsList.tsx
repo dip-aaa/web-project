@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { notificationAPI } from '../../../lib/api';
+import { notificationAPI, marketplaceAPI } from '../../../lib/api';
+import { useRouter } from 'next/navigation';
 
 interface Notification {
   id: number;
@@ -23,7 +24,9 @@ const getNotificationEmoji = (type: string) => {
     'new_item': '🛒',
     'review': '⭐',
     'mentorship_request': '🤝',
-    'mentorship_response': '✅'
+    'mentorship_response': '✅',
+    'buy_request': '🛒',
+    'buy_request_accepted': '🎉'
   };
   return emojiMap[type] || '🔔';
 };
@@ -46,16 +49,56 @@ export default function NotificationsList() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
   const [processing, setProcessing] = useState<number | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     fetchNotifications();
   }, [filter]);
 
+  const handleAcceptBuyRequest = async (id: number) => {
+    try {
+      setProcessing(id);
+      const response = await marketplaceAPI.acceptBuyRequest(id);
+      if (response.success) {
+        alert('✅ Request accepted! Redirecting to chat...');
+        // Refresh notifications to show the updated state
+        fetchNotifications();
+        // Redirect to chat
+        router.push('/chat');
+      } else {
+        alert('❌ Failed to accept request: ' + response.message);
+      }
+    } catch (error) {
+      console.error('Error accepting buy request:', error);
+      alert('❌ Error accepting request. Please try again.');
+    } finally {
+      setProcessing(null);
+    }
+  };
+
+  const handleRejectBuyRequest = async (id: number) => {
+    try {
+      setProcessing(id);
+      const response = await marketplaceAPI.rejectBuyRequest(id);
+      if (response.success) {
+        alert('Request dismissed.');
+        fetchNotifications();
+      } else {
+        alert('❌ Failed to dismiss request: ' + response.message);
+      }
+    } catch (error) {
+      console.error('Error dismissing buy request:', error);
+      alert('❌ Error dismissing request. Please try again.');
+    } finally {
+      setProcessing(null);
+    }
+  };
+
   const fetchNotifications = async () => {
     try {
       setLoading(true);
       const response = await notificationAPI.getNotifications(filter === 'unread');
-      
+
       if (response.success) {
         setNotifications(response.data);
       }
@@ -70,9 +113,9 @@ export default function NotificationsList() {
     try {
       setProcessing(id);
       const response = await notificationAPI.markAsRead(id);
-      
+
       if (response.success) {
-        setNotifications(notifications.map(notif => 
+        setNotifications(notifications.map(notif =>
           notif.id === id ? { ...notif, read: true } : notif
         ));
       }
@@ -86,7 +129,7 @@ export default function NotificationsList() {
   const handleMarkAllAsRead = async () => {
     try {
       const response = await notificationAPI.markAllAsRead();
-      
+
       if (response.success) {
         setNotifications(notifications.map(notif => ({ ...notif, read: true })));
       }
@@ -99,7 +142,7 @@ export default function NotificationsList() {
     try {
       setProcessing(id);
       const response = await notificationAPI.deleteNotification(id);
-      
+
       if (response.success) {
         setNotifications(notifications.filter(notif => notif.id !== id));
       }
@@ -112,10 +155,10 @@ export default function NotificationsList() {
 
   const handleClearRead = async () => {
     if (!confirm('Are you sure you want to clear all read notifications?')) return;
-    
+
     try {
       const response = await notificationAPI.clearReadNotifications();
-      
+
       if (response.success) {
         setNotifications(notifications.filter(notif => !notif.read));
       }
@@ -128,10 +171,10 @@ export default function NotificationsList() {
 
   if (loading) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         minHeight: 400,
         color: '#8b6f47'
       }}>
@@ -147,16 +190,16 @@ export default function NotificationsList() {
     <div style={{ maxWidth: 900, margin: '0 auto' }}>
       {/* Header with Filters */}
       <div style={{
-        background: 'linear-gradient(145deg, #ffffff, #fef8f0)',
-        borderRadius: 20,
-        padding: '24px 32px',
-        marginBottom: 24,
-        border: '2px solid #f0e6dc',
-        boxShadow: '0 4px 12px rgba(139, 111, 71, 0.08)'
+        background: '#fff',
+        borderRadius: 8,
+        padding: '16px 24px',
+        marginBottom: 16,
+        border: '1px solid #e0e0e0',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
       }}>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
           gap: 16
@@ -164,15 +207,15 @@ export default function NotificationsList() {
           {/* Filter Buttons */}
           <div style={{ display: 'flex', gap: 12 }}>
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ backgroundColor: '#f3f6f8' }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => setFilter('all')}
               style={{
-                padding: '10px 20px',
-                borderRadius: 12,
-                border: filter === 'all' ? '2px solid #f5c77e' : '2px solid #f0e6dc',
-                background: filter === 'all' ? 'linear-gradient(135deg, #ffd89b, #f5c77e)' : '#fff',
-                color: '#6b4423',
+                padding: '6px 16px',
+                borderRadius: 16,
+                border: filter === 'all' ? 'none' : '1px solid #666',
+                background: filter === 'all' ? '#8b6f47' : 'transparent',
+                color: filter === 'all' ? '#fff' : '#666',
                 fontWeight: 600,
                 fontSize: 14,
                 cursor: 'pointer',
@@ -182,15 +225,15 @@ export default function NotificationsList() {
               All ({notifications.length})
             </motion.button>
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ backgroundColor: '#f3f6f8' }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => setFilter('unread')}
               style={{
-                padding: '10px 20px',
-                borderRadius: 12,
-                border: filter === 'unread' ? '2px solid #f5c77e' : '2px solid #f0e6dc',
-                background: filter === 'unread' ? 'linear-gradient(135deg, #ffd89b, #f5c77e)' : '#fff',
-                color: '#6b4423',
+                padding: '6px 16px',
+                borderRadius: 16,
+                border: filter === 'unread' ? 'none' : '1px solid #666',
+                background: filter === 'unread' ? '#8b6f47' : 'transparent',
+                color: filter === 'unread' ? '#fff' : '#666',
                 fontWeight: 600,
                 fontSize: 14,
                 cursor: 'pointer',
@@ -205,42 +248,42 @@ export default function NotificationsList() {
           <div style={{ display: 'flex', gap: 12 }}>
             {unreadCount > 0 && (
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ textDecoration: 'underline' }}
+                whileTap={{ scale: 0.98 }}
                 onClick={handleMarkAllAsRead}
                 style={{
-                  padding: '10px 18px',
-                  borderRadius: 12,
-                  border: '2px solid #f0e6dc',
-                  background: '#fff',
-                  color: '#6b4423',
-                  fontSize: 13,
+                  padding: '6px 12px',
+                  borderRadius: 4,
+                  border: 'none',
+                  background: 'transparent',
+                  color: '#8b6f47',
+                  fontSize: 14,
                   cursor: 'pointer',
-                  fontWeight: 500,
+                  fontWeight: 600,
                   transition: 'all 0.2s'
                 }}
               >
-                ✓ Mark All Read
+                Mark all as read
               </motion.button>
             )}
             {notifications.some(n => n.read) && (
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ textDecoration: 'underline' }}
+                whileTap={{ scale: 0.98 }}
                 onClick={handleClearRead}
                 style={{
-                  padding: '10px 18px',
-                  borderRadius: 12,
-                  border: '2px solid #f0e6dc',
-                  background: '#fff',
-                  color: '#8b6f47',
-                  fontSize: 13,
+                  padding: '6px 12px',
+                  borderRadius: 4,
+                  border: 'none',
+                  background: 'transparent',
+                  color: '#666',
+                  fontSize: 14,
                   cursor: 'pointer',
-                  fontWeight: 500,
+                  fontWeight: 600,
                   transition: 'all 0.2s'
                 }}
               >
-                🗑️ Clear Read
+                Clear read
               </motion.button>
             )}
           </div>
@@ -253,20 +296,21 @@ export default function NotificationsList() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           style={{
-            background: 'linear-gradient(145deg, #ffffff, #fef8f0)',
-            borderRadius: 20,
+            background: '#fff',
+            borderRadius: 8,
             padding: 60,
             textAlign: 'center',
-            border: '2px solid #f0e6dc'
+            border: '1px solid #e0e0e0',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
           }}
         >
           <div style={{ fontSize: 64, marginBottom: 16 }}>🔕</div>
-          <h3 style={{ fontSize: 20, fontWeight: 600, color: '#6b4423', marginBottom: 8 }}>
+          <h3 style={{ fontSize: 20, fontWeight: 600, color: '#000', marginBottom: 8 }}>
             No notifications
           </h3>
-          <p style={{ fontSize: 15, color: '#8b6f47' }}>
-            {filter === 'unread' 
-              ? "You're all caught up!" 
+          <p style={{ fontSize: 16, color: '#666' }}>
+            {filter === 'unread'
+              ? "You're all caught up!"
               : "You'll get notified about new messages, items, and connections"}
           </p>
         </motion.div>
@@ -280,44 +324,41 @@ export default function NotificationsList() {
               exit={{ opacity: 0, x: -100 }}
               transition={{ delay: index * 0.05 }}
               style={{
-                background: notif.read 
-                  ? 'linear-gradient(145deg, #fefefe, #faf8f6)'
-                  : 'linear-gradient(145deg, #fffef8, #fff9ed)',
-                borderRadius: 16,
-                padding: 20,
-                marginBottom: 12,
-                border: notif.read ? '2px solid #f5f0e8' : '2px solid #ffd89b',
-                boxShadow: notif.read 
-                  ? '0 2px 8px rgba(139, 111, 71, 0.04)'
-                  : '0 4px 12px rgba(255, 216, 155, 0.2)',
+                background: notif.read ? '#fff' : '#fefaf6',
+                borderRadius: 0,
+                padding: '16px 24px',
+                marginBottom: 0,
+                borderBottom: '1px solid #e0e0e0',
                 position: 'relative',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                transition: 'background-color 0.3s'
               }}
             >
               {!notif.read && (
                 <div style={{
                   position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: 4,
-                  height: '100%',
-                  background: 'linear-gradient(180deg, #ffd89b, #f5c77e)'
+                  top: '50%',
+                  left: 8,
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  background: '#c6a664',
+                  transform: 'translateY(-50%)'
                 }} />
               )}
 
               <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
                 {/* Icon */}
                 <div style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: 14,
-                  background: 'linear-gradient(135deg, #ffd89b, #f5c77e)',
+                  width: 56,
+                  height: 56,
+                  borderRadius: '50%',
+                  background: '#f3f6f8',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: 24,
-                  flexShrink: 0,
-                  boxShadow: '0 4px 12px rgba(245, 199, 126, 0.3)'
+                  fontSize: 28,
+                  flexShrink: 0
                 }}>
                   {getNotificationEmoji(notif.type)}
                 </div>
@@ -326,17 +367,17 @@ export default function NotificationsList() {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <h4 style={{
                     fontSize: 16,
-                    fontWeight: 600,
-                    color: '#6b4423',
-                    marginBottom: 6
+                    fontWeight: notif.read ? 400 : 700,
+                    color: '#000',
+                    marginBottom: 4
                   }}>
                     {notif.title}
                   </h4>
                   <p style={{
-                    fontSize: 14,
-                    color: '#8b6f47',
-                    marginBottom: 8,
-                    lineHeight: 1.5
+                    fontSize: 15,
+                    color: '#666',
+                    marginBottom: 4,
+                    lineHeight: 1.4
                   }}>
                     {notif.message}
                   </p>
@@ -350,53 +391,92 @@ export default function NotificationsList() {
                 </div>
 
                 {/* Actions */}
-                <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
-                  {!notif.read && (
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={() => handleMarkAsRead(notif.id)}
-                      disabled={processing === notif.id}
-                      style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 10,
-                        border: '2px solid #f0e6dc',
-                        background: '#fff',
-                        cursor: 'pointer',
-                        fontSize: 16,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        opacity: processing === notif.id ? 0.5 : 1
-                      }}
-                      title="Mark as read"
-                    >
-                      ✓
-                    </motion.button>
+                <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexShrink: 0 }}>
+                  {notif.type === 'buy_request' && !notif.read ? (
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <motion.button
+                        whileHover={{ backgroundColor: '#6b4423' }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => handleAcceptBuyRequest(notif.id)}
+                        disabled={processing === notif.id}
+                        style={{
+                          padding: '6px 16px',
+                          borderRadius: 16,
+                          background: '#8b6f47',
+                          color: '#fff',
+                          border: 'none',
+                          fontWeight: 600,
+                          fontSize: 13,
+                          cursor: 'pointer',
+                          opacity: processing === notif.id ? 0.7 : 1
+                        }}
+                      >
+                        Accept & Chat
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ backgroundColor: '#f3f6f8' }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => handleRejectBuyRequest(notif.id)}
+                        disabled={processing === notif.id}
+                        style={{
+                          padding: '6px 16px',
+                          borderRadius: 16,
+                          background: 'transparent',
+                          color: '#666',
+                          border: '1px solid #666',
+                          fontWeight: 600,
+                          fontSize: 13,
+                          cursor: 'pointer',
+                          opacity: processing === notif.id ? 0.7 : 1
+                        }}
+                      >
+                        Reject
+                      </motion.button>
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      {!notif.read && (
+                        <motion.button
+                          whileHover={{ backgroundColor: '#f3f6f8' }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => handleMarkAsRead(notif.id)}
+                          disabled={processing === notif.id}
+                          style={{
+                            padding: '4px 8px',
+                            borderRadius: 4,
+                            border: 'none',
+                            background: 'transparent',
+                            color: '#8b6f47',
+                            cursor: 'pointer',
+                            fontSize: 13,
+                            fontWeight: 600,
+                            opacity: processing === notif.id ? 0.5 : 1
+                          }}
+                        >
+                          Mark as read
+                        </motion.button>
+                      )}
+                      <motion.button
+                        whileHover={{ backgroundColor: '#f3f6f8' }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => handleDelete(notif.id)}
+                        disabled={processing === notif.id}
+                        style={{
+                          padding: '4px 8px',
+                          borderRadius: 4,
+                          border: 'none',
+                          background: 'transparent',
+                          color: '#666',
+                          cursor: 'pointer',
+                          fontSize: 13,
+                          fontWeight: 600,
+                          opacity: processing === notif.id ? 0.5 : 1
+                        }}
+                      >
+                        Delete
+                      </motion.button>
+                    </div>
                   )}
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => handleDelete(notif.id)}
-                    disabled={processing === notif.id}
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 10,
-                      border: '2px solid #f0e6dc',
-                      background: '#fff',
-                      cursor: 'pointer',
-                      fontSize: 16,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      opacity: processing === notif.id ? 0.5 : 1
-                    }}
-                    title="Delete"
-                  >
-                    🗑️
-                  </motion.button>
                 </div>
               </div>
             </motion.div>

@@ -1,58 +1,64 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { reviewAPI } from '../../../lib/api';
 
-const reviews = [
-  {
-    id: 1,
-    author: 'John Davis',
-    avatar: '👨‍💼',
-    rating: 5,
-    date: 'Feb 10, 2026',
-    comment: 'Excellent mentor! Sarah helped me understand React hooks in depth. Her teaching style is clear and patient.',
-    type: 'mentorship'
-  },
-  {
-    id: 2,
-    author: 'Emily Chen',
-    avatar: '👩‍💻',
-    rating: 5,
-    date: 'Feb 8, 2026',
-    comment: 'The course notes were incredibly helpful. Well organized and easy to follow. Highly recommend!',
-    type: 'marketplace'
-  },
-  {
-    id: 3,
-    author: 'Michael Brown',
-    avatar: '👨‍🎓',
-    rating: 4,
-    date: 'Feb 5, 2026',
-    comment: 'Great resource for learning TypeScript. Good examples and explanations.',
-    type: 'marketplace'
-  },
-  {
-    id: 4,
-    author: 'Lisa Wang',
-    avatar: '👩‍🔬',
-    rating: 5,
-    date: 'Jan 28, 2026',
-    comment: 'Sarah is an amazing mentor. She went above and beyond to help me debug my project. Thank you!',
-    type: 'mentorship'
-  },
-  {
-    id: 5,
-    author: 'David Kim',
-    avatar: '👨‍🚀',
-    rating: 5,
-    date: 'Jan 25, 2026',
-    comment: 'Very responsive and knowledgeable. The project template saved me hours of setup time!',
-    type: 'marketplace'
-  }
-];
+interface StarRatingProps {
+  rating: number;
+}
+
+const StarRating = ({ rating }: StarRatingProps) => {
+  return (
+    <div style={{ fontSize: 18 }}>
+      {'⭐'.repeat(Math.round(rating))}
+      {rating < 5 && <span style={{ opacity: 0.3 }}>{'⭐'.repeat(5 - Math.round(rating))}</span>}
+    </div>
+  );
+};
 
 export default function ReviewsSection() {
-  const avgRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [avgRating, setAvgRating] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMyReviews = async () => {
+      try {
+        setLoading(true);
+        const userStr = localStorage.getItem('user');
+        if (!userStr) return;
+
+        const user = JSON.parse(userStr);
+        const response = await reviewAPI.getMentorReviews(user.id);
+
+        if (response.success) {
+          setReviews(response.data);
+          setAvgRating(response.averageRating);
+        }
+      } catch (error) {
+        console.error('Error fetching profile reviews:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMyReviews();
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '40px 0', color: '#8b6f47' }}>
+        <div style={{ fontSize: 32, marginBottom: 10 }}>⏳</div>
+        <p>Loading your reviews...</p>
+      </div>
+    );
+  }
+
+  const ratingCounts = [5, 4, 3, 2, 1].map(star => ({
+    star,
+    count: reviews.filter(r => r.rating === star).length
+  }));
 
   return (
     <div>
@@ -69,47 +75,47 @@ export default function ReviewsSection() {
           border: '2px solid #f0e6dc',
           display: 'flex',
           alignItems: 'center',
-          gap: 30
+          gap: 30,
+          flexWrap: 'wrap'
         }}
       >
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ 
-            fontSize: 56, 
-            fontWeight: 'bold', 
+        <div style={{ textAlign: 'center', minWidth: 150 }}>
+          <div style={{
+            fontSize: 56,
+            fontWeight: 'bold',
             color: '#6b4423',
             marginBottom: 8
           }}>
-            {avgRating}
+            {avgRating || "0.0"}
           </div>
-          <div style={{ fontSize: 28, marginBottom: 8 }}>
-            {'⭐'.repeat(5)}
+          <div style={{ marginBottom: 8 }}>
+            <StarRating rating={avgRating} />
           </div>
-          <div style={{ 
-            fontSize: 14, 
-            color: '#8b6f47' 
+          <div style={{
+            fontSize: 14,
+            color: '#8b6f47'
           }}>
             Based on {reviews.length} reviews
           </div>
         </div>
 
-        <div style={{ flex: 1 }}>
-          {[5, 4, 3, 2, 1].map((star) => {
-            const count = reviews.filter(r => r.rating === star).length;
-            const percentage = (count / reviews.length) * 100;
-            
+        <div style={{ flex: 1, minWidth: 250 }}>
+          {ratingCounts.map(({ star, count }) => {
+            const percentage = reviews.length > 0 ? (count / reviews.length) * 100 : 0;
+
             return (
-              <div 
+              <div
                 key={star}
-                style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
                   gap: 10,
                   marginBottom: 8
                 }}
               >
-                <span style={{ 
-                  width: 60, 
-                  fontSize: 14, 
+                <span style={{
+                  width: 60,
+                  fontSize: 14,
                   color: '#6b4423',
                   fontWeight: 'bold'
                 }}>
@@ -133,10 +139,10 @@ export default function ReviewsSection() {
                     }}
                   />
                 </div>
-                <span style={{ 
-                  width: 40, 
-                  fontSize: 14, 
-                  color: '#8b6f47' 
+                <span style={{
+                  width: 40,
+                  fontSize: 14,
+                  color: '#8b6f47'
                 }}>
                   {count}
                 </span>
@@ -148,67 +154,83 @@ export default function ReviewsSection() {
 
       {/* Reviews List */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
-        {reviews.map((review, index) => (
-          <motion.div
-            key={review.id}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1 }}
-            style={{
-              background: '#fff',
-              borderRadius: 16,
-              padding: 24,
-              boxShadow: '0 4px 20px rgba(107, 68, 35, 0.08)',
-              border: '2px solid #f0e6dc'
-            }}
-          >
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between',
-              marginBottom: 12
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #ffd89b, #f5c77e)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 24
-                }}>
-                  {review.avatar}
+        {reviews.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '60px 0', background: '#fff', borderRadius: 20, border: '2px dashed #f0e6dc' }}>
+            <p style={{ color: '#8b6f47', fontSize: 16 }}>No reviews yet. As you complete mentorship sessions, feedback will appear here!</p>
+          </div>
+        ) : (
+          reviews.map((review, index) => (
+            <motion.div
+              key={review.id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 }}
+              style={{
+                background: '#fff',
+                borderRadius: 16,
+                padding: 24,
+                boxShadow: '0 4px 20px rgba(107, 68, 35, 0.08)',
+                border: '2px solid #f0e6dc'
+              }}
+            >
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginBottom: 12,
+                flexWrap: 'wrap',
+                gap: 12
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #ffd89b, #f5c77e)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    color: '#6b4423',
+                    overflow: 'hidden'
+                  }}>
+                    {review.buyer?.user?.profileImageUrl ? (
+                      <img src={review.buyer.user.profileImageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                      review.buyer?.user?.name?.charAt(0) || 'U'
+                    )}
+                  </div>
+                  <div>
+                    <div style={{
+                      fontWeight: 'bold',
+                      color: '#6b4423',
+                      marginBottom: 4
+                    }}>
+                      {review.buyer?.user?.name || 'Anonymous User'}
+                    </div>
+                    <div style={{
+                      fontSize: 13,
+                      color: '#8b6f47'
+                    }}>
+                      {new Date(review.date).toLocaleDateString()} • Mentorship
+                    </div>
+                  </div>
                 </div>
                 <div>
-                  <div style={{ 
-                    fontWeight: 'bold', 
-                    color: '#6b4423',
-                    marginBottom: 4
-                  }}>
-                    {review.author}
-                  </div>
-                  <div style={{ 
-                    fontSize: 13, 
-                    color: '#8b6f47' 
-                  }}>
-                    {review.date} • {review.type === 'mentorship' ? '🎓 Mentorship' : '📦 Purchase'}
-                  </div>
+                  <StarRating rating={review.rating} />
                 </div>
               </div>
-              <div style={{ fontSize: 18 }}>
-                {'⭐'.repeat(review.rating)}
-              </div>
-            </div>
-            <p style={{ 
-              fontSize: 15, 
-              color: '#6b4423', 
-              lineHeight: 1.6 
-            }}>
-              {review.comment}
-            </p>
-          </motion.div>
-        ))}
+              <p style={{
+                fontSize: 15,
+                color: '#6b4423',
+                lineHeight: 1.6,
+                fontStyle: 'italic'
+              }}>
+                "{review.comments || "No comments provided."}"
+              </p>
+            </motion.div>
+          ))
+        )}
       </div>
     </div>
   );

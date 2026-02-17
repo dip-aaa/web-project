@@ -16,7 +16,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, isLoading = false }) => {
   useEffect(() => {
     const shouldScroll = messages.length > prevMessageCountRef.current;
     prevMessageCountRef.current = messages.length;
-    
+
     if (shouldScroll || isLoading) {
       // Use requestAnimationFrame to ensure DOM has updated
       requestAnimationFrame(() => {
@@ -26,18 +26,18 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, isLoading = false }) => {
   }, [messages.length, isLoading]);
 
   return (
-    <div 
+    <div
       ref={chatBoxRef}
-      className="flex-1 overflow-y-auto px-4 py-6 space-y-4 bg-[#f5f0eb]"
+      className="h-full overflow-y-auto px-4 py-6 pb-32 space-y-4 bg-[#f5f0eb]"
     >
       <div className="max-w-4xl mx-auto space-y-4">
         {messages.map((message) => (
-          <ChatBubble 
+          <ChatBubble
             key={message.id}
             message={message}
           />
         ))}
-        
+
         {/* Loading indicator */}
         {isLoading && (
           <div className="flex justify-start animate-fadeIn">
@@ -55,7 +55,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, isLoading = false }) => {
             </div>
           </div>
         )}
-        
+
         {/* Invisible element to scroll to */}
         <div ref={chatEndRef} />
       </div>

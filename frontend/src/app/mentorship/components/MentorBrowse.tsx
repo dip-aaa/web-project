@@ -23,36 +23,33 @@ export function MentorBrowse() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        
+
         // Fetch mentors
         const mentorsResponse = await mentorshipAPI.getMentors({
           search: query || undefined
         });
-        
+
         // Fetch sent requests
         const sentRequestsResponse = await mentorshipAPI.getConnectionRequests('sent');
-        
+
         if (mentorsResponse.success && mentorsResponse.data) {
           // Transform backend data to MentorProfile format
           const transformedMentors: MentorProfile[] = mentorsResponse.data.map((user: any) => ({
             id: user.id.toString(),
             name: user.name,
-            year: "Mentor", 
+            year: "Mentor",
             branch: user.department || "Not specified",
             role: "mentor",
             skills: user.expertiseArea ? [user.expertiseArea] : ["General Guidance"],
             lookingFor: [],
             bio: `Mentor from ${user.department || 'the college'}. ${user.expertiseArea ? `Expertise in ${user.expertiseArea}.` : 'Available for general guidance.'}`,
-            rating: 4.5, // Default rating
-            sessions: 0,
-            followers: 0,
-            online: false,
-            badges: [],
             linkedinStyle: `${user.department || 'Student'} · ${user.email}`,
             achievements: [],
             openFor: ["1-on-1 mentoring", "Project guidance"],
             fee: 0,
-            verified: true
+            verified: true,
+            rating: user.avgRating || 0,
+            reviewCount: user.reviewCount || 0
           }));
           setMentors(transformedMentors);
         }
@@ -268,13 +265,13 @@ export function MentorBrowse() {
           gap: 24,
           justifyItems: "center"
         }}>          {filtered.map((mentor) => (
-            <MentorCard 
-              key={mentor.id} 
-              mentor={mentor} 
-              pendingRequestId={pendingRequests.get(mentor.id)}
-              onRequestChange={refreshPendingRequests}
-            />
-          ))}
+          <MentorCard
+            key={mentor.id}
+            mentor={mentor}
+            pendingRequestId={pendingRequests.get(mentor.id)}
+            onRequestChange={refreshPendingRequests}
+          />
+        ))}
         </div>
       ) : (
         <motion.div

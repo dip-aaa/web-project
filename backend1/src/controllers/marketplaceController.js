@@ -43,7 +43,7 @@ const getItems = async (req, res, next) => {
 
     // Build filter object
     const where = {};
-    
+
     if (category && category !== 'All Items' && category !== 'Select Category') {
       where.category = {
         name: category
@@ -73,7 +73,12 @@ const getItems = async (req, res, next) => {
             }
           }
         },
-        category: true
+        category: true,
+        reviews: {
+          select: {
+            rating: true
+          }
+        }
       },
       orderBy: {
         id: 'desc'
@@ -90,7 +95,11 @@ const getItems = async (req, res, next) => {
         conditionLabel: item.condition,
         category: item.category.name,
         imageUrl: item.imageUrl || `https://placehold.co/800x600/png?text=${encodeURIComponent(item.itemName)}`,
-        description: `Contact ${item.seller.user.name} for more details.`
+        description: `Contact ${item.seller.user.name} for more details.`,
+        avgRating: item.reviews.length > 0
+          ? parseFloat((item.reviews.reduce((acc, curr) => acc + curr.rating, 0) / item.reviews.length).toFixed(1))
+          : 0,
+        reviewCount: item.reviews.length
       }))
     });
   } catch (error) {
@@ -161,7 +170,8 @@ const createItem = async (req, res, next) => {
             }
           }
         },
-        category: true
+        category: true,
+        reviews: true
       }
     });
 
@@ -171,7 +181,7 @@ const createItem = async (req, res, next) => {
         where: { id: { not: userId } },
         select: { id: true }
       });
-      
+
       // Create notifications for all users except the seller
       for (const user of allUsers) {
         await createNotification({
@@ -198,7 +208,11 @@ const createItem = async (req, res, next) => {
         conditionLabel: item.condition,
         category: item.category.name,
         imageUrl: item.imageUrl || `https://placehold.co/800x600/png?text=${encodeURIComponent(item.itemName)}`,
-        description: description || `Contact ${item.seller.user.name} for more details.`
+        description: description || `Contact ${item.seller.user.name} for more details.`,
+        avgRating: item.reviews && item.reviews.length > 0
+          ? parseFloat((item.reviews.reduce((acc, curr) => acc + curr.rating, 0) / item.reviews.length).toFixed(1))
+          : 0,
+        reviewCount: item.reviews ? item.reviews.length : 0
       }
     });
   } catch (error) {
@@ -390,7 +404,7 @@ const addComment = async (req, res, next) => {
           where: { id: parseInt(itemId) },
           include: { seller: { include: { user: true } } }
         });
-        
+
         await createNotification({
           userId: item.sellerId,
           type: 'item_comment',
@@ -463,6 +477,203 @@ const deleteComment = async (req, res, next) => {
   }
 };
 
+/**
+ * Request to buy an item
+ */
+const requestToBuy = async (req, res, next) => {
+  try {
+    const { itemId } = req.params;
+    const buyerId = req.user.id;
+
+    // Find item and seller
+    const item = await prisma.item.findUnique({
+      where: { id: parseInt(itemId) },
+      include: {
+        seller: {
+          include: {
+            user: {
+              select: { id: true, name: true }
+            }
+          }
+        }
+      }
+    });
+
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: 'Item not found'
+      });
+    }
+
+    if (item.sellerId === buyerId) {
+      return res.status(400).json({
+        success: false,
+        message: 'You cannot buy your own item'
+      });
+    }
+
+    const buyer = await prisma.user.findUnique({
+      where: { id: buyerId },
+      select: { name: true }
+    });
+
+    // Create notification for seller
+    await createNotification({
+      userId: item.sellerId,
+      type: 'buy_request',
+      title: '🛒 Buy Request',
+      message: `${buyer.name} is wanting to buy your "${item.itemName}"`,
+      data: {
+        itemId: item.id,
+        itemName: item.itemName,
+        buyerId: buyerId,
+        buyerName: buyer.name
+      }
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Request sent to seller successfully'
+    });
+  } catch (error) {
+    console.error('Request to buy error:', error);
+    next(error);
+  }
+};
+
+/**
+ * Accept a buy request
+ */
+const acceptBuyRequest = async (req, res, next) => {
+  try {
+    const { notificationId } = req.params;
+    const sellerUserId = req.user.id;
+
+    // Get notification to get data
+    const notification = await prisma.notification.findUnique({
+      where: { id: parseInt(notificationId) }
+    });
+
+    if (!notification || notification.userId !== sellerUserId) {
+      return res.status(404).json({
+        success: false,
+        message: 'Request not found'
+      });
+    }
+
+    const data = JSON.parse(notification.data);
+    const buyerUserId = data.buyerId;
+
+    // Ensure connection exists (Mentorship style)
+    // 1. Ensure seller is a Mentor
+    let mentor = await prisma.mentor.findUnique({
+      where: { userId: sellerUserId }
+    });
+    if (!mentor) {
+      mentor = await prisma.mentor.create({
+        data: { userId: sellerUserId }
+      });
+    }
+
+    // 2. Ensure buyer is a Mentee
+    let mentee = await prisma.mentee.findUnique({
+      where: { userId: buyerUserId }
+    });
+    if (!mentee) {
+      mentee = await prisma.mentee.create({
+        data: { userId: buyerUserId }
+      });
+    }
+
+    // 3. Create/Update accepted Request
+    const existingRequest = await prisma.request.findFirst({
+      where: {
+        mentorId: sellerUserId,
+        menteeId: buyerUserId
+      }
+    });
+
+    if (existingRequest) {
+      await prisma.request.update({
+        where: { id: existingRequest.id },
+        data: {
+          requestStatus: 'accepted',
+          requestReceived: new Date()
+        }
+      });
+    } else {
+      await prisma.request.create({
+        data: {
+          mentorId: sellerUserId,
+          menteeId: buyerUserId,
+          requestStatus: 'accepted',
+          requestSent: new Date(),
+          requestReceived: new Date()
+        }
+      });
+    }
+
+    // Mark notification as read
+    await prisma.notification.update({
+      where: { id: parseInt(notificationId) },
+      data: { read: true }
+    });
+
+    // Notify buyer
+    await createNotification({
+      userId: buyerUserId,
+      type: 'buy_request_accepted',
+      title: '✅ Request Accepted',
+      message: `${req.user.name} accepted your request for "${data.itemName}"! You can now chat.`,
+      data: { sellerId: sellerUserId, itemId: data.itemId }
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Request accepted. You can now chat with the buyer.'
+    });
+  } catch (error) {
+    console.error('Accept buy request error:', error);
+    next(error);
+  }
+};
+
+/**
+ * Reject a buy request
+ */
+const rejectBuyRequest = async (req, res, next) => {
+  try {
+    const { notificationId } = req.params;
+    const sellerUserId = req.user.id;
+
+    const notification = await prisma.notification.findUnique({
+      where: { id: parseInt(notificationId) }
+    });
+
+    if (!notification || notification.userId !== sellerUserId) {
+      return res.status(404).json({
+        success: false,
+        message: 'Request not found'
+      });
+    }
+
+    // Mark notification as read (dismiss)
+    await prisma.notification.update({
+      where: { id: parseInt(notificationId) },
+      data: { read: true }
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Request dismissed'
+    });
+  } catch (error) {
+    console.error('Reject buy request error:', error);
+    next(error);
+  }
+};
+
 module.exports = {
   uploadImage,
   getItems,
@@ -471,5 +682,8 @@ module.exports = {
   deleteItem,
   getComments,
   addComment,
-  deleteComment
+  deleteComment,
+  requestToBuy,
+  acceptBuyRequest,
+  rejectBuyRequest
 };

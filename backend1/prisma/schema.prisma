@@ -152,6 +152,7 @@ model Mentor {
   expertiseArea String?
 
   requestsReceived Request[]
+  reviews          Review[]
 }
 
 /// ERD subtype: Mentee (ISA Student/User)
@@ -192,6 +193,7 @@ model Item {
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 
   comments ItemComment[]
+  reviews  Review[]
 
   @@index([sellerId])
   @@index([buyerId])
@@ -224,7 +226,15 @@ model Review {
   buyerId Int
   buyer   Buyer @relation(fields: [buyerId], references: [userId], onDelete: Cascade)
 
+  itemId Int?
+  item   Item? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  mentorId Int?
+  mentor   Mentor? @relation(fields: [mentorId], references: [userId], onDelete: Cascade)
+
   @@index([buyerId])
+  @@index([itemId])
+  @@index([mentorId])
 }
 
 /// ERD: Mentee sends Requests, Mentor receives Requests

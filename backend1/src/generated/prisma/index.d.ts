@@ -2514,10 +2514,12 @@ export namespace Prisma {
 
   export type MentorCountOutputType = {
     requestsReceived: number
+    reviews: number
   }
 
   export type MentorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     requestsReceived?: boolean | MentorCountOutputTypeCountRequestsReceivedArgs
+    reviews?: boolean | MentorCountOutputTypeCountReviewsArgs
   }
 
   // Custom InputTypes
@@ -2536,6 +2538,13 @@ export namespace Prisma {
    */
   export type MentorCountOutputTypeCountRequestsReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RequestWhereInput
+  }
+
+  /**
+   * MentorCountOutputType without action
+   */
+  export type MentorCountOutputTypeCountReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReviewWhereInput
   }
 
 
@@ -2607,10 +2616,12 @@ export namespace Prisma {
 
   export type ItemCountOutputType = {
     comments: number
+    reviews: number
   }
 
   export type ItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     comments?: boolean | ItemCountOutputTypeCountCommentsArgs
+    reviews?: boolean | ItemCountOutputTypeCountReviewsArgs
   }
 
   // Custom InputTypes
@@ -2629,6 +2640,13 @@ export namespace Prisma {
    */
   export type ItemCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ItemCommentWhereInput
+  }
+
+  /**
+   * ItemCountOutputType without action
+   */
+  export type ItemCountOutputTypeCountReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReviewWhereInput
   }
 
 
@@ -12175,6 +12193,7 @@ export namespace Prisma {
     student?: boolean | Mentor$studentArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     requestsReceived?: boolean | Mentor$requestsReceivedArgs<ExtArgs>
+    reviews?: boolean | Mentor$reviewsArgs<ExtArgs>
     _count?: boolean | MentorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["mentor"]>
 
@@ -12205,6 +12224,7 @@ export namespace Prisma {
     student?: boolean | Mentor$studentArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     requestsReceived?: boolean | Mentor$requestsReceivedArgs<ExtArgs>
+    reviews?: boolean | Mentor$reviewsArgs<ExtArgs>
     _count?: boolean | MentorCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MentorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12222,6 +12242,7 @@ export namespace Prisma {
       student: Prisma.$StudentPayload<ExtArgs> | null
       user: Prisma.$UserPayload<ExtArgs>
       requestsReceived: Prisma.$RequestPayload<ExtArgs>[]
+      reviews: Prisma.$ReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       studentId: number | null
@@ -12624,6 +12645,7 @@ export namespace Prisma {
     student<T extends Mentor$studentArgs<ExtArgs> = {}>(args?: Subset<T, Mentor$studentArgs<ExtArgs>>): Prisma__StudentClient<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     requestsReceived<T extends Mentor$requestsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, Mentor$requestsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reviews<T extends Mentor$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, Mentor$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13090,6 +13112,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RequestScalarFieldEnum | RequestScalarFieldEnum[]
+  }
+
+  /**
+   * Mentor.reviews
+   */
+  export type Mentor$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    where?: ReviewWhereInput
+    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
+    cursor?: ReviewWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
   }
 
   /**
@@ -15541,6 +15587,7 @@ export namespace Prisma {
     buyer?: boolean | Item$buyerArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
     comments?: boolean | Item$commentsArgs<ExtArgs>
+    reviews?: boolean | Item$reviewsArgs<ExtArgs>
     _count?: boolean | ItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["item"]>
 
@@ -15589,6 +15636,7 @@ export namespace Prisma {
     buyer?: boolean | Item$buyerArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
     comments?: boolean | Item$commentsArgs<ExtArgs>
+    reviews?: boolean | Item$reviewsArgs<ExtArgs>
     _count?: boolean | ItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15609,6 +15657,7 @@ export namespace Prisma {
       buyer: Prisma.$BuyerPayload<ExtArgs> | null
       category: Prisma.$CategoryPayload<ExtArgs>
       comments: Prisma.$ItemCommentPayload<ExtArgs>[]
+      reviews: Prisma.$ReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -16017,6 +16066,7 @@ export namespace Prisma {
     buyer<T extends Item$buyerArgs<ExtArgs> = {}>(args?: Subset<T, Item$buyerArgs<ExtArgs>>): Prisma__BuyerClient<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     category<T extends CategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CategoryDefaultArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     comments<T extends Item$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Item$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reviews<T extends Item$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, Item$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -16488,6 +16538,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ItemCommentScalarFieldEnum | ItemCommentScalarFieldEnum[]
+  }
+
+  /**
+   * Item.reviews
+   */
+  export type Item$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    where?: ReviewWhereInput
+    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
+    cursor?: ReviewWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
   }
 
   /**
@@ -17631,12 +17705,16 @@ export namespace Prisma {
     id: number | null
     rating: number | null
     buyerId: number | null
+    itemId: number | null
+    mentorId: number | null
   }
 
   export type ReviewSumAggregateOutputType = {
     id: number | null
     rating: number | null
     buyerId: number | null
+    itemId: number | null
+    mentorId: number | null
   }
 
   export type ReviewMinAggregateOutputType = {
@@ -17645,6 +17723,8 @@ export namespace Prisma {
     rating: number | null
     date: Date | null
     buyerId: number | null
+    itemId: number | null
+    mentorId: number | null
   }
 
   export type ReviewMaxAggregateOutputType = {
@@ -17653,6 +17733,8 @@ export namespace Prisma {
     rating: number | null
     date: Date | null
     buyerId: number | null
+    itemId: number | null
+    mentorId: number | null
   }
 
   export type ReviewCountAggregateOutputType = {
@@ -17661,6 +17743,8 @@ export namespace Prisma {
     rating: number
     date: number
     buyerId: number
+    itemId: number
+    mentorId: number
     _all: number
   }
 
@@ -17669,12 +17753,16 @@ export namespace Prisma {
     id?: true
     rating?: true
     buyerId?: true
+    itemId?: true
+    mentorId?: true
   }
 
   export type ReviewSumAggregateInputType = {
     id?: true
     rating?: true
     buyerId?: true
+    itemId?: true
+    mentorId?: true
   }
 
   export type ReviewMinAggregateInputType = {
@@ -17683,6 +17771,8 @@ export namespace Prisma {
     rating?: true
     date?: true
     buyerId?: true
+    itemId?: true
+    mentorId?: true
   }
 
   export type ReviewMaxAggregateInputType = {
@@ -17691,6 +17781,8 @@ export namespace Prisma {
     rating?: true
     date?: true
     buyerId?: true
+    itemId?: true
+    mentorId?: true
   }
 
   export type ReviewCountAggregateInputType = {
@@ -17699,6 +17791,8 @@ export namespace Prisma {
     rating?: true
     date?: true
     buyerId?: true
+    itemId?: true
+    mentorId?: true
     _all?: true
   }
 
@@ -17794,6 +17888,8 @@ export namespace Prisma {
     rating: number
     date: Date
     buyerId: number
+    itemId: number | null
+    mentorId: number | null
     _count: ReviewCountAggregateOutputType | null
     _avg: ReviewAvgAggregateOutputType | null
     _sum: ReviewSumAggregateOutputType | null
@@ -17821,7 +17917,11 @@ export namespace Prisma {
     rating?: boolean
     date?: boolean
     buyerId?: boolean
+    itemId?: boolean
+    mentorId?: boolean
     buyer?: boolean | BuyerDefaultArgs<ExtArgs>
+    item?: boolean | Review$itemArgs<ExtArgs>
+    mentor?: boolean | Review$mentorArgs<ExtArgs>
   }, ExtArgs["result"]["review"]>
 
   export type ReviewSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17830,7 +17930,11 @@ export namespace Prisma {
     rating?: boolean
     date?: boolean
     buyerId?: boolean
+    itemId?: boolean
+    mentorId?: boolean
     buyer?: boolean | BuyerDefaultArgs<ExtArgs>
+    item?: boolean | Review$itemArgs<ExtArgs>
+    mentor?: boolean | Review$mentorArgs<ExtArgs>
   }, ExtArgs["result"]["review"]>
 
   export type ReviewSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17839,7 +17943,11 @@ export namespace Prisma {
     rating?: boolean
     date?: boolean
     buyerId?: boolean
+    itemId?: boolean
+    mentorId?: boolean
     buyer?: boolean | BuyerDefaultArgs<ExtArgs>
+    item?: boolean | Review$itemArgs<ExtArgs>
+    mentor?: boolean | Review$mentorArgs<ExtArgs>
   }, ExtArgs["result"]["review"]>
 
   export type ReviewSelectScalar = {
@@ -17848,23 +17956,33 @@ export namespace Prisma {
     rating?: boolean
     date?: boolean
     buyerId?: boolean
+    itemId?: boolean
+    mentorId?: boolean
   }
 
-  export type ReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "comments" | "rating" | "date" | "buyerId", ExtArgs["result"]["review"]>
+  export type ReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "comments" | "rating" | "date" | "buyerId" | "itemId" | "mentorId", ExtArgs["result"]["review"]>
   export type ReviewInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     buyer?: boolean | BuyerDefaultArgs<ExtArgs>
+    item?: boolean | Review$itemArgs<ExtArgs>
+    mentor?: boolean | Review$mentorArgs<ExtArgs>
   }
   export type ReviewIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     buyer?: boolean | BuyerDefaultArgs<ExtArgs>
+    item?: boolean | Review$itemArgs<ExtArgs>
+    mentor?: boolean | Review$mentorArgs<ExtArgs>
   }
   export type ReviewIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     buyer?: boolean | BuyerDefaultArgs<ExtArgs>
+    item?: boolean | Review$itemArgs<ExtArgs>
+    mentor?: boolean | Review$mentorArgs<ExtArgs>
   }
 
   export type $ReviewPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Review"
     objects: {
       buyer: Prisma.$BuyerPayload<ExtArgs>
+      item: Prisma.$ItemPayload<ExtArgs> | null
+      mentor: Prisma.$MentorPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -17872,6 +17990,8 @@ export namespace Prisma {
       rating: number
       date: Date
       buyerId: number
+      itemId: number | null
+      mentorId: number | null
     }, ExtArgs["result"]["review"]>
     composites: {}
   }
@@ -18267,6 +18387,8 @@ export namespace Prisma {
   export interface Prisma__ReviewClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     buyer<T extends BuyerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BuyerDefaultArgs<ExtArgs>>): Prisma__BuyerClient<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    item<T extends Review$itemArgs<ExtArgs> = {}>(args?: Subset<T, Review$itemArgs<ExtArgs>>): Prisma__ItemClient<$Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    mentor<T extends Review$mentorArgs<ExtArgs> = {}>(args?: Subset<T, Review$mentorArgs<ExtArgs>>): Prisma__MentorClient<$Result.GetResult<Prisma.$MentorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18301,6 +18423,8 @@ export namespace Prisma {
     readonly rating: FieldRef<"Review", 'Int'>
     readonly date: FieldRef<"Review", 'DateTime'>
     readonly buyerId: FieldRef<"Review", 'Int'>
+    readonly itemId: FieldRef<"Review", 'Int'>
+    readonly mentorId: FieldRef<"Review", 'Int'>
   }
     
 
@@ -18692,6 +18816,44 @@ export namespace Prisma {
      * Limit how many Reviews to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Review.item
+   */
+  export type Review$itemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Item
+     */
+    select?: ItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Item
+     */
+    omit?: ItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemInclude<ExtArgs> | null
+    where?: ItemWhereInput
+  }
+
+  /**
+   * Review.mentor
+   */
+  export type Review$mentorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mentor
+     */
+    select?: MentorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mentor
+     */
+    omit?: MentorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentorInclude<ExtArgs> | null
+    where?: MentorWhereInput
   }
 
   /**
@@ -22242,7 +22404,9 @@ export namespace Prisma {
     comments: 'comments',
     rating: 'rating',
     date: 'date',
-    buyerId: 'buyerId'
+    buyerId: 'buyerId',
+    itemId: 'itemId',
+    mentorId: 'mentorId'
   };
 
   export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
@@ -22888,6 +23052,7 @@ export namespace Prisma {
     student?: XOR<StudentNullableScalarRelationFilter, StudentWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     requestsReceived?: RequestListRelationFilter
+    reviews?: ReviewListRelationFilter
   }
 
   export type MentorOrderByWithRelationInput = {
@@ -22897,6 +23062,7 @@ export namespace Prisma {
     student?: StudentOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     requestsReceived?: RequestOrderByRelationAggregateInput
+    reviews?: ReviewOrderByRelationAggregateInput
   }
 
   export type MentorWhereUniqueInput = Prisma.AtLeast<{
@@ -22909,6 +23075,7 @@ export namespace Prisma {
     student?: XOR<StudentNullableScalarRelationFilter, StudentWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     requestsReceived?: RequestListRelationFilter
+    reviews?: ReviewListRelationFilter
   }, "userId" | "studentId">
 
   export type MentorOrderByWithAggregationInput = {
@@ -23042,6 +23209,7 @@ export namespace Prisma {
     buyer?: XOR<BuyerNullableScalarRelationFilter, BuyerWhereInput> | null
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
     comments?: ItemCommentListRelationFilter
+    reviews?: ReviewListRelationFilter
   }
 
   export type ItemOrderByWithRelationInput = {
@@ -23057,6 +23225,7 @@ export namespace Prisma {
     buyer?: BuyerOrderByWithRelationInput
     category?: CategoryOrderByWithRelationInput
     comments?: ItemCommentOrderByRelationAggregateInput
+    reviews?: ReviewOrderByRelationAggregateInput
   }
 
   export type ItemWhereUniqueInput = Prisma.AtLeast<{
@@ -23075,6 +23244,7 @@ export namespace Prisma {
     buyer?: XOR<BuyerNullableScalarRelationFilter, BuyerWhereInput> | null
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
     comments?: ItemCommentListRelationFilter
+    reviews?: ReviewListRelationFilter
   }, "id">
 
   export type ItemOrderByWithAggregationInput = {
@@ -23176,7 +23346,11 @@ export namespace Prisma {
     rating?: IntFilter<"Review"> | number
     date?: DateTimeFilter<"Review"> | Date | string
     buyerId?: IntFilter<"Review"> | number
+    itemId?: IntNullableFilter<"Review"> | number | null
+    mentorId?: IntNullableFilter<"Review"> | number | null
     buyer?: XOR<BuyerScalarRelationFilter, BuyerWhereInput>
+    item?: XOR<ItemNullableScalarRelationFilter, ItemWhereInput> | null
+    mentor?: XOR<MentorNullableScalarRelationFilter, MentorWhereInput> | null
   }
 
   export type ReviewOrderByWithRelationInput = {
@@ -23185,7 +23359,11 @@ export namespace Prisma {
     rating?: SortOrder
     date?: SortOrder
     buyerId?: SortOrder
+    itemId?: SortOrderInput | SortOrder
+    mentorId?: SortOrderInput | SortOrder
     buyer?: BuyerOrderByWithRelationInput
+    item?: ItemOrderByWithRelationInput
+    mentor?: MentorOrderByWithRelationInput
   }
 
   export type ReviewWhereUniqueInput = Prisma.AtLeast<{
@@ -23197,7 +23375,11 @@ export namespace Prisma {
     rating?: IntFilter<"Review"> | number
     date?: DateTimeFilter<"Review"> | Date | string
     buyerId?: IntFilter<"Review"> | number
+    itemId?: IntNullableFilter<"Review"> | number | null
+    mentorId?: IntNullableFilter<"Review"> | number | null
     buyer?: XOR<BuyerScalarRelationFilter, BuyerWhereInput>
+    item?: XOR<ItemNullableScalarRelationFilter, ItemWhereInput> | null
+    mentor?: XOR<MentorNullableScalarRelationFilter, MentorWhereInput> | null
   }, "id">
 
   export type ReviewOrderByWithAggregationInput = {
@@ -23206,6 +23388,8 @@ export namespace Prisma {
     rating?: SortOrder
     date?: SortOrder
     buyerId?: SortOrder
+    itemId?: SortOrderInput | SortOrder
+    mentorId?: SortOrderInput | SortOrder
     _count?: ReviewCountOrderByAggregateInput
     _avg?: ReviewAvgOrderByAggregateInput
     _max?: ReviewMaxOrderByAggregateInput
@@ -23222,6 +23406,8 @@ export namespace Prisma {
     rating?: IntWithAggregatesFilter<"Review"> | number
     date?: DateTimeWithAggregatesFilter<"Review"> | Date | string
     buyerId?: IntWithAggregatesFilter<"Review"> | number
+    itemId?: IntNullableWithAggregatesFilter<"Review"> | number | null
+    mentorId?: IntNullableWithAggregatesFilter<"Review"> | number | null
   }
 
   export type RequestWhereInput = {
@@ -23949,6 +24135,7 @@ export namespace Prisma {
     student?: StudentCreateNestedOneWithoutMentorInput
     user: UserCreateNestedOneWithoutMentorInput
     requestsReceived?: RequestCreateNestedManyWithoutMentorInput
+    reviews?: ReviewCreateNestedManyWithoutMentorInput
   }
 
   export type MentorUncheckedCreateInput = {
@@ -23956,6 +24143,7 @@ export namespace Prisma {
     userId: number
     expertiseArea?: string | null
     requestsReceived?: RequestUncheckedCreateNestedManyWithoutMentorInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutMentorInput
   }
 
   export type MentorUpdateInput = {
@@ -23963,6 +24151,7 @@ export namespace Prisma {
     student?: StudentUpdateOneWithoutMentorNestedInput
     user?: UserUpdateOneRequiredWithoutMentorNestedInput
     requestsReceived?: RequestUpdateManyWithoutMentorNestedInput
+    reviews?: ReviewUpdateManyWithoutMentorNestedInput
   }
 
   export type MentorUncheckedUpdateInput = {
@@ -23970,6 +24159,7 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
     expertiseArea?: NullableStringFieldUpdateOperationsInput | string | null
     requestsReceived?: RequestUncheckedUpdateManyWithoutMentorNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutMentorNestedInput
   }
 
   export type MentorCreateManyInput = {
@@ -24077,6 +24267,7 @@ export namespace Prisma {
     buyer?: BuyerCreateNestedOneWithoutPurchasesInput
     category: CategoryCreateNestedOneWithoutItemsInput
     comments?: ItemCommentCreateNestedManyWithoutItemInput
+    reviews?: ReviewCreateNestedManyWithoutItemInput
   }
 
   export type ItemUncheckedCreateInput = {
@@ -24089,6 +24280,7 @@ export namespace Prisma {
     buyerId?: number | null
     categoryId: number
     comments?: ItemCommentUncheckedCreateNestedManyWithoutItemInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutItemInput
   }
 
   export type ItemUpdateInput = {
@@ -24100,6 +24292,7 @@ export namespace Prisma {
     buyer?: BuyerUpdateOneWithoutPurchasesNestedInput
     category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
     comments?: ItemCommentUpdateManyWithoutItemNestedInput
+    reviews?: ReviewUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateInput = {
@@ -24112,6 +24305,7 @@ export namespace Prisma {
     buyerId?: NullableIntFieldUpdateOperationsInput | number | null
     categoryId?: IntFieldUpdateOperationsInput | number
     comments?: ItemCommentUncheckedUpdateManyWithoutItemNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutItemNestedInput
   }
 
   export type ItemCreateManyInput = {
@@ -24199,6 +24393,8 @@ export namespace Prisma {
     rating: number
     date?: Date | string
     buyer: BuyerCreateNestedOneWithoutReviewsInput
+    item?: ItemCreateNestedOneWithoutReviewsInput
+    mentor?: MentorCreateNestedOneWithoutReviewsInput
   }
 
   export type ReviewUncheckedCreateInput = {
@@ -24207,6 +24403,8 @@ export namespace Prisma {
     rating: number
     date?: Date | string
     buyerId: number
+    itemId?: number | null
+    mentorId?: number | null
   }
 
   export type ReviewUpdateInput = {
@@ -24214,6 +24412,8 @@ export namespace Prisma {
     rating?: IntFieldUpdateOperationsInput | number
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     buyer?: BuyerUpdateOneRequiredWithoutReviewsNestedInput
+    item?: ItemUpdateOneWithoutReviewsNestedInput
+    mentor?: MentorUpdateOneWithoutReviewsNestedInput
   }
 
   export type ReviewUncheckedUpdateInput = {
@@ -24222,6 +24422,8 @@ export namespace Prisma {
     rating?: IntFieldUpdateOperationsInput | number
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     buyerId?: IntFieldUpdateOperationsInput | number
+    itemId?: NullableIntFieldUpdateOperationsInput | number | null
+    mentorId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ReviewCreateManyInput = {
@@ -24230,6 +24432,8 @@ export namespace Prisma {
     rating: number
     date?: Date | string
     buyerId: number
+    itemId?: number | null
+    mentorId?: number | null
   }
 
   export type ReviewUpdateManyMutationInput = {
@@ -24244,6 +24448,8 @@ export namespace Prisma {
     rating?: IntFieldUpdateOperationsInput | number
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     buyerId?: IntFieldUpdateOperationsInput | number
+    itemId?: NullableIntFieldUpdateOperationsInput | number | null
+    mentorId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type RequestCreateInput = {
@@ -25236,18 +25442,27 @@ export namespace Prisma {
     isNot?: BuyerWhereInput
   }
 
+  export type ItemNullableScalarRelationFilter = {
+    is?: ItemWhereInput | null
+    isNot?: ItemWhereInput | null
+  }
+
   export type ReviewCountOrderByAggregateInput = {
     id?: SortOrder
     comments?: SortOrder
     rating?: SortOrder
     date?: SortOrder
     buyerId?: SortOrder
+    itemId?: SortOrder
+    mentorId?: SortOrder
   }
 
   export type ReviewAvgOrderByAggregateInput = {
     id?: SortOrder
     rating?: SortOrder
     buyerId?: SortOrder
+    itemId?: SortOrder
+    mentorId?: SortOrder
   }
 
   export type ReviewMaxOrderByAggregateInput = {
@@ -25256,6 +25471,8 @@ export namespace Prisma {
     rating?: SortOrder
     date?: SortOrder
     buyerId?: SortOrder
+    itemId?: SortOrder
+    mentorId?: SortOrder
   }
 
   export type ReviewMinOrderByAggregateInput = {
@@ -25264,12 +25481,16 @@ export namespace Prisma {
     rating?: SortOrder
     date?: SortOrder
     buyerId?: SortOrder
+    itemId?: SortOrder
+    mentorId?: SortOrder
   }
 
   export type ReviewSumOrderByAggregateInput = {
     id?: SortOrder
     rating?: SortOrder
     buyerId?: SortOrder
+    itemId?: SortOrder
+    mentorId?: SortOrder
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -26384,11 +26605,25 @@ export namespace Prisma {
     connect?: RequestWhereUniqueInput | RequestWhereUniqueInput[]
   }
 
+  export type ReviewCreateNestedManyWithoutMentorInput = {
+    create?: XOR<ReviewCreateWithoutMentorInput, ReviewUncheckedCreateWithoutMentorInput> | ReviewCreateWithoutMentorInput[] | ReviewUncheckedCreateWithoutMentorInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutMentorInput | ReviewCreateOrConnectWithoutMentorInput[]
+    createMany?: ReviewCreateManyMentorInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+  }
+
   export type RequestUncheckedCreateNestedManyWithoutMentorInput = {
     create?: XOR<RequestCreateWithoutMentorInput, RequestUncheckedCreateWithoutMentorInput> | RequestCreateWithoutMentorInput[] | RequestUncheckedCreateWithoutMentorInput[]
     connectOrCreate?: RequestCreateOrConnectWithoutMentorInput | RequestCreateOrConnectWithoutMentorInput[]
     createMany?: RequestCreateManyMentorInputEnvelope
     connect?: RequestWhereUniqueInput | RequestWhereUniqueInput[]
+  }
+
+  export type ReviewUncheckedCreateNestedManyWithoutMentorInput = {
+    create?: XOR<ReviewCreateWithoutMentorInput, ReviewUncheckedCreateWithoutMentorInput> | ReviewCreateWithoutMentorInput[] | ReviewUncheckedCreateWithoutMentorInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutMentorInput | ReviewCreateOrConnectWithoutMentorInput[]
+    createMany?: ReviewCreateManyMentorInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
   }
 
   export type StudentUpdateOneWithoutMentorNestedInput = {
@@ -26423,6 +26658,20 @@ export namespace Prisma {
     deleteMany?: RequestScalarWhereInput | RequestScalarWhereInput[]
   }
 
+  export type ReviewUpdateManyWithoutMentorNestedInput = {
+    create?: XOR<ReviewCreateWithoutMentorInput, ReviewUncheckedCreateWithoutMentorInput> | ReviewCreateWithoutMentorInput[] | ReviewUncheckedCreateWithoutMentorInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutMentorInput | ReviewCreateOrConnectWithoutMentorInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutMentorInput | ReviewUpsertWithWhereUniqueWithoutMentorInput[]
+    createMany?: ReviewCreateManyMentorInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutMentorInput | ReviewUpdateWithWhereUniqueWithoutMentorInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutMentorInput | ReviewUpdateManyWithWhereWithoutMentorInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+  }
+
   export type RequestUncheckedUpdateManyWithoutMentorNestedInput = {
     create?: XOR<RequestCreateWithoutMentorInput, RequestUncheckedCreateWithoutMentorInput> | RequestCreateWithoutMentorInput[] | RequestUncheckedCreateWithoutMentorInput[]
     connectOrCreate?: RequestCreateOrConnectWithoutMentorInput | RequestCreateOrConnectWithoutMentorInput[]
@@ -26435,6 +26684,20 @@ export namespace Prisma {
     update?: RequestUpdateWithWhereUniqueWithoutMentorInput | RequestUpdateWithWhereUniqueWithoutMentorInput[]
     updateMany?: RequestUpdateManyWithWhereWithoutMentorInput | RequestUpdateManyWithWhereWithoutMentorInput[]
     deleteMany?: RequestScalarWhereInput | RequestScalarWhereInput[]
+  }
+
+  export type ReviewUncheckedUpdateManyWithoutMentorNestedInput = {
+    create?: XOR<ReviewCreateWithoutMentorInput, ReviewUncheckedCreateWithoutMentorInput> | ReviewCreateWithoutMentorInput[] | ReviewUncheckedCreateWithoutMentorInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutMentorInput | ReviewCreateOrConnectWithoutMentorInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutMentorInput | ReviewUpsertWithWhereUniqueWithoutMentorInput[]
+    createMany?: ReviewCreateManyMentorInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutMentorInput | ReviewUpdateWithWhereUniqueWithoutMentorInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutMentorInput | ReviewUpdateManyWithWhereWithoutMentorInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
   }
 
   export type StudentCreateNestedOneWithoutMenteeInput = {
@@ -26576,11 +26839,25 @@ export namespace Prisma {
     connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
   }
 
+  export type ReviewCreateNestedManyWithoutItemInput = {
+    create?: XOR<ReviewCreateWithoutItemInput, ReviewUncheckedCreateWithoutItemInput> | ReviewCreateWithoutItemInput[] | ReviewUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutItemInput | ReviewCreateOrConnectWithoutItemInput[]
+    createMany?: ReviewCreateManyItemInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+  }
+
   export type ItemCommentUncheckedCreateNestedManyWithoutItemInput = {
     create?: XOR<ItemCommentCreateWithoutItemInput, ItemCommentUncheckedCreateWithoutItemInput> | ItemCommentCreateWithoutItemInput[] | ItemCommentUncheckedCreateWithoutItemInput[]
     connectOrCreate?: ItemCommentCreateOrConnectWithoutItemInput | ItemCommentCreateOrConnectWithoutItemInput[]
     createMany?: ItemCommentCreateManyItemInputEnvelope
     connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+  }
+
+  export type ReviewUncheckedCreateNestedManyWithoutItemInput = {
+    create?: XOR<ReviewCreateWithoutItemInput, ReviewUncheckedCreateWithoutItemInput> | ReviewCreateWithoutItemInput[] | ReviewUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutItemInput | ReviewCreateOrConnectWithoutItemInput[]
+    createMany?: ReviewCreateManyItemInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -26631,6 +26908,20 @@ export namespace Prisma {
     deleteMany?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
   }
 
+  export type ReviewUpdateManyWithoutItemNestedInput = {
+    create?: XOR<ReviewCreateWithoutItemInput, ReviewUncheckedCreateWithoutItemInput> | ReviewCreateWithoutItemInput[] | ReviewUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutItemInput | ReviewCreateOrConnectWithoutItemInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutItemInput | ReviewUpsertWithWhereUniqueWithoutItemInput[]
+    createMany?: ReviewCreateManyItemInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutItemInput | ReviewUpdateWithWhereUniqueWithoutItemInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutItemInput | ReviewUpdateManyWithWhereWithoutItemInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+  }
+
   export type ItemCommentUncheckedUpdateManyWithoutItemNestedInput = {
     create?: XOR<ItemCommentCreateWithoutItemInput, ItemCommentUncheckedCreateWithoutItemInput> | ItemCommentCreateWithoutItemInput[] | ItemCommentUncheckedCreateWithoutItemInput[]
     connectOrCreate?: ItemCommentCreateOrConnectWithoutItemInput | ItemCommentCreateOrConnectWithoutItemInput[]
@@ -26643,6 +26934,20 @@ export namespace Prisma {
     update?: ItemCommentUpdateWithWhereUniqueWithoutItemInput | ItemCommentUpdateWithWhereUniqueWithoutItemInput[]
     updateMany?: ItemCommentUpdateManyWithWhereWithoutItemInput | ItemCommentUpdateManyWithWhereWithoutItemInput[]
     deleteMany?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
+  }
+
+  export type ReviewUncheckedUpdateManyWithoutItemNestedInput = {
+    create?: XOR<ReviewCreateWithoutItemInput, ReviewUncheckedCreateWithoutItemInput> | ReviewCreateWithoutItemInput[] | ReviewUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutItemInput | ReviewCreateOrConnectWithoutItemInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutItemInput | ReviewUpsertWithWhereUniqueWithoutItemInput[]
+    createMany?: ReviewCreateManyItemInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutItemInput | ReviewUpdateWithWhereUniqueWithoutItemInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutItemInput | ReviewUpdateManyWithWhereWithoutItemInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutItemCommentsInput = {
@@ -26679,12 +26984,44 @@ export namespace Prisma {
     connect?: BuyerWhereUniqueInput
   }
 
+  export type ItemCreateNestedOneWithoutReviewsInput = {
+    create?: XOR<ItemCreateWithoutReviewsInput, ItemUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutReviewsInput
+    connect?: ItemWhereUniqueInput
+  }
+
+  export type MentorCreateNestedOneWithoutReviewsInput = {
+    create?: XOR<MentorCreateWithoutReviewsInput, MentorUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: MentorCreateOrConnectWithoutReviewsInput
+    connect?: MentorWhereUniqueInput
+  }
+
   export type BuyerUpdateOneRequiredWithoutReviewsNestedInput = {
     create?: XOR<BuyerCreateWithoutReviewsInput, BuyerUncheckedCreateWithoutReviewsInput>
     connectOrCreate?: BuyerCreateOrConnectWithoutReviewsInput
     upsert?: BuyerUpsertWithoutReviewsInput
     connect?: BuyerWhereUniqueInput
     update?: XOR<XOR<BuyerUpdateToOneWithWhereWithoutReviewsInput, BuyerUpdateWithoutReviewsInput>, BuyerUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type ItemUpdateOneWithoutReviewsNestedInput = {
+    create?: XOR<ItemCreateWithoutReviewsInput, ItemUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutReviewsInput
+    upsert?: ItemUpsertWithoutReviewsInput
+    disconnect?: ItemWhereInput | boolean
+    delete?: ItemWhereInput | boolean
+    connect?: ItemWhereUniqueInput
+    update?: XOR<XOR<ItemUpdateToOneWithWhereWithoutReviewsInput, ItemUpdateWithoutReviewsInput>, ItemUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type MentorUpdateOneWithoutReviewsNestedInput = {
+    create?: XOR<MentorCreateWithoutReviewsInput, MentorUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: MentorCreateOrConnectWithoutReviewsInput
+    upsert?: MentorUpsertWithoutReviewsInput
+    disconnect?: MentorWhereInput | boolean
+    delete?: MentorWhereInput | boolean
+    connect?: MentorWhereUniqueInput
+    update?: XOR<XOR<MentorUpdateToOneWithWhereWithoutReviewsInput, MentorUpdateWithoutReviewsInput>, MentorUncheckedUpdateWithoutReviewsInput>
   }
 
   export type MentorCreateNestedOneWithoutRequestsReceivedInput = {
@@ -27064,12 +27401,14 @@ export namespace Prisma {
     expertiseArea?: string | null
     student?: StudentCreateNestedOneWithoutMentorInput
     requestsReceived?: RequestCreateNestedManyWithoutMentorInput
+    reviews?: ReviewCreateNestedManyWithoutMentorInput
   }
 
   export type MentorUncheckedCreateWithoutUserInput = {
     studentId?: number | null
     expertiseArea?: string | null
     requestsReceived?: RequestUncheckedCreateNestedManyWithoutMentorInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutMentorInput
   }
 
   export type MentorCreateOrConnectWithoutUserInput = {
@@ -27356,12 +27695,14 @@ export namespace Prisma {
     expertiseArea?: NullableStringFieldUpdateOperationsInput | string | null
     student?: StudentUpdateOneWithoutMentorNestedInput
     requestsReceived?: RequestUpdateManyWithoutMentorNestedInput
+    reviews?: ReviewUpdateManyWithoutMentorNestedInput
   }
 
   export type MentorUncheckedUpdateWithoutUserInput = {
     studentId?: NullableIntFieldUpdateOperationsInput | number | null
     expertiseArea?: NullableStringFieldUpdateOperationsInput | string | null
     requestsReceived?: RequestUncheckedUpdateManyWithoutMentorNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutMentorNestedInput
   }
 
   export type MenteeUpsertWithoutUserInput = {
@@ -28179,12 +28520,14 @@ export namespace Prisma {
     expertiseArea?: string | null
     user: UserCreateNestedOneWithoutMentorInput
     requestsReceived?: RequestCreateNestedManyWithoutMentorInput
+    reviews?: ReviewCreateNestedManyWithoutMentorInput
   }
 
   export type MentorUncheckedCreateWithoutStudentInput = {
     userId: number
     expertiseArea?: string | null
     requestsReceived?: RequestUncheckedCreateNestedManyWithoutMentorInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutMentorInput
   }
 
   export type MentorCreateOrConnectWithoutStudentInput = {
@@ -28292,12 +28635,14 @@ export namespace Prisma {
     expertiseArea?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutMentorNestedInput
     requestsReceived?: RequestUpdateManyWithoutMentorNestedInput
+    reviews?: ReviewUpdateManyWithoutMentorNestedInput
   }
 
   export type MentorUncheckedUpdateWithoutStudentInput = {
     userId?: IntFieldUpdateOperationsInput | number
     expertiseArea?: NullableStringFieldUpdateOperationsInput | string | null
     requestsReceived?: RequestUncheckedUpdateManyWithoutMentorNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutMentorNestedInput
   }
 
   export type MenteeUpsertWithoutStudentInput = {
@@ -28413,6 +28758,7 @@ export namespace Prisma {
     seller: SellerCreateNestedOneWithoutItemsInput
     category: CategoryCreateNestedOneWithoutItemsInput
     comments?: ItemCommentCreateNestedManyWithoutItemInput
+    reviews?: ReviewCreateNestedManyWithoutItemInput
   }
 
   export type ItemUncheckedCreateWithoutBuyerInput = {
@@ -28424,6 +28770,7 @@ export namespace Prisma {
     sellerId: number
     categoryId: number
     comments?: ItemCommentUncheckedCreateNestedManyWithoutItemInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutItemInput
   }
 
   export type ItemCreateOrConnectWithoutBuyerInput = {
@@ -28439,6 +28786,8 @@ export namespace Prisma {
     comments?: string | null
     rating: number
     date?: Date | string
+    item?: ItemCreateNestedOneWithoutReviewsInput
+    mentor?: MentorCreateNestedOneWithoutReviewsInput
   }
 
   export type ReviewUncheckedCreateWithoutBuyerInput = {
@@ -28446,6 +28795,8 @@ export namespace Prisma {
     comments?: string | null
     rating: number
     date?: Date | string
+    itemId?: number | null
+    mentorId?: number | null
   }
 
   export type ReviewCreateOrConnectWithoutBuyerInput = {
@@ -28606,6 +28957,8 @@ export namespace Prisma {
     rating?: IntFilter<"Review"> | number
     date?: DateTimeFilter<"Review"> | Date | string
     buyerId?: IntFilter<"Review"> | number
+    itemId?: IntNullableFilter<"Review"> | number | null
+    mentorId?: IntNullableFilter<"Review"> | number | null
   }
 
   export type StudentCreateWithoutSellerInput = {
@@ -28698,6 +29051,7 @@ export namespace Prisma {
     buyer?: BuyerCreateNestedOneWithoutPurchasesInput
     category: CategoryCreateNestedOneWithoutItemsInput
     comments?: ItemCommentCreateNestedManyWithoutItemInput
+    reviews?: ReviewCreateNestedManyWithoutItemInput
   }
 
   export type ItemUncheckedCreateWithoutSellerInput = {
@@ -28709,6 +29063,7 @@ export namespace Prisma {
     buyerId?: number | null
     categoryId: number
     comments?: ItemCommentUncheckedCreateNestedManyWithoutItemInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutItemInput
   }
 
   export type ItemCreateOrConnectWithoutSellerInput = {
@@ -28936,6 +29291,32 @@ export namespace Prisma {
     data: RequestCreateManyMentorInput | RequestCreateManyMentorInput[]
   }
 
+  export type ReviewCreateWithoutMentorInput = {
+    comments?: string | null
+    rating: number
+    date?: Date | string
+    buyer: BuyerCreateNestedOneWithoutReviewsInput
+    item?: ItemCreateNestedOneWithoutReviewsInput
+  }
+
+  export type ReviewUncheckedCreateWithoutMentorInput = {
+    id?: number
+    comments?: string | null
+    rating: number
+    date?: Date | string
+    buyerId: number
+    itemId?: number | null
+  }
+
+  export type ReviewCreateOrConnectWithoutMentorInput = {
+    where: ReviewWhereUniqueInput
+    create: XOR<ReviewCreateWithoutMentorInput, ReviewUncheckedCreateWithoutMentorInput>
+  }
+
+  export type ReviewCreateManyMentorInputEnvelope = {
+    data: ReviewCreateManyMentorInput | ReviewCreateManyMentorInput[]
+  }
+
   export type StudentUpsertWithoutMentorInput = {
     update: XOR<StudentUpdateWithoutMentorInput, StudentUncheckedUpdateWithoutMentorInput>
     create: XOR<StudentCreateWithoutMentorInput, StudentUncheckedCreateWithoutMentorInput>
@@ -29056,6 +29437,22 @@ export namespace Prisma {
     requestReceived?: DateTimeNullableFilter<"Request"> | Date | string | null
     mentorId?: IntFilter<"Request"> | number
     menteeId?: IntFilter<"Request"> | number
+  }
+
+  export type ReviewUpsertWithWhereUniqueWithoutMentorInput = {
+    where: ReviewWhereUniqueInput
+    update: XOR<ReviewUpdateWithoutMentorInput, ReviewUncheckedUpdateWithoutMentorInput>
+    create: XOR<ReviewCreateWithoutMentorInput, ReviewUncheckedCreateWithoutMentorInput>
+  }
+
+  export type ReviewUpdateWithWhereUniqueWithoutMentorInput = {
+    where: ReviewWhereUniqueInput
+    data: XOR<ReviewUpdateWithoutMentorInput, ReviewUncheckedUpdateWithoutMentorInput>
+  }
+
+  export type ReviewUpdateManyWithWhereWithoutMentorInput = {
+    where: ReviewScalarWhereInput
+    data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutMentorInput>
   }
 
   export type StudentCreateWithoutMenteeInput = {
@@ -29282,6 +29679,7 @@ export namespace Prisma {
     seller: SellerCreateNestedOneWithoutItemsInput
     buyer?: BuyerCreateNestedOneWithoutPurchasesInput
     comments?: ItemCommentCreateNestedManyWithoutItemInput
+    reviews?: ReviewCreateNestedManyWithoutItemInput
   }
 
   export type ItemUncheckedCreateWithoutCategoryInput = {
@@ -29293,6 +29691,7 @@ export namespace Prisma {
     sellerId: number
     buyerId?: number | null
     comments?: ItemCommentUncheckedCreateNestedManyWithoutItemInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutItemInput
   }
 
   export type ItemCreateOrConnectWithoutCategoryInput = {
@@ -29388,6 +29787,32 @@ export namespace Prisma {
     data: ItemCommentCreateManyItemInput | ItemCommentCreateManyItemInput[]
   }
 
+  export type ReviewCreateWithoutItemInput = {
+    comments?: string | null
+    rating: number
+    date?: Date | string
+    buyer: BuyerCreateNestedOneWithoutReviewsInput
+    mentor?: MentorCreateNestedOneWithoutReviewsInput
+  }
+
+  export type ReviewUncheckedCreateWithoutItemInput = {
+    id?: number
+    comments?: string | null
+    rating: number
+    date?: Date | string
+    buyerId: number
+    mentorId?: number | null
+  }
+
+  export type ReviewCreateOrConnectWithoutItemInput = {
+    where: ReviewWhereUniqueInput
+    create: XOR<ReviewCreateWithoutItemInput, ReviewUncheckedCreateWithoutItemInput>
+  }
+
+  export type ReviewCreateManyItemInputEnvelope = {
+    data: ReviewCreateManyItemInput | ReviewCreateManyItemInput[]
+  }
+
   export type SellerUpsertWithoutItemsInput = {
     update: XOR<SellerUpdateWithoutItemsInput, SellerUncheckedUpdateWithoutItemsInput>
     create: XOR<SellerCreateWithoutItemsInput, SellerUncheckedCreateWithoutItemsInput>
@@ -29468,6 +29893,22 @@ export namespace Prisma {
     data: XOR<ItemCommentUpdateManyMutationInput, ItemCommentUncheckedUpdateManyWithoutItemInput>
   }
 
+  export type ReviewUpsertWithWhereUniqueWithoutItemInput = {
+    where: ReviewWhereUniqueInput
+    update: XOR<ReviewUpdateWithoutItemInput, ReviewUncheckedUpdateWithoutItemInput>
+    create: XOR<ReviewCreateWithoutItemInput, ReviewUncheckedCreateWithoutItemInput>
+  }
+
+  export type ReviewUpdateWithWhereUniqueWithoutItemInput = {
+    where: ReviewWhereUniqueInput
+    data: XOR<ReviewUpdateWithoutItemInput, ReviewUncheckedUpdateWithoutItemInput>
+  }
+
+  export type ReviewUpdateManyWithWhereWithoutItemInput = {
+    where: ReviewScalarWhereInput
+    data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutItemInput>
+  }
+
   export type UserCreateWithoutItemCommentsInput = {
     email: string
     password: string
@@ -29530,6 +29971,7 @@ export namespace Prisma {
     seller: SellerCreateNestedOneWithoutItemsInput
     buyer?: BuyerCreateNestedOneWithoutPurchasesInput
     category: CategoryCreateNestedOneWithoutItemsInput
+    reviews?: ReviewCreateNestedManyWithoutItemInput
   }
 
   export type ItemUncheckedCreateWithoutCommentsInput = {
@@ -29541,6 +29983,7 @@ export namespace Prisma {
     sellerId: number
     buyerId?: number | null
     categoryId: number
+    reviews?: ReviewUncheckedCreateNestedManyWithoutItemInput
   }
 
   export type ItemCreateOrConnectWithoutCommentsInput = {
@@ -29627,6 +30070,7 @@ export namespace Prisma {
     seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
     buyer?: BuyerUpdateOneWithoutPurchasesNestedInput
     category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
+    reviews?: ReviewUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutCommentsInput = {
@@ -29638,6 +30082,7 @@ export namespace Prisma {
     sellerId?: IntFieldUpdateOperationsInput | number
     buyerId?: NullableIntFieldUpdateOperationsInput | number | null
     categoryId?: IntFieldUpdateOperationsInput | number
+    reviews?: ReviewUncheckedUpdateManyWithoutItemNestedInput
   }
 
   export type BuyerCreateWithoutReviewsInput = {
@@ -29655,6 +30100,53 @@ export namespace Prisma {
   export type BuyerCreateOrConnectWithoutReviewsInput = {
     where: BuyerWhereUniqueInput
     create: XOR<BuyerCreateWithoutReviewsInput, BuyerUncheckedCreateWithoutReviewsInput>
+  }
+
+  export type ItemCreateWithoutReviewsInput = {
+    itemName: string
+    cost: number
+    condition: string
+    imageUrl?: string | null
+    seller: SellerCreateNestedOneWithoutItemsInput
+    buyer?: BuyerCreateNestedOneWithoutPurchasesInput
+    category: CategoryCreateNestedOneWithoutItemsInput
+    comments?: ItemCommentCreateNestedManyWithoutItemInput
+  }
+
+  export type ItemUncheckedCreateWithoutReviewsInput = {
+    id?: number
+    itemName: string
+    cost: number
+    condition: string
+    imageUrl?: string | null
+    sellerId: number
+    buyerId?: number | null
+    categoryId: number
+    comments?: ItemCommentUncheckedCreateNestedManyWithoutItemInput
+  }
+
+  export type ItemCreateOrConnectWithoutReviewsInput = {
+    where: ItemWhereUniqueInput
+    create: XOR<ItemCreateWithoutReviewsInput, ItemUncheckedCreateWithoutReviewsInput>
+  }
+
+  export type MentorCreateWithoutReviewsInput = {
+    expertiseArea?: string | null
+    student?: StudentCreateNestedOneWithoutMentorInput
+    user: UserCreateNestedOneWithoutMentorInput
+    requestsReceived?: RequestCreateNestedManyWithoutMentorInput
+  }
+
+  export type MentorUncheckedCreateWithoutReviewsInput = {
+    studentId?: number | null
+    userId: number
+    expertiseArea?: string | null
+    requestsReceived?: RequestUncheckedCreateNestedManyWithoutMentorInput
+  }
+
+  export type MentorCreateOrConnectWithoutReviewsInput = {
+    where: MentorWhereUniqueInput
+    create: XOR<MentorCreateWithoutReviewsInput, MentorUncheckedCreateWithoutReviewsInput>
   }
 
   export type BuyerUpsertWithoutReviewsInput = {
@@ -29680,16 +30172,77 @@ export namespace Prisma {
     purchases?: ItemUncheckedUpdateManyWithoutBuyerNestedInput
   }
 
+  export type ItemUpsertWithoutReviewsInput = {
+    update: XOR<ItemUpdateWithoutReviewsInput, ItemUncheckedUpdateWithoutReviewsInput>
+    create: XOR<ItemCreateWithoutReviewsInput, ItemUncheckedCreateWithoutReviewsInput>
+    where?: ItemWhereInput
+  }
+
+  export type ItemUpdateToOneWithWhereWithoutReviewsInput = {
+    where?: ItemWhereInput
+    data: XOR<ItemUpdateWithoutReviewsInput, ItemUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type ItemUpdateWithoutReviewsInput = {
+    itemName?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    condition?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
+    buyer?: BuyerUpdateOneWithoutPurchasesNestedInput
+    category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
+    comments?: ItemCommentUpdateManyWithoutItemNestedInput
+  }
+
+  export type ItemUncheckedUpdateWithoutReviewsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    itemName?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    condition?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sellerId?: IntFieldUpdateOperationsInput | number
+    buyerId?: NullableIntFieldUpdateOperationsInput | number | null
+    categoryId?: IntFieldUpdateOperationsInput | number
+    comments?: ItemCommentUncheckedUpdateManyWithoutItemNestedInput
+  }
+
+  export type MentorUpsertWithoutReviewsInput = {
+    update: XOR<MentorUpdateWithoutReviewsInput, MentorUncheckedUpdateWithoutReviewsInput>
+    create: XOR<MentorCreateWithoutReviewsInput, MentorUncheckedCreateWithoutReviewsInput>
+    where?: MentorWhereInput
+  }
+
+  export type MentorUpdateToOneWithWhereWithoutReviewsInput = {
+    where?: MentorWhereInput
+    data: XOR<MentorUpdateWithoutReviewsInput, MentorUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type MentorUpdateWithoutReviewsInput = {
+    expertiseArea?: NullableStringFieldUpdateOperationsInput | string | null
+    student?: StudentUpdateOneWithoutMentorNestedInput
+    user?: UserUpdateOneRequiredWithoutMentorNestedInput
+    requestsReceived?: RequestUpdateManyWithoutMentorNestedInput
+  }
+
+  export type MentorUncheckedUpdateWithoutReviewsInput = {
+    studentId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
+    expertiseArea?: NullableStringFieldUpdateOperationsInput | string | null
+    requestsReceived?: RequestUncheckedUpdateManyWithoutMentorNestedInput
+  }
+
   export type MentorCreateWithoutRequestsReceivedInput = {
     expertiseArea?: string | null
     student?: StudentCreateNestedOneWithoutMentorInput
     user: UserCreateNestedOneWithoutMentorInput
+    reviews?: ReviewCreateNestedManyWithoutMentorInput
   }
 
   export type MentorUncheckedCreateWithoutRequestsReceivedInput = {
     studentId?: number | null
     userId: number
     expertiseArea?: string | null
+    reviews?: ReviewUncheckedCreateNestedManyWithoutMentorInput
   }
 
   export type MentorCreateOrConnectWithoutRequestsReceivedInput = {
@@ -29729,12 +30282,14 @@ export namespace Prisma {
     expertiseArea?: NullableStringFieldUpdateOperationsInput | string | null
     student?: StudentUpdateOneWithoutMentorNestedInput
     user?: UserUpdateOneRequiredWithoutMentorNestedInput
+    reviews?: ReviewUpdateManyWithoutMentorNestedInput
   }
 
   export type MentorUncheckedUpdateWithoutRequestsReceivedInput = {
     studentId?: NullableIntFieldUpdateOperationsInput | number | null
     userId?: IntFieldUpdateOperationsInput | number
     expertiseArea?: NullableStringFieldUpdateOperationsInput | string | null
+    reviews?: ReviewUncheckedUpdateManyWithoutMentorNestedInput
   }
 
   export type MenteeUpsertWithoutRequestsSentInput = {
@@ -30340,6 +30895,8 @@ export namespace Prisma {
     comments?: string | null
     rating: number
     date?: Date | string
+    itemId?: number | null
+    mentorId?: number | null
   }
 
   export type ItemUpdateWithoutBuyerInput = {
@@ -30350,6 +30907,7 @@ export namespace Prisma {
     seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
     category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
     comments?: ItemCommentUpdateManyWithoutItemNestedInput
+    reviews?: ReviewUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutBuyerInput = {
@@ -30361,6 +30919,7 @@ export namespace Prisma {
     sellerId?: IntFieldUpdateOperationsInput | number
     categoryId?: IntFieldUpdateOperationsInput | number
     comments?: ItemCommentUncheckedUpdateManyWithoutItemNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateManyWithoutBuyerInput = {
@@ -30377,6 +30936,8 @@ export namespace Prisma {
     comments?: NullableStringFieldUpdateOperationsInput | string | null
     rating?: IntFieldUpdateOperationsInput | number
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    item?: ItemUpdateOneWithoutReviewsNestedInput
+    mentor?: MentorUpdateOneWithoutReviewsNestedInput
   }
 
   export type ReviewUncheckedUpdateWithoutBuyerInput = {
@@ -30384,6 +30945,8 @@ export namespace Prisma {
     comments?: NullableStringFieldUpdateOperationsInput | string | null
     rating?: IntFieldUpdateOperationsInput | number
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    itemId?: NullableIntFieldUpdateOperationsInput | number | null
+    mentorId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ReviewUncheckedUpdateManyWithoutBuyerInput = {
@@ -30391,6 +30954,8 @@ export namespace Prisma {
     comments?: NullableStringFieldUpdateOperationsInput | string | null
     rating?: IntFieldUpdateOperationsInput | number
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    itemId?: NullableIntFieldUpdateOperationsInput | number | null
+    mentorId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ItemCreateManySellerInput = {
@@ -30411,6 +30976,7 @@ export namespace Prisma {
     buyer?: BuyerUpdateOneWithoutPurchasesNestedInput
     category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
     comments?: ItemCommentUpdateManyWithoutItemNestedInput
+    reviews?: ReviewUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutSellerInput = {
@@ -30422,6 +30988,7 @@ export namespace Prisma {
     buyerId?: NullableIntFieldUpdateOperationsInput | number | null
     categoryId?: IntFieldUpdateOperationsInput | number
     comments?: ItemCommentUncheckedUpdateManyWithoutItemNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateManyWithoutSellerInput = {
@@ -30440,6 +31007,15 @@ export namespace Prisma {
     requestSent?: Date | string
     requestReceived?: Date | string | null
     menteeId: number
+  }
+
+  export type ReviewCreateManyMentorInput = {
+    id?: number
+    comments?: string | null
+    rating: number
+    date?: Date | string
+    buyerId: number
+    itemId?: number | null
   }
 
   export type RequestUpdateWithoutMentorInput = {
@@ -30463,6 +31039,32 @@ export namespace Prisma {
     requestSent?: DateTimeFieldUpdateOperationsInput | Date | string
     requestReceived?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     menteeId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ReviewUpdateWithoutMentorInput = {
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    buyer?: BuyerUpdateOneRequiredWithoutReviewsNestedInput
+    item?: ItemUpdateOneWithoutReviewsNestedInput
+  }
+
+  export type ReviewUncheckedUpdateWithoutMentorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    buyerId?: IntFieldUpdateOperationsInput | number
+    itemId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ReviewUncheckedUpdateManyWithoutMentorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    buyerId?: IntFieldUpdateOperationsInput | number
+    itemId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type RequestCreateManyMenteeInput = {
@@ -30514,6 +31116,7 @@ export namespace Prisma {
     seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
     buyer?: BuyerUpdateOneWithoutPurchasesNestedInput
     comments?: ItemCommentUpdateManyWithoutItemNestedInput
+    reviews?: ReviewUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutCategoryInput = {
@@ -30525,6 +31128,7 @@ export namespace Prisma {
     sellerId?: IntFieldUpdateOperationsInput | number
     buyerId?: NullableIntFieldUpdateOperationsInput | number | null
     comments?: ItemCommentUncheckedUpdateManyWithoutItemNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutItemNestedInput
   }
 
   export type ItemUncheckedUpdateManyWithoutCategoryInput = {
@@ -30542,6 +31146,15 @@ export namespace Prisma {
     text: string
     createdAt?: Date | string
     userId: number
+  }
+
+  export type ReviewCreateManyItemInput = {
+    id?: number
+    comments?: string | null
+    rating: number
+    date?: Date | string
+    buyerId: number
+    mentorId?: number | null
   }
 
   export type ItemCommentUpdateWithoutItemInput = {
@@ -30562,6 +31175,32 @@ export namespace Prisma {
     text?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ReviewUpdateWithoutItemInput = {
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    buyer?: BuyerUpdateOneRequiredWithoutReviewsNestedInput
+    mentor?: MentorUpdateOneWithoutReviewsNestedInput
+  }
+
+  export type ReviewUncheckedUpdateWithoutItemInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    buyerId?: IntFieldUpdateOperationsInput | number
+    mentorId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ReviewUncheckedUpdateManyWithoutItemInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    buyerId?: IntFieldUpdateOperationsInput | number
+    mentorId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
 

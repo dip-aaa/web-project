@@ -259,7 +259,7 @@ export function Button({
   children: React.ReactNode;
   variant?: "primary" | "secondary" | "ghost" | "danger";
   size?: "sm" | "md" | "lg";
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   fullWidth?: boolean;
   icon?: React.ReactNode;
   style?: React.CSSProperties;

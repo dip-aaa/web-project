@@ -6,10 +6,10 @@ interface ChatInputProps {
   disabled?: boolean;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ 
-  onSendMessage, 
+const ChatInput: React.FC<ChatInputProps> = ({
+  onSendMessage,
   placeholder = "Type a message...",
-  disabled = false 
+  disabled = false
 }) => {
   const [inputValue, setInputValue] = useState('');
 
@@ -28,19 +28,18 @@ const ChatInput: React.FC<ChatInputProps> = ({
   };
 
   return (
-    <div className="bg-[#f5f0eb] px-4 py-4 border-t border-[#e8ddd4] shadow-lg">
-      <div className="max-w-4xl mx-auto flex gap-3 items-center">
+    <div className="bg-[#f5f0eb] px-6 py-5 border-t border-[#e8ddd4] shadow-lg z-10">
+      <div className="max-w-4xl mx-auto flex gap-4 items-center">
         {/* Emoji/Attachment buttons */}
-        <button 
+        <button
           disabled={disabled}
-          className={`flex-shrink-0 p-2.5 rounded-full transition-all duration-200 shadow-md ${
-            disabled 
-              ? 'bg-stone-200 text-stone-400 cursor-not-allowed' 
-              : 'bg-stone-300 hover:bg-stone-400 text-stone-800 hover:shadow-lg'
-          }`}
+          className={`flex-shrink-0 p-3.5 rounded-full transition-all duration-200 shadow-md ${disabled
+            ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
+            : 'bg-stone-300 hover:bg-stone-400 text-stone-800 hover:shadow-lg'
+            }`}
           aria-label="Add emoji"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </button>
@@ -55,10 +54,11 @@ const ChatInput: React.FC<ChatInputProps> = ({
             disabled={disabled}
             placeholder={placeholder}
             className={`
-              w-full px-5 py-3.5 
+              w-full px-6 py-4 
               bg-white
               border-2 border-[#e8ddd4]
               rounded-full 
+              text-base
               text-[#6b4423] placeholder-[#b08e62]
               focus:outline-none focus:border-[#8b6f47] focus:ring-2 focus:ring-[#f5f0eb]
               shadow-sm
@@ -73,7 +73,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           onClick={handleSend}
           disabled={!inputValue.trim() || disabled}
           className={`
-            flex-shrink-0 p-3 rounded-full
+            flex-shrink-0 p-4 rounded-full
             transition-all duration-200 shadow-md
             ${!inputValue.trim() || disabled
               ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
@@ -82,7 +82,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           `}
           aria-label="Send message"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
           </svg>
         </button>

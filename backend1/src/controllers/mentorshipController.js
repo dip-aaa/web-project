@@ -40,7 +40,12 @@ const getMentors = async (req, res, next) => {
         phoneNumber: true,
         mentor: {
           select: {
-            expertiseArea: true
+            expertiseArea: true,
+            reviews: {
+              select: {
+                rating: true
+              }
+            }
           }
         }
       },
@@ -48,16 +53,24 @@ const getMentors = async (req, res, next) => {
     });
 
     // Format response
-    const formattedUsers = users.map(user => ({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      department: user.department || 'Not specified',
-      phoneNumber: user.phoneNumber,
-      role: 'mentor',
-      expertiseArea: user.mentor?.expertiseArea,
-      isMentor: true
-    }));
+    const formattedUsers = users.map(user => {
+      const avgRating = user.mentor?.reviews.length > 0
+        ? user.mentor.reviews.reduce((acc, curr) => acc + curr.rating, 0) / user.mentor.reviews.length
+        : 0;
+
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        department: user.department || 'Not specified',
+        phoneNumber: user.phoneNumber,
+        role: 'mentor',
+        expertiseArea: user.mentor?.expertiseArea,
+        isMentor: true,
+        avgRating: parseFloat(avgRating.toFixed(1)),
+        reviewCount: user.mentor?.reviews.length || 0
+      };
+    });
 
     res.status(200).json({
       success: true,
@@ -68,6 +81,7 @@ const getMentors = async (req, res, next) => {
     next(error);
   }
 };
+
 
 /**
  * Send connection request to a mentor
@@ -86,7 +100,7 @@ const sendConnectionRequest = async (req, res, next) => {
 
     // Check if mentor exists and has mentor profile
     const mentor = await prisma.mentor.findUnique({
-      where: { userId: mentorId },
+      where: { userId: parseInt(mentorId) },
       include: { user: true }
     });
 
@@ -111,18 +125,43 @@ const sendConnectionRequest = async (req, res, next) => {
       });
     }
 
-    // Check if request already exists
-    const existingRequest = await prisma.request.findFirst({
+    // Check for ANY existing requests between these two users
+    const existingRequests = await prisma.request.findMany({
       where: {
         mentorId: mentor.userId,
         menteeId: mentee.userId
       }
     });
 
-    if (existingRequest) {
-      return res.status(400).json({
-        success: false,
-        message: 'Connection request already sent'
+    // Cleanup logic: If there are multiple requests or cancelled ones, we might need to clean up
+    if (existingRequests.length > 0) {
+      // Check if there is already a pending or accepted request
+      const activeRequest = existingRequests.find(r =>
+        r.requestStatus === 'pending' || r.requestStatus === 'accepted'
+      );
+
+      if (activeRequest) {
+        if (activeRequest.requestStatus === 'accepted') {
+          return res.status(400).json({
+            success: false,
+            message: 'You are already connected with this mentor'
+          });
+        } else {
+          return res.status(400).json({
+            success: false,
+            message: 'Connection request already sent'
+          });
+        }
+      }
+
+      // If we're here, it means all existing requests are rejected or cancelled (or some other state)
+      // We should delete them to avoid clutter and allow a new request
+      // (Optionally, we could just update the status of one, but creating fresh is cleaner and avoids history confusion)
+      await prisma.request.deleteMany({
+        where: {
+          mentorId: mentor.userId,
+          menteeId: mentee.userId
+        }
       });
     }
 
@@ -177,6 +216,7 @@ const sendConnectionRequest = async (req, res, next) => {
     next(error);
   }
 };
+
 
 /**
  * Get connection requests (notifications) for current user
@@ -333,7 +373,7 @@ const respondToRequest = async (req, res, next) => {
         userId: request.menteeId,
         type: 'mentorship_response',
         title: action === 'accept' ? '✅ Request Accepted!' : '❌ Request Declined',
-        message: action === 'accept' 
+        message: action === 'accept'
           ? `${request.mentor.user.name} accepted your mentorship request`
           : `${request.mentor.user.name} declined your mentorship request`,
         data: { requestId: request.id, mentorId: request.mentorId, mentorName: request.mentor.user.name, action }
@@ -443,6 +483,11 @@ const getUserProfile = async (req, res, next) => {
               select: {
                 id: true
               }
+            },
+            reviews: {
+              select: {
+                rating: true
+              }
             }
           }
         },
@@ -483,7 +528,11 @@ const getUserProfile = async (req, res, next) => {
       expertiseArea: user.mentor?.expertiseArea,
       interestArea: user.mentee?.interestArea,
       mentorConnections: user.mentor?.requestsReceived.length || 0,
-      menteeConnections: user.mentee?.requestsSent.length || 0
+      menteeConnections: user.mentee?.requestsSent.length || 0,
+      avgRating: user.mentor?.reviews.length > 0
+        ? parseFloat((user.mentor.reviews.reduce((acc, curr) => acc + curr.rating, 0) / user.mentor.reviews.length).toFixed(1))
+        : 0,
+      reviewCount: user.mentor?.reviews.length || 0
     };
 
     res.status(200).json({
@@ -557,12 +606,12 @@ const getConnectedUsers = async (req, res, next) => {
     // Extract connected users
     const connectedUsers = acceptedRequests.map(request => {
       // If current user is the mentor, return mentee; otherwise return mentor
-      const connectedUser = request.mentorId === userId 
-        ? request.mentee.user 
+      const connectedUser = request.mentorId === userId
+        ? request.mentee.user
         : request.mentor.user;
-      
+
       console.log('Mapping request - isMentor:', request.mentorId === userId, 'returning:', connectedUser.name);
-      
+
       return {
         id: connectedUser.id,
         name: connectedUser.name,

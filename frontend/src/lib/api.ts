@@ -25,7 +25,7 @@ export const marketplaceAPI = {
     const token = getAuthToken();
     const formData = new FormData();
     formData.append('image', file);
-    
+
     const response = await fetch(`${API_URL}/marketplace/upload-image`, {
       method: 'POST',
       headers: {
@@ -43,7 +43,7 @@ export const marketplaceAPI = {
     if (filters?.condition) params.append('condition', filters.condition);
     if (filters?.minPrice) params.append('minPrice', filters.minPrice.toString());
     if (filters?.maxPrice) params.append('maxPrice', filters.maxPrice.toString());
-    
+
     const response = await fetch(`${API_URL}/marketplace/items?${params}`, {
       headers: getAuthHeaders()
     });
@@ -109,6 +109,33 @@ export const marketplaceAPI = {
       headers: getAuthHeaders()
     });
     return response.json();
+  },
+
+  // Request to buy an item
+  sendBuyRequest: async (itemId: string) => {
+    const response = await fetch(`${API_URL}/marketplace/request-to-buy/${itemId}`, {
+      method: 'POST',
+      headers: getAuthHeaders()
+    });
+    return response.json();
+  },
+
+  // Accept buy request
+  acceptBuyRequest: async (notificationId: number) => {
+    const response = await fetch(`${API_URL}/marketplace/accept-buy-request/${notificationId}`, {
+      method: 'POST',
+      headers: getAuthHeaders()
+    });
+    return response.json();
+  },
+
+  // Reject buy request
+  rejectBuyRequest: async (notificationId: number) => {
+    const response = await fetch(`${API_URL}/marketplace/reject-buy-request/${notificationId}`, {
+      method: 'POST',
+      headers: getAuthHeaders()
+    });
+    return response.json();
   }
 };
 
@@ -144,14 +171,14 @@ export const authAPI = {
       headers: getAuthHeaders(),
       body: JSON.stringify({ refreshToken })
     });
-    
+
     // Clear local storage
     if (typeof window !== 'undefined') {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('user');
     }
-    
+
     return response.json();
   }
 };
@@ -164,7 +191,7 @@ export const mentorshipAPI = {
     if (filters?.search) params.append('search', filters.search);
     if (filters?.department) params.append('department', filters.department);
     if (filters?.year) params.append('year', filters.year);
-    
+
     const response = await fetch(`${API_URL}/mentorship/mentors?${params}`, {
       headers: getAuthHeaders()
     });
@@ -382,6 +409,25 @@ export const notificationAPI = {
       method: 'DELETE',
       headers: getAuthHeaders()
     });
+    return response.json();
+  }
+};
+
+export const reviewAPI = {
+  createReview: async (data: { comments?: string; rating: number; itemId?: number; mentorId?: number }) => {
+    const response = await fetch(`${API_URL}/reviews`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data)
+    });
+    return response.json();
+  },
+  getItemReviews: async (itemId: number) => {
+    const response = await fetch(`${API_URL}/reviews/item/${itemId}`);
+    return response.json();
+  },
+  getMentorReviews: async (mentorId: number) => {
+    const response = await fetch(`${API_URL}/reviews/mentor/${mentorId}`);
     return response.json();
   }
 };

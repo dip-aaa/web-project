@@ -3,11 +3,11 @@ const prisma = require('../config/database');
 const { generateAccessToken, generateRefreshToken, verifyRefreshToken } = require('../config/jwt');
 const { sendOTPEmail, sendWelcomeEmail } = require('../utils/emailService');
 const { generateOTP, getOTPExpiryTime } = require('../utils/otpGenerator');
-const { 
-  validateEmail, 
-  validateKhwopaEmail, 
-  validatePassword, 
-  sanitizeInput 
+const {
+  validateEmail,
+  validateKhwopaEmail,
+  validatePassword,
+  sanitizeInput
 } = require('../utils/validators');
 
 /**
@@ -126,7 +126,7 @@ const signup = async (req, res, next) => {
     if (!emailResult.success) {
       // If email fails, delete user and return error
       await prisma.user.delete({ where: { id: user.id } });
-      
+
       return res.status(500).json({
         success: false,
         message: 'Failed to send OTP email. Please try again later.',
@@ -537,13 +537,40 @@ const getProfile = async (req, res, next) => {
             name: true,
             location: true
           }
+        },
+        mentor: {
+          select: {
+            reviews: {
+              select: {
+                rating: true
+              }
+            }
+          }
         }
       }
     });
 
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    const avgRating = user.mentor?.reviews.length > 0
+      ? user.mentor.reviews.reduce((acc, curr) => acc + curr.rating, 0) / user.mentor.reviews.length
+      : 0;
+
+    const responseUser = {
+      ...user,
+      avgRating: parseFloat(avgRating.toFixed(1)),
+      reviewCount: user.mentor?.reviews.length || 0
+    };
+    delete responseUser.mentor;
+
     res.status(200).json({
       success: true,
-      data: { user }
+      data: { user: responseUser }
     });
   } catch (error) {
     next(error);

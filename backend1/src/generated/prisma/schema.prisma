@@ -10,15 +10,17 @@ datasource db {
 
 /// User authentication and profile
 model User {
-  id          Int      @id @default(autoincrement())
-  email       String   @unique
-  password    String
-  name        String
-  phoneNumber String?
-  department  String?
-  isVerified  Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              Int      @id @default(autoincrement())
+  email           String   @unique
+  password        String
+  name            String
+  phoneNumber     String?
+  department      String?
+  profileImageUrl String?
+  coverImageUrl   String?
+  isVerified      Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   collegeId Int
   college   College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
@@ -36,6 +38,9 @@ model User {
 
   itemComments ItemComment[]
   tasks        Task[]
+
+  // Notifications
+  notifications Notification[]
 
   @@index([email])
 }
@@ -171,10 +176,11 @@ model Category {
 
 /// ERD: Seller 1..* Items, Buyer 1..* Items (optional buyer until purchased)
 model Item {
-  id        Int    @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   itemName  String
   cost      Float
   condition String
+  imageUrl  String?
 
   sellerId Int
   seller   Seller @relation("SellerItems", fields: [sellerId], references: [userId], onDelete: Restrict)
@@ -252,4 +258,22 @@ model Task {
 
   @@index([userId])
   @@index([date])
+}
+
+/// Notifications for user activities
+model Notification {
+  id        Int      @id @default(autoincrement())
+  type      String // 'message', 'item_interest', 'item_comment', 'new_item', 'review', 'mentorship_request', 'mentorship_response'
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  data      String? // JSON data for additional info (itemId, requestId, etc.)
+  createdAt DateTime @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([read])
+  @@index([createdAt])
 }

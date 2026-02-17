@@ -225,7 +225,9 @@ exports.Prisma.ReviewScalarFieldEnum = {
   comments: 'comments',
   rating: 'rating',
   date: 'date',
-  buyerId: 'buyerId'
+  buyerId: 'buyerId',
+  itemId: 'itemId',
+  mentorId: 'mentorId'
 };
 
 exports.Prisma.RequestScalarFieldEnum = {
