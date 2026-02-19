@@ -1,15 +1,6 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-// Create transporter with Gmail SMTP
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
-  secure: false, // true for 465, false for other ports
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD
-  }
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendOTPEmail = async (email, otp, name) => {
   const htmlContent = `
@@ -51,15 +42,13 @@ const sendOTPEmail = async (email, otp, name) => {
     </html>
   `;
 
-  const mailOptions = {
-    from: process.env.EMAIL_FROM,
-    to: email,
-    subject: 'Email Verification - OTP Code',
-    html: htmlContent
-  };
-
   try {
-    await transporter.sendMail(mailOptions);
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
+      to: email,
+      subject: 'Email Verification - OTP Code',
+      html: htmlContent
+    });
     console.log(`✉️  OTP email sent successfully to ${email}`);
     return { success: true };
   } catch (error) {
@@ -106,15 +95,13 @@ const sendWelcomeEmail = async (email, name) => {
     </html>
   `;
 
-  const mailOptions = {
-    from: process.env.EMAIL_FROM,
-    to: email,
-    subject: 'Welcome to Khwopa College Portal!',
-    html: htmlContent
-  };
-
   try {
-    await transporter.sendMail(mailOptions);
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
+      to: email,
+      subject: 'Welcome to Khwopa College Portal!',
+      html: htmlContent
+    });
     console.log(`✉️  Welcome email sent successfully to ${email}`);
     return { success: true };
   } catch (error) {
