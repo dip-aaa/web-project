@@ -113,7 +113,7 @@ export default function TodoList({ tasks, setTasks }: TodoListProps) {
           <circle cx="15" cy="32" r="2" fill="#ffd89b" />
         </svg>
         <h3 className="text-2xl font-bold bg-gradient-to-r from-[#6b4423] to-[#8b5a3c] bg-clip-text text-transparent">
-          Today's Tasks
+          Today&apos;s Tasks
         </h3>
       </div>
 

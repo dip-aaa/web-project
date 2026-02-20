@@ -89,7 +89,7 @@ export default function WelcomeHeader({ firstName }: WelcomeHeaderProps) {
             transition={{ delay: 1 }}
             className="text-lg text-[#8b6f47] italic font-medium"
           >
-            ✨ "Every expert was once a beginner who refused to give up"
+            ✨ &quot;Every expert was once a beginner who refused to give up&quot;
           </motion.p>
         </div>
       </div>

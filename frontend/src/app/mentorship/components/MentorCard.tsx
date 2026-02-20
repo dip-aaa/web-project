@@ -636,7 +636,7 @@ function MentorModal({ mentor, onClose }: { mentor: MentorProfile; onClose: () =
                           </div>
                           <div style={{ marginBottom: 6 }}><StarRating rating={rev.rating} /></div>
                           <p style={{ margin: 0, fontSize: 12, color: T.textSoft, fontStyle: "italic", lineHeight: 1.5 }}>
-                            "{rev.comments || "No comment."}"
+                            &quot;{rev.comments || "No comment."}&quot;
                           </p>
                         </div>
                       ))}

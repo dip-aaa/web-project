@@ -293,7 +293,7 @@ function BecomeMentorCard() {
             marginBottom: 8,
             fontFamily: "'Playfair Display', serif"
           }}>
-            You're a Mentor!
+            You&apos;re a Mentor!
           </div>
           <div style={{
             fontSize: 13,
@@ -369,7 +369,7 @@ function BecomeMentorCard() {
           }}>
             <strong>As a mentor, you will:</strong>
             <ul style={{ margin: "8px 0 0 20px", padding: 0 }}>
-              <li>Appear in the "Find Mentors" section</li>
+              <li>Appear in the &quot;Find Mentors&quot; section</li>
               <li>Receive connection requests from students</li>
               <li>Help guide juniors in their academic journey</li>
             </ul>
@@ -590,7 +590,7 @@ export function MentorshipOverview({ onTabChange }: { onTabChange?: (tab: string
             Coffee Coins Tip
           </div>
           <div style={{ fontSize: 12, color: T.textMuted, fontFamily: "'Inter', sans-serif", marginTop: 2 }}>
-            Complete your profile to earn 50 free coins. Mentor 5 sessions to unlock the "Rising Star" badge. Coins can be used to book sessions with senior mentors!
+            Complete your profile to earn 50 free coins. Mentor 5 sessions to unlock the &quot;Rising Star&quot; badge. Coins can be used to book sessions with senior mentors!
           </div>
         </div>
       </motion.div>
