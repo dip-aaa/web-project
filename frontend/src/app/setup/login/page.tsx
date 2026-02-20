@@ -88,7 +88,6 @@ export default function LoginPage() {
 
   return (
     <>
-      <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
       <div
         style={{
           minHeight: "100vh",

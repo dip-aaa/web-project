@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 type NavItem = {
@@ -24,9 +25,11 @@ export function Navbar1() {
 				{/* Left: logo + title */}
 				<Link href="/" className="flex items-center gap-3">
 					<span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-amber-900/60 ring-1 ring-amber-200/15">
-						<img
+						<Image
 							src="/win.svg"
 							alt="KOSH"
+							width={24}
+							height={24}
 							className="h-6 w-6"
 						/>
 					</span>

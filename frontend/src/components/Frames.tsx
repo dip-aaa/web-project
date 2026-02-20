@@ -1,4 +1,5 @@
 // Removed imports for deleted SVG files
+import Image from 'next/image';
 
 export const Frames = () => {
   return (
@@ -37,7 +38,7 @@ export const Frames = () => {
             <span style={{ width: 350, height: 48, marginTop: -8, fontFamily: 'Playfair Display, Helvetica', fontWeight: 'bold', color: '#1a1a1a', fontSize: 36, lineHeight: '48px', whiteSpace: 'nowrap' }}>
               Wake up your
             </span>
-            <img src="/paperpin.svg" alt="Paper Pin" style={{ height: 32, width: 32, marginLeft: 8, marginTop: 2 }} />
+            <Image src="/paperpin.svg" alt="Paper Pin" width={32} height={32} style={{ marginLeft: 8, marginTop: 2 }} />
           </div>
           <div style={{ width: 220, height: 48, display: 'flex', flexDirection: 'column', gap: 4, border: 0 }}>
             <p style={{ height: 48, marginTop: -8, fontFamily: 'Playfair Display, Helvetica', fontWeight: 400, color: '#e86c18', fontSize: 36, lineHeight: '48px', whiteSpace: 'nowrap' }}>
@@ -59,14 +60,14 @@ export const Frames = () => {
           <span style={{ fontFamily: 'Roboto, Helvetica', fontWeight: 'bold', color: '#fdf7f2', fontSize: 14, lineHeight: '20px', whiteSpace: 'nowrap' }}>
             Explore Marketplace
           </span>
-          <img src="/arrow.svg" alt="Arrow" style={{ width: 18, height: 18, marginLeft: 8, marginTop: 2 }} />
+          <Image src="/arrow.svg" alt="Arrow" width={18} height={18} style={{ marginLeft: 8, marginTop: 2 }} />
         </div>
       </div>
       <div style={{ marginLeft: 15, width: 700, marginTop: 40, display: 'flex', gap: 32, border: 0, overflow: 'visible' }}>
         {/* Marketplace Card */}
         <div style={{ width: 250, height: 222.46, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', background: '#fff', borderRadius: 22.4, overflow: 'hidden', borderBottom: '7.84px solid #856046', boxShadow: '0px 0px 0px transparent', padding: '12px 10px 10px 10px', boxSizing: 'border-box' }}>
           <div style={{ margin: '0 auto 8px auto', width: 48, height: 48, display: 'flex', background: '#f0e6d9', borderRadius: 12, border: 0, alignItems: 'center', justifyContent: 'center' }}>
-            <img src="/market.svg" alt="Market" style={{ width: '24px', height: '24px' }} />
+            <Image src="/market.svg" alt="Market" width={24} height={24} />
           </div>
           <div style={{ height: 6, margin: '8px 0', background: '#efe8df', border: 0 }} />
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', border: 0 }}>
@@ -81,7 +82,7 @@ export const Frames = () => {
         {/* Mentorship Card */}
         <div style={{ width: 250, height: 222.46, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', background: '#fff', borderRadius: 22.4, overflow: 'hidden', borderBottom: '7.84px solid #856046', boxShadow: '0px 0px 0px transparent', padding: '12px 10px 10px 10px', boxSizing: 'border-box' }}>
           <div style={{ margin: '0 auto 8px auto', width: 44, height: 44, display: 'flex', background: '#f0e6d9', borderRadius: 11, border: 0, alignItems: 'center', justifyContent: 'center' }}>
-            <img src="/mentor.svg" alt="Mentor" style={{ width: '24px', height: '24px' }} />
+            <Image src="/mentor.svg" alt="Mentor" width={24} height={24} />
           </div>
           <div style={{ height: 6, margin: '8px 0', background: '#efe8df', border: 0 }} />
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', border: 0 }}>
@@ -96,7 +97,7 @@ export const Frames = () => {
         {/* Connect Card */}
         <div style={{ width: 250, height: 222.46, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', background: '#fff', borderRadius: 22.4, overflow: 'hidden', borderBottom: '7.84px solid #856046', boxShadow: '0px 0px 0px transparent', padding: '12px 10px 10px 10px', boxSizing: 'border-box' }}>
           <div style={{ margin: '0 auto 8px auto', width: 44, height: 44, display: 'flex', background: '#f0e6d9', borderRadius: 11, border: 0, alignItems: 'center', justifyContent: 'center' }}>
-            <img src="/connect.svg" alt="Connect" style={{ width: '24px', height: '24px' }} />
+            <Image src="/connect.svg" alt="Connect" width={24} height={24} />
           </div>
           <div style={{ height: 6, margin: '8px 0', background: '#efe8df', border: 0 }} />
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', border: 0 }}>
