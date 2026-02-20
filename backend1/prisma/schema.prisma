@@ -11,37 +11,30 @@ datasource db {
 
 /// User authentication and profile
 model User {
-  id              Int      @id @default(autoincrement())
-  email           String   @unique
-  password        String
-  name            String
-  phoneNumber     String?
-  department      String?
-  profileImageUrl String?
-  coverImageUrl   String?
-  isVerified      Boolean  @default(false)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  collegeId Int
-  college   College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
-
-  otps          OTP[]
-  refreshTokens RefreshToken[]
-
-  buyer  Buyer?
-  seller Seller?
-  mentor Mentor?
-  mentee Mentee?
-
-  sentMessages     Message[] @relation("SentMessages")
-  receivedMessages Message[] @relation("ReceivedMessages")
-
-  itemComments ItemComment[]
-  tasks        Task[]
-
-  // Notifications
-  notifications Notification[]
+  id               Int            @id @default(autoincrement())
+  email            String         @unique
+  password         String
+  name             String
+  phoneNumber      String?
+  department       String?
+  profileImageUrl  String?
+  coverImageUrl    String?
+  isVerified       Boolean        @default(false)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  collegeId        Int
+  buyer            Buyer?
+  itemComments     ItemComment[]
+  mentee           Mentee?
+  mentor           Mentor?
+  receivedMessages Message[]      @relation("ReceivedMessages")
+  sentMessages     Message[]      @relation("SentMessages")
+  notifications    Notification[]
+  otps             OTP[]
+  refreshTokens    RefreshToken[]
+  seller           Seller?
+  tasks            Task[]
+  college          College        @relation(fields: [collegeId], references: [id], onDelete: Cascade)
 
   @@index([email])
 }
@@ -53,9 +46,8 @@ model OTP {
   expiresAt DateTime
   used      Boolean  @default(false)
   createdAt DateTime @default(now())
-
-  userId Int
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([code])
@@ -67,9 +59,8 @@ model RefreshToken {
   token     String   @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
-
-  userId Int
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([token])
@@ -77,16 +68,14 @@ model RefreshToken {
 
 /// Chat messages between users and mentors
 model Message {
-  id        Int      @id @default(autoincrement())
-  content   String
-  read      Boolean  @default(false)
-  createdAt DateTime @default(now())
-
-  senderId Int
-  sender   User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
-
+  id         Int      @id @default(autoincrement())
+  content    String
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  senderId   Int
   receiverId Int
-  receiver   User @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
 
   @@index([senderId])
   @@index([receiverId])
@@ -95,12 +84,11 @@ model Message {
 
 /// ERD: College 1..* Student
 model College {
-  id       Int    @id @default(autoincrement())
+  id       Int       @id @default(autoincrement())
   name     String
   location String
-
-  users    User[]
   students Student[]
+  users    User[]
 }
 
 /// ERD: Student belongs to a College and is a supertype for Buyer/Seller/Mentor/Mentee
@@ -110,24 +98,20 @@ model Student {
   email       String  @unique
   phoneNumber String?
   department  String?
-
-  collegeId Int
-  college   College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
-
-  buyer  Buyer?
-  seller Seller?
-  mentor Mentor?
-  mentee Mentee?
+  collegeId   Int
+  buyer       Buyer?
+  mentee      Mentee?
+  mentor      Mentor?
+  seller      Seller?
+  college     College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
 }
 
 /// ERD subtype: Buyer (ISA Student/User)
 model Buyer {
   studentId Int?     @unique
+  userId    Int      @id
   student   Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
-
-  userId Int  @id
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   purchases Item[]   @relation("BuyerPurchases")
   reviews   Review[]
 }
@@ -135,66 +119,55 @@ model Buyer {
 /// ERD subtype: Seller (ISA Student/User)
 model Seller {
   studentId Int?     @unique
+  userId    Int      @id
+  items     Item[]   @relation("SellerItems")
   student   Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
-
-  userId Int  @id
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  items Item[] @relation("SellerItems")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 /// ERD subtype: Mentor (ISA Student/User)
 model Mentor {
-  studentId Int?     @unique
-  student   Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
-
-  userId        Int     @id
-  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  expertiseArea String?
-
+  studentId        Int?      @unique
+  userId           Int       @id
+  expertiseArea    String?
+  student          Student?  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   requestsReceived Request[]
   reviews          Review[]
 }
 
 /// ERD subtype: Mentee (ISA Student/User)
 model Mentee {
-  studentId Int?     @unique
-  student   Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
-
-  userId       Int     @id
-  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  studentId    Int?      @unique
+  userId       Int       @id
   interestArea String?
-
+  student      Student?  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   requestsSent Request[]
 }
 
 /// ERD: Category 1..* Item
 model Category {
-  id   Int    @id @default(autoincrement())
-  name String @unique
-
+  id    Int    @id @default(autoincrement())
+  name  String @unique
   items Item[]
 }
 
 /// ERD: Seller 1..* Items, Buyer 1..* Items (optional buyer until purchased)
 model Item {
-  id        Int     @id @default(autoincrement())
-  itemName  String
-  cost      Float
-  condition String
-  imageUrl  String?
-
-  sellerId Int
-  seller   Seller @relation("SellerItems", fields: [sellerId], references: [userId], onDelete: Restrict)
-
-  buyerId Int?
-  buyer   Buyer? @relation("BuyerPurchases", fields: [buyerId], references: [userId], onDelete: SetNull)
-
+  id         Int           @id @default(autoincrement())
+  itemName   String
+  cost       Float
+  condition  String
+  imageUrl   String?
+  sellerId   Int
+  buyerId    Int?
   categoryId Int
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
-
-  comments ItemComment[]
-  reviews  Review[]
+  buyer      Buyer?        @relation("BuyerPurchases", fields: [buyerId], references: [userId])
+  category   Category      @relation(fields: [categoryId], references: [id])
+  seller     Seller        @relation("SellerItems", fields: [sellerId], references: [userId])
+  comments   ItemComment[]
+  reviews    Review[]
 
   @@index([sellerId])
   @@index([buyerId])
@@ -206,12 +179,10 @@ model ItemComment {
   id        Int      @id @default(autoincrement())
   text      String
   createdAt DateTime @default(now())
-
-  userId Int
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  itemId Int
-  item   Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  userId    Int
+  itemId    Int
+  item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([itemId])
@@ -223,15 +194,12 @@ model Review {
   comments String?
   rating   Int
   date     DateTime @default(now())
-
-  buyerId Int
-  buyer   Buyer @relation(fields: [buyerId], references: [userId], onDelete: Cascade)
-
-  itemId Int?
-  item   Item? @relation(fields: [itemId], references: [id], onDelete: Cascade)
-
+  buyerId  Int
+  itemId   Int?
   mentorId Int?
-  mentor   Mentor? @relation(fields: [mentorId], references: [userId], onDelete: Cascade)
+  buyer    Buyer    @relation(fields: [buyerId], references: [userId], onDelete: Cascade)
+  item     Item?    @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  mentor   Mentor?  @relation(fields: [mentorId], references: [userId], onDelete: Cascade)
 
   @@index([buyerId])
   @@index([itemId])
@@ -244,12 +212,10 @@ model Request {
   requestStatus   String
   requestSent     DateTime  @default(now())
   requestReceived DateTime?
-
-  mentorId Int
-  mentor   Mentor @relation(fields: [mentorId], references: [userId], onDelete: Cascade)
-
-  menteeId Int
-  mentee   Mentee @relation(fields: [menteeId], references: [userId], onDelete: Cascade)
+  mentorId        Int
+  menteeId        Int
+  mentee          Mentee    @relation(fields: [menteeId], references: [userId], onDelete: Cascade)
+  mentor          Mentor    @relation(fields: [mentorId], references: [userId], onDelete: Cascade)
 
   @@index([mentorId])
   @@index([menteeId])
@@ -259,13 +225,12 @@ model Request {
 model Task {
   id        Int      @id @default(autoincrement())
   title     String
-  date      String // Date in YYYY-MM-DD format
+  date      String
   completed Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  userId Int
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([date])
@@ -274,15 +239,14 @@ model Task {
 /// Notifications for user activities
 model Notification {
   id        Int      @id @default(autoincrement())
-  type      String // 'message', 'item_interest', 'item_comment', 'new_item', 'review', 'mentorship_request', 'mentorship_response'
+  type      String
   title     String
   message   String
   read      Boolean  @default(false)
-  data      String? // JSON data for additional info (itemId, requestId, etc.)
+  data      String?
   createdAt DateTime @default(now())
-
-  userId Int
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([read])

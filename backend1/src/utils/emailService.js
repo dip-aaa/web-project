@@ -42,17 +42,50 @@ const sendOTPEmail = async (email, otp, name) => {
     </html>
   `;
 
+  // In development mode, always log OTP to console
+  if (process.env.NODE_ENV === 'development') {
+    console.log('\n' + '='.repeat(60));
+    console.log('📧 DEVELOPMENT MODE - OTP EMAIL');
+    console.log('='.repeat(60));
+    console.log(`To: ${email}`);
+    console.log(`Name: ${name}`);
+    console.log(`OTP Code: ${otp}`);
+    console.log(`Expires: ${process.env.OTP_EXPIRES_IN || 10} minutes`);
+    console.log('='.repeat(60) + '\n');
+  }
+
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
       to: email,
       subject: 'Email Verification - OTP Code',
       html: htmlContent
     });
-    console.log(`✉️  OTP email sent successfully to ${email}`);
-    return { success: true };
+    
+    console.log(`✅ OTP email sent successfully to ${email}`);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Resend Response:', result);
+    }
+    
+    return { success: true, messageId: result.id };
   } catch (error) {
-    console.error('Error sending OTP email:', error);
+    console.error('❌ Error sending OTP email:', error);
+    console.error('Error details:', {
+      message: error.message,
+      statusCode: error.statusCode,
+      name: error.name
+    });
+    
+    // In development, still return success so user can use console OTP
+    if (process.env.NODE_ENV === 'development') {
+      console.log('⚠️  Email failed but OTP is available in console above');
+      return { 
+        success: true, 
+        developmentMode: true,
+        note: 'Email failed but proceeding in development mode. Check console for OTP.'
+      };
+    }
+    
     return { success: false, error: error.message };
   }
 };
