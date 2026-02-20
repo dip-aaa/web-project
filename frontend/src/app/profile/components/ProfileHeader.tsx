@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 interface UserData {
   id: number;
@@ -97,10 +98,11 @@ export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLo
                   color: '#6b4423',
                   overflow: 'hidden'
                 }}>
-                  <img
+                  <Image
                     src={profileImage}
                     alt="Profile"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    fill
+                    style={{ objectFit: 'cover' }}
                   />
                 </div>
               </div>

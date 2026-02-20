@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { reviewAPI } from '../../../lib/api';
 
 interface StarRatingProps {
@@ -195,7 +196,7 @@ export default function ReviewsSection() {
                     overflow: 'hidden'
                   }}>
                     {review.buyer?.user?.profileImageUrl ? (
-                      <img src={review.buyer.user.profileImageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <Image src={review.buyer.user.profileImageUrl} alt="" fill style={{ objectFit: 'cover' }} />
                     ) : (
                       review.buyer?.user?.name?.charAt(0) || 'U'
                     )}
@@ -226,7 +227,7 @@ export default function ReviewsSection() {
                 lineHeight: 1.6,
                 fontStyle: 'italic'
               }}>
-                "{review.comments || "No comments provided."}"
+                &ldquo;{review.comments || "No comments provided."}&rdquo;
               </p>
             </motion.div>
           ))

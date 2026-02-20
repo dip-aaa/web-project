@@ -595,7 +595,7 @@ function ProductDetails({ item, onBack }: { item: MarketplaceItem; onBack: () =>
 							disabled={isSubmitting}
 							className="bg-[#6b4423] text-white px-6 py-2 rounded-xl text-sm font-bold hover:bg-[#573217] transition-all disabled:opacity-50"
 						>
-							{isSubmitting ? "Submitting..." : "Submit Review"}
+							{isSubmitting ? &ldquo;Submitting...&rdquo; : &ldquo;Submit Review&rdquo;}
 						</button>
 					</form>
 				</div>

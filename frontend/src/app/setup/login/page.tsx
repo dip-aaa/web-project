@@ -278,7 +278,7 @@ export default function LoginPage() {
             </form>
             <div style={{ textAlign: "center", marginTop: 4 }}>
               <p style={{ margin: "4px 0 0", fontSize: "13px", color: "#9E8572" }}>
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <a href="/setup/signup" style={{ color: "#8B5E3C", textDecoration: "none", fontWeight: 700 }}
                   onMouseEnter={(e) => (e.target as HTMLAnchorElement).style.textDecoration = "underline"}
                   onMouseLeave={(e) => (e.target as HTMLAnchorElement).style.textDecoration = "none"}

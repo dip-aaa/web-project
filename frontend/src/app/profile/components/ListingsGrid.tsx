@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { marketplaceAPI } from '../../../lib/api';
 
 interface ListingsGridProps {
@@ -136,10 +137,11 @@ export default function ListingsGrid({ limit }: ListingsGridProps) {
             position: 'relative',
             overflow: 'hidden'
           }}>
-            <img 
+            <Image 
               src={item.imageUrl} 
               alt={item.title}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              fill
+              style={{ objectFit: 'cover' }}
             />
           </div>
 
