@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 interface HeaderProps {
   username: string;
@@ -20,9 +21,11 @@ const Header: React.FC<HeaderProps> = ({ username, avatarUrl, status = 'online' 
         <div className="relative">
           <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#e8ddd4] shadow-md bg-[#f5f0eb]">
             {avatarUrl ? (
-              <img 
+              <Image 
                 src={avatarUrl} 
                 alt={username}
+                width={48}
+                height={48}
                 className="w-full h-full object-cover"
               />
             ) : (

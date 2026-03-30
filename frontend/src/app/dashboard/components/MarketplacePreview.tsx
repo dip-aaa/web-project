@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { MarketplaceItem } from '../page';
 
@@ -117,9 +118,11 @@ export default function MarketplacePreview({ items, toggleWishlist, loading = fa
             
             <div className="relative z-10">
               <div className="mb-4 rounded-2xl overflow-hidden bg-white/50 aspect-video w-full">
-                <img 
+                <Image 
                   src={item.image} 
                   alt={item.title}
+                  width={400}
+                  height={300}
                   className="w-full h-full object-cover transition-transform duration-300"
                   style={{ maxWidth: '100%' }}
                 />

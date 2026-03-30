@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { notificationAPI, marketplaceAPI } from '../../../lib/api';
 import { useRouter } from 'next/navigation';
@@ -51,9 +51,24 @@ export default function NotificationsList() {
   const [processing, setProcessing] = useState<number | null>(null);
   const router = useRouter();
 
+  const fetchNotifications = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await notificationAPI.getNotifications(filter === 'unread');
+
+      if (response.success) {
+        setNotifications(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [filter]);
+
   useEffect(() => {
     fetchNotifications();
-  }, [filter]);
+  }, [fetchNotifications]);
 
   const handleAcceptBuyRequest = async (id: number) => {
     try {
@@ -91,21 +106,6 @@ export default function NotificationsList() {
       alert('❌ Error dismissing request. Please try again.');
     } finally {
       setProcessing(null);
-    }
-  };
-
-  const fetchNotifications = async () => {
-    try {
-      setLoading(true);
-      const response = await notificationAPI.getNotifications(filter === 'unread');
-
-      if (response.success) {
-        setNotifications(response.data);
-      }
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-    } finally {
-      setLoading(false);
     }
   };
 

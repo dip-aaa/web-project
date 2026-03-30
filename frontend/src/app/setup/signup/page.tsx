@@ -206,6 +206,7 @@ export default function SignUpPage() {
 
   return (
     <>
+<<<<<<< HEAD
       <style>{`
         .signup-scroll {
           -ms-overflow-style: none;
@@ -215,6 +216,8 @@ export default function SignUpPage() {
           display: none;
         }
       `}</style>
+=======
+>>>>>>> ce3fa3c6cc3c7f144fc6e072c23a049de4de43f8
       <div
         className={nunito.className}
         style={{
@@ -525,7 +528,7 @@ export default function SignUpPage() {
             {step === 2 && (
               <form onSubmit={handleVerifyOTP}>
                 <p style={{ fontSize: "14px", color: "#9E8572", marginBottom: "20px", textAlign: "center" }}>
-                  We've sent a 6-digit OTP to<br />
+                  We&apos;ve sent a 6-digit OTP to<br />
                   <strong style={{ color: "#8B5E3C" }}>{email}</strong>
                 </p>
                 

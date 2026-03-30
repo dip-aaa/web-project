@@ -2,6 +2,15 @@
 
 A secure backend system built with Express.js, featuring JWT-based authentication with OTP email verification, and real-time chat functionality using Socket.io.
 
+## 🚀 Quick Links
+
+- **[Production Deployment Guide](./PRODUCTION_READY.md)** - Deploy now with verified domain!
+- **[Email Setup (Resend)](./RESEND_SETUP.md)** - Configure email service
+- **[API Testing Guide](./API_TESTING.md)** - Test your endpoints
+- **[Quick Start](./QUICKSTART.md)** - Get started in development
+
+---
+
 ## Features
 
 ### 🔐 Authentication & Security
@@ -47,20 +56,24 @@ cp .env.example .env
 
 Required environment variables:
 - `PORT`: Server port (default: 5001)
-- `DATABASE_URL`: SQLite database file path
+- `DATABASE_URL`: PostgreSQL connection string
 - `JWT_SECRET`: Secret key for JWT tokens
 - `JWT_REFRESH_SECRET`: Secret key for refresh tokens
-- `EMAIL_HOST`: SMTP server host
-- `EMAIL_PORT`: SMTP server port
-- `EMAIL_USER`: Email account for sending OTPs
-- `EMAIL_PASSWORD`: Email account password (use app-specific password)
+- `RESEND_API_KEY`: Your Resend API key (get from resend.com)
+- `EMAIL_FROM`: Sender email address
 - `FRONTEND_URL`: Frontend URL for CORS
 
-3. **Setup Email (Gmail Example)**
-   - Go to Google Account Settings
-   - Enable 2-Factor Authentication
-   - Generate an App Password
-   - Use the app password in `EMAIL_PASSWORD`
+3. **Setup Email Service (Resend)**
+   
+   Resend is recommended as it works perfectly with Render and has a generous free tier.
+   
+   - Create account at [resend.com](https://resend.com)
+   - Get your API key from the dashboard
+   - Add `RESEND_API_KEY` to your `.env` file
+   - For development, use `EMAIL_FROM=onboarding@resend.dev`
+   - For production, verify your domain and use your custom email
+   
+   **See [RESEND_SETUP.md](./RESEND_SETUP.md) for detailed setup instructions.**
 
 4. **Initialize Database**
 ```bash

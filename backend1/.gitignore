@@ -13,3 +13,4 @@ coverage/
 # Gmail API OAuth2 credentials
 credentials.json
 token.json
+

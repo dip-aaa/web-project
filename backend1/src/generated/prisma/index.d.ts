@@ -2317,23 +2317,23 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
+    itemComments: number
+    receivedMessages: number
+    sentMessages: number
+    notifications: number
     otps: number
     refreshTokens: number
-    sentMessages: number
-    receivedMessages: number
-    itemComments: number
     tasks: number
-    notifications: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    itemComments?: boolean | UserCountOutputTypeCountItemCommentsArgs
+    receivedMessages?: boolean | UserCountOutputTypeCountReceivedMessagesArgs
+    sentMessages?: boolean | UserCountOutputTypeCountSentMessagesArgs
+    notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
     otps?: boolean | UserCountOutputTypeCountOtpsArgs
     refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
-    sentMessages?: boolean | UserCountOutputTypeCountSentMessagesArgs
-    receivedMessages?: boolean | UserCountOutputTypeCountReceivedMessagesArgs
-    itemComments?: boolean | UserCountOutputTypeCountItemCommentsArgs
     tasks?: boolean | UserCountOutputTypeCountTasksArgs
-    notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
   }
 
   // Custom InputTypes
@@ -2345,6 +2345,34 @@ export namespace Prisma {
      * Select specific fields to fetch from the UserCountOutputType
      */
     select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountItemCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItemCommentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReceivedMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MessageWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSentMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MessageWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
   }
 
   /**
@@ -2364,36 +2392,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountSentMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MessageWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountReceivedMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MessageWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountItemCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ItemCommentWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
   export type UserCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TaskWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: NotificationWhereInput
   }
 
 
@@ -2402,13 +2402,13 @@ export namespace Prisma {
    */
 
   export type CollegeCountOutputType = {
-    users: number
     students: number
+    users: number
   }
 
   export type CollegeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    users?: boolean | CollegeCountOutputTypeCountUsersArgs
     students?: boolean | CollegeCountOutputTypeCountStudentsArgs
+    users?: boolean | CollegeCountOutputTypeCountUsersArgs
   }
 
   // Custom InputTypes
@@ -2425,15 +2425,15 @@ export namespace Prisma {
   /**
    * CollegeCountOutputType without action
    */
-  export type CollegeCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserWhereInput
+  export type CollegeCountOutputTypeCountStudentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentWhereInput
   }
 
   /**
    * CollegeCountOutputType without action
    */
-  export type CollegeCountOutputTypeCountStudentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: StudentWhereInput
+  export type CollegeCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
   }
 
 
@@ -2912,18 +2912,18 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     collegeId?: boolean
-    college?: boolean | CollegeDefaultArgs<ExtArgs>
+    buyer?: boolean | User$buyerArgs<ExtArgs>
+    itemComments?: boolean | User$itemCommentsArgs<ExtArgs>
+    mentee?: boolean | User$menteeArgs<ExtArgs>
+    mentor?: boolean | User$mentorArgs<ExtArgs>
+    receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
+    sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
     otps?: boolean | User$otpsArgs<ExtArgs>
     refreshTokens?: boolean | User$refreshTokensArgs<ExtArgs>
-    buyer?: boolean | User$buyerArgs<ExtArgs>
     seller?: boolean | User$sellerArgs<ExtArgs>
-    mentor?: boolean | User$mentorArgs<ExtArgs>
-    mentee?: boolean | User$menteeArgs<ExtArgs>
-    sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
-    receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
-    itemComments?: boolean | User$itemCommentsArgs<ExtArgs>
     tasks?: boolean | User$tasksArgs<ExtArgs>
-    notifications?: boolean | User$notificationsArgs<ExtArgs>
+    college?: boolean | CollegeDefaultArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2976,18 +2976,18 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "phoneNumber" | "department" | "profileImageUrl" | "coverImageUrl" | "isVerified" | "createdAt" | "updatedAt" | "collegeId", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    college?: boolean | CollegeDefaultArgs<ExtArgs>
+    buyer?: boolean | User$buyerArgs<ExtArgs>
+    itemComments?: boolean | User$itemCommentsArgs<ExtArgs>
+    mentee?: boolean | User$menteeArgs<ExtArgs>
+    mentor?: boolean | User$mentorArgs<ExtArgs>
+    receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
+    sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
     otps?: boolean | User$otpsArgs<ExtArgs>
     refreshTokens?: boolean | User$refreshTokensArgs<ExtArgs>
-    buyer?: boolean | User$buyerArgs<ExtArgs>
     seller?: boolean | User$sellerArgs<ExtArgs>
-    mentor?: boolean | User$mentorArgs<ExtArgs>
-    mentee?: boolean | User$menteeArgs<ExtArgs>
-    sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
-    receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
-    itemComments?: boolean | User$itemCommentsArgs<ExtArgs>
     tasks?: boolean | User$tasksArgs<ExtArgs>
-    notifications?: boolean | User$notificationsArgs<ExtArgs>
+    college?: boolean | CollegeDefaultArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3000,18 +3000,18 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      college: Prisma.$CollegePayload<ExtArgs>
+      buyer: Prisma.$BuyerPayload<ExtArgs> | null
+      itemComments: Prisma.$ItemCommentPayload<ExtArgs>[]
+      mentee: Prisma.$MenteePayload<ExtArgs> | null
+      mentor: Prisma.$MentorPayload<ExtArgs> | null
+      receivedMessages: Prisma.$MessagePayload<ExtArgs>[]
+      sentMessages: Prisma.$MessagePayload<ExtArgs>[]
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
       otps: Prisma.$OTPPayload<ExtArgs>[]
       refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
-      buyer: Prisma.$BuyerPayload<ExtArgs> | null
       seller: Prisma.$SellerPayload<ExtArgs> | null
-      mentor: Prisma.$MentorPayload<ExtArgs> | null
-      mentee: Prisma.$MenteePayload<ExtArgs> | null
-      sentMessages: Prisma.$MessagePayload<ExtArgs>[]
-      receivedMessages: Prisma.$MessagePayload<ExtArgs>[]
-      itemComments: Prisma.$ItemCommentPayload<ExtArgs>[]
       tasks: Prisma.$TaskPayload<ExtArgs>[]
-      notifications: Prisma.$NotificationPayload<ExtArgs>[]
+      college: Prisma.$CollegePayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -3420,18 +3420,18 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    college<T extends CollegeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CollegeDefaultArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    buyer<T extends User$buyerArgs<ExtArgs> = {}>(args?: Subset<T, User$buyerArgs<ExtArgs>>): Prisma__BuyerClient<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    itemComments<T extends User$itemCommentsArgs<ExtArgs> = {}>(args?: Subset<T, User$itemCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    mentee<T extends User$menteeArgs<ExtArgs> = {}>(args?: Subset<T, User$menteeArgs<ExtArgs>>): Prisma__MenteeClient<$Result.GetResult<Prisma.$MenteePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    mentor<T extends User$mentorArgs<ExtArgs> = {}>(args?: Subset<T, User$mentorArgs<ExtArgs>>): Prisma__MentorClient<$Result.GetResult<Prisma.$MentorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    receivedMessages<T extends User$receivedMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sentMessages<T extends User$sentMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$sentMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     otps<T extends User$otpsArgs<ExtArgs> = {}>(args?: Subset<T, User$otpsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OTPPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     refreshTokens<T extends User$refreshTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    buyer<T extends User$buyerArgs<ExtArgs> = {}>(args?: Subset<T, User$buyerArgs<ExtArgs>>): Prisma__BuyerClient<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     seller<T extends User$sellerArgs<ExtArgs> = {}>(args?: Subset<T, User$sellerArgs<ExtArgs>>): Prisma__SellerClient<$Result.GetResult<Prisma.$SellerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    mentor<T extends User$mentorArgs<ExtArgs> = {}>(args?: Subset<T, User$mentorArgs<ExtArgs>>): Prisma__MentorClient<$Result.GetResult<Prisma.$MentorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    mentee<T extends User$menteeArgs<ExtArgs> = {}>(args?: Subset<T, User$menteeArgs<ExtArgs>>): Prisma__MenteeClient<$Result.GetResult<Prisma.$MenteePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    sentMessages<T extends User$sentMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$sentMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    receivedMessages<T extends User$receivedMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    itemComments<T extends User$itemCommentsArgs<ExtArgs> = {}>(args?: Subset<T, User$itemCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tasks<T extends User$tasksArgs<ExtArgs> = {}>(args?: Subset<T, User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    college<T extends CollegeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CollegeDefaultArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3869,6 +3869,159 @@ export namespace Prisma {
   }
 
   /**
+   * User.buyer
+   */
+  export type User$buyerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Buyer
+     */
+    select?: BuyerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Buyer
+     */
+    omit?: BuyerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BuyerInclude<ExtArgs> | null
+    where?: BuyerWhereInput
+  }
+
+  /**
+   * User.itemComments
+   */
+  export type User$itemCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemComment
+     */
+    select?: ItemCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemComment
+     */
+    omit?: ItemCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemCommentInclude<ExtArgs> | null
+    where?: ItemCommentWhereInput
+    orderBy?: ItemCommentOrderByWithRelationInput | ItemCommentOrderByWithRelationInput[]
+    cursor?: ItemCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ItemCommentScalarFieldEnum | ItemCommentScalarFieldEnum[]
+  }
+
+  /**
+   * User.mentee
+   */
+  export type User$menteeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mentee
+     */
+    select?: MenteeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mentee
+     */
+    omit?: MenteeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MenteeInclude<ExtArgs> | null
+    where?: MenteeWhereInput
+  }
+
+  /**
+   * User.mentor
+   */
+  export type User$mentorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mentor
+     */
+    select?: MentorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mentor
+     */
+    omit?: MentorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentorInclude<ExtArgs> | null
+    where?: MentorWhereInput
+  }
+
+  /**
+   * User.receivedMessages
+   */
+  export type User$receivedMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    where?: MessageWhereInput
+    orderBy?: MessageOrderByWithRelationInput | MessageOrderByWithRelationInput[]
+    cursor?: MessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
+  }
+
+  /**
+   * User.sentMessages
+   */
+  export type User$sentMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    where?: MessageWhereInput
+    orderBy?: MessageOrderByWithRelationInput | MessageOrderByWithRelationInput[]
+    cursor?: MessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
+  }
+
+  /**
+   * User.notifications
+   */
+  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
    * User.otps
    */
   export type User$otpsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3917,25 +4070,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.buyer
-   */
-  export type User$buyerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Buyer
-     */
-    select?: BuyerSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Buyer
-     */
-    omit?: BuyerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BuyerInclude<ExtArgs> | null
-    where?: BuyerWhereInput
-  }
-
-  /**
    * User.seller
    */
   export type User$sellerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3952,116 +4086,6 @@ export namespace Prisma {
      */
     include?: SellerInclude<ExtArgs> | null
     where?: SellerWhereInput
-  }
-
-  /**
-   * User.mentor
-   */
-  export type User$mentorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Mentor
-     */
-    select?: MentorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Mentor
-     */
-    omit?: MentorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MentorInclude<ExtArgs> | null
-    where?: MentorWhereInput
-  }
-
-  /**
-   * User.mentee
-   */
-  export type User$menteeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Mentee
-     */
-    select?: MenteeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Mentee
-     */
-    omit?: MenteeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MenteeInclude<ExtArgs> | null
-    where?: MenteeWhereInput
-  }
-
-  /**
-   * User.sentMessages
-   */
-  export type User$sentMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Message
-     */
-    select?: MessageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Message
-     */
-    omit?: MessageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MessageInclude<ExtArgs> | null
-    where?: MessageWhereInput
-    orderBy?: MessageOrderByWithRelationInput | MessageOrderByWithRelationInput[]
-    cursor?: MessageWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
-  }
-
-  /**
-   * User.receivedMessages
-   */
-  export type User$receivedMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Message
-     */
-    select?: MessageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Message
-     */
-    omit?: MessageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MessageInclude<ExtArgs> | null
-    where?: MessageWhereInput
-    orderBy?: MessageOrderByWithRelationInput | MessageOrderByWithRelationInput[]
-    cursor?: MessageWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
-  }
-
-  /**
-   * User.itemComments
-   */
-  export type User$itemCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ItemComment
-     */
-    select?: ItemCommentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ItemComment
-     */
-    omit?: ItemCommentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ItemCommentInclude<ExtArgs> | null
-    where?: ItemCommentWhereInput
-    orderBy?: ItemCommentOrderByWithRelationInput | ItemCommentOrderByWithRelationInput[]
-    cursor?: ItemCommentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ItemCommentScalarFieldEnum | ItemCommentScalarFieldEnum[]
   }
 
   /**
@@ -4086,30 +4110,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
-  }
-
-  /**
-   * User.notifications
-   */
-  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Notification
-     */
-    select?: NotificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Notification
-     */
-    omit?: NotificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NotificationInclude<ExtArgs> | null
-    where?: NotificationWhereInput
-    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
-    cursor?: NotificationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
   }
 
   /**
@@ -6550,8 +6550,8 @@ export namespace Prisma {
     createdAt?: boolean
     senderId?: boolean
     receiverId?: boolean
-    sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["message"]>
 
   export type MessageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6561,8 +6561,8 @@ export namespace Prisma {
     createdAt?: boolean
     senderId?: boolean
     receiverId?: boolean
-    sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["message"]>
 
   export type MessageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6572,8 +6572,8 @@ export namespace Prisma {
     createdAt?: boolean
     senderId?: boolean
     receiverId?: boolean
-    sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["message"]>
 
   export type MessageSelectScalar = {
@@ -6587,23 +6587,23 @@ export namespace Prisma {
 
   export type MessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "read" | "createdAt" | "senderId" | "receiverId", ExtArgs["result"]["message"]>
   export type MessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type MessageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type MessageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $MessagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Message"
     objects: {
-      sender: Prisma.$UserPayload<ExtArgs>
       receiver: Prisma.$UserPayload<ExtArgs>
+      sender: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -7006,8 +7006,8 @@ export namespace Prisma {
    */
   export interface Prisma__MessageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    sender<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     receiver<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sender<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7639,8 +7639,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     location?: boolean
-    users?: boolean | College$usersArgs<ExtArgs>
     students?: boolean | College$studentsArgs<ExtArgs>
+    users?: boolean | College$usersArgs<ExtArgs>
     _count?: boolean | CollegeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["college"]>
 
@@ -7664,8 +7664,8 @@ export namespace Prisma {
 
   export type CollegeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "location", ExtArgs["result"]["college"]>
   export type CollegeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    users?: boolean | College$usersArgs<ExtArgs>
     students?: boolean | College$studentsArgs<ExtArgs>
+    users?: boolean | College$usersArgs<ExtArgs>
     _count?: boolean | CollegeCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CollegeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -7674,8 +7674,8 @@ export namespace Prisma {
   export type $CollegePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "College"
     objects: {
-      users: Prisma.$UserPayload<ExtArgs>[]
       students: Prisma.$StudentPayload<ExtArgs>[]
+      users: Prisma.$UserPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -8075,8 +8075,8 @@ export namespace Prisma {
    */
   export interface Prisma__CollegeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    users<T extends College$usersArgs<ExtArgs> = {}>(args?: Subset<T, College$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     students<T extends College$studentsArgs<ExtArgs> = {}>(args?: Subset<T, College$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    users<T extends College$usersArgs<ExtArgs> = {}>(args?: Subset<T, College$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8497,30 +8497,6 @@ export namespace Prisma {
   }
 
   /**
-   * College.users
-   */
-  export type College$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
-    cursor?: UserWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
-  }
-
-  /**
    * College.students
    */
   export type College$studentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8542,6 +8518,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: StudentScalarFieldEnum | StudentScalarFieldEnum[]
+  }
+
+  /**
+   * College.users
+   */
+  export type College$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
@@ -8773,11 +8773,11 @@ export namespace Prisma {
     phoneNumber?: boolean
     department?: boolean
     collegeId?: boolean
-    college?: boolean | CollegeDefaultArgs<ExtArgs>
     buyer?: boolean | Student$buyerArgs<ExtArgs>
-    seller?: boolean | Student$sellerArgs<ExtArgs>
-    mentor?: boolean | Student$mentorArgs<ExtArgs>
     mentee?: boolean | Student$menteeArgs<ExtArgs>
+    mentor?: boolean | Student$mentorArgs<ExtArgs>
+    seller?: boolean | Student$sellerArgs<ExtArgs>
+    college?: boolean | CollegeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["student"]>
 
   export type StudentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8811,11 +8811,11 @@ export namespace Prisma {
 
   export type StudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phoneNumber" | "department" | "collegeId", ExtArgs["result"]["student"]>
   export type StudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    college?: boolean | CollegeDefaultArgs<ExtArgs>
     buyer?: boolean | Student$buyerArgs<ExtArgs>
-    seller?: boolean | Student$sellerArgs<ExtArgs>
-    mentor?: boolean | Student$mentorArgs<ExtArgs>
     mentee?: boolean | Student$menteeArgs<ExtArgs>
+    mentor?: boolean | Student$mentorArgs<ExtArgs>
+    seller?: boolean | Student$sellerArgs<ExtArgs>
+    college?: boolean | CollegeDefaultArgs<ExtArgs>
   }
   export type StudentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     college?: boolean | CollegeDefaultArgs<ExtArgs>
@@ -8827,11 +8827,11 @@ export namespace Prisma {
   export type $StudentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Student"
     objects: {
-      college: Prisma.$CollegePayload<ExtArgs>
       buyer: Prisma.$BuyerPayload<ExtArgs> | null
-      seller: Prisma.$SellerPayload<ExtArgs> | null
-      mentor: Prisma.$MentorPayload<ExtArgs> | null
       mentee: Prisma.$MenteePayload<ExtArgs> | null
+      mentor: Prisma.$MentorPayload<ExtArgs> | null
+      seller: Prisma.$SellerPayload<ExtArgs> | null
+      college: Prisma.$CollegePayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -9234,11 +9234,11 @@ export namespace Prisma {
    */
   export interface Prisma__StudentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    college<T extends CollegeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CollegeDefaultArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     buyer<T extends Student$buyerArgs<ExtArgs> = {}>(args?: Subset<T, Student$buyerArgs<ExtArgs>>): Prisma__BuyerClient<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    seller<T extends Student$sellerArgs<ExtArgs> = {}>(args?: Subset<T, Student$sellerArgs<ExtArgs>>): Prisma__SellerClient<$Result.GetResult<Prisma.$SellerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    mentor<T extends Student$mentorArgs<ExtArgs> = {}>(args?: Subset<T, Student$mentorArgs<ExtArgs>>): Prisma__MentorClient<$Result.GetResult<Prisma.$MentorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     mentee<T extends Student$menteeArgs<ExtArgs> = {}>(args?: Subset<T, Student$menteeArgs<ExtArgs>>): Prisma__MenteeClient<$Result.GetResult<Prisma.$MenteePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    mentor<T extends Student$mentorArgs<ExtArgs> = {}>(args?: Subset<T, Student$mentorArgs<ExtArgs>>): Prisma__MentorClient<$Result.GetResult<Prisma.$MentorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    seller<T extends Student$sellerArgs<ExtArgs> = {}>(args?: Subset<T, Student$sellerArgs<ExtArgs>>): Prisma__SellerClient<$Result.GetResult<Prisma.$SellerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    college<T extends CollegeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CollegeDefaultArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9689,22 +9689,22 @@ export namespace Prisma {
   }
 
   /**
-   * Student.seller
+   * Student.mentee
    */
-  export type Student$sellerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Student$menteeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Seller
+     * Select specific fields to fetch from the Mentee
      */
-    select?: SellerSelect<ExtArgs> | null
+    select?: MenteeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Seller
+     * Omit specific fields from the Mentee
      */
-    omit?: SellerOmit<ExtArgs> | null
+    omit?: MenteeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SellerInclude<ExtArgs> | null
-    where?: SellerWhereInput
+    include?: MenteeInclude<ExtArgs> | null
+    where?: MenteeWhereInput
   }
 
   /**
@@ -9727,22 +9727,22 @@ export namespace Prisma {
   }
 
   /**
-   * Student.mentee
+   * Student.seller
    */
-  export type Student$menteeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Student$sellerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Mentee
+     * Select specific fields to fetch from the Seller
      */
-    select?: MenteeSelect<ExtArgs> | null
+    select?: SellerSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Mentee
+     * Omit specific fields from the Seller
      */
-    omit?: MenteeOmit<ExtArgs> | null
+    omit?: SellerOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MenteeInclude<ExtArgs> | null
-    where?: MenteeWhereInput
+    include?: SellerInclude<ExtArgs> | null
+    where?: SellerWhereInput
   }
 
   /**
@@ -11084,9 +11084,9 @@ export namespace Prisma {
   export type SellerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     studentId?: boolean
     userId?: boolean
+    items?: boolean | Seller$itemsArgs<ExtArgs>
     student?: boolean | Seller$studentArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
-    items?: boolean | Seller$itemsArgs<ExtArgs>
     _count?: boolean | SellerCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["seller"]>
 
@@ -11111,9 +11111,9 @@ export namespace Prisma {
 
   export type SellerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"studentId" | "userId", ExtArgs["result"]["seller"]>
   export type SellerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | Seller$itemsArgs<ExtArgs>
     student?: boolean | Seller$studentArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
-    items?: boolean | Seller$itemsArgs<ExtArgs>
     _count?: boolean | SellerCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SellerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11128,9 +11128,9 @@ export namespace Prisma {
   export type $SellerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Seller"
     objects: {
+      items: Prisma.$ItemPayload<ExtArgs>[]
       student: Prisma.$StudentPayload<ExtArgs> | null
       user: Prisma.$UserPayload<ExtArgs>
-      items: Prisma.$ItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       studentId: number | null
@@ -11529,9 +11529,9 @@ export namespace Prisma {
    */
   export interface Prisma__SellerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    items<T extends Seller$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Seller$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     student<T extends Seller$studentArgs<ExtArgs> = {}>(args?: Subset<T, Seller$studentArgs<ExtArgs>>): Prisma__StudentClient<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    items<T extends Seller$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Seller$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11959,25 +11959,6 @@ export namespace Prisma {
   }
 
   /**
-   * Seller.student
-   */
-  export type Seller$studentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Student
-     */
-    select?: StudentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Student
-     */
-    omit?: StudentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: StudentInclude<ExtArgs> | null
-    where?: StudentWhereInput
-  }
-
-  /**
    * Seller.items
    */
   export type Seller$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11999,6 +11980,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ItemScalarFieldEnum | ItemScalarFieldEnum[]
+  }
+
+  /**
+   * Seller.student
+   */
+  export type Seller$studentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Student
+     */
+    select?: StudentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Student
+     */
+    omit?: StudentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentInclude<ExtArgs> | null
+    where?: StudentWhereInput
   }
 
   /**
@@ -15605,9 +15605,9 @@ export namespace Prisma {
     sellerId?: boolean
     buyerId?: boolean
     categoryId?: boolean
-    seller?: boolean | SellerDefaultArgs<ExtArgs>
     buyer?: boolean | Item$buyerArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
+    seller?: boolean | SellerDefaultArgs<ExtArgs>
     comments?: boolean | Item$commentsArgs<ExtArgs>
     reviews?: boolean | Item$reviewsArgs<ExtArgs>
     _count?: boolean | ItemCountOutputTypeDefaultArgs<ExtArgs>
@@ -15622,9 +15622,9 @@ export namespace Prisma {
     sellerId?: boolean
     buyerId?: boolean
     categoryId?: boolean
-    seller?: boolean | SellerDefaultArgs<ExtArgs>
     buyer?: boolean | Item$buyerArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
+    seller?: boolean | SellerDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["item"]>
 
   export type ItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -15636,9 +15636,9 @@ export namespace Prisma {
     sellerId?: boolean
     buyerId?: boolean
     categoryId?: boolean
-    seller?: boolean | SellerDefaultArgs<ExtArgs>
     buyer?: boolean | Item$buyerArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
+    seller?: boolean | SellerDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["item"]>
 
   export type ItemSelectScalar = {
@@ -15654,30 +15654,30 @@ export namespace Prisma {
 
   export type ItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "itemName" | "cost" | "condition" | "imageUrl" | "sellerId" | "buyerId" | "categoryId", ExtArgs["result"]["item"]>
   export type ItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    seller?: boolean | SellerDefaultArgs<ExtArgs>
     buyer?: boolean | Item$buyerArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
+    seller?: boolean | SellerDefaultArgs<ExtArgs>
     comments?: boolean | Item$commentsArgs<ExtArgs>
     reviews?: boolean | Item$reviewsArgs<ExtArgs>
     _count?: boolean | ItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    seller?: boolean | SellerDefaultArgs<ExtArgs>
     buyer?: boolean | Item$buyerArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
+    seller?: boolean | SellerDefaultArgs<ExtArgs>
   }
   export type ItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    seller?: boolean | SellerDefaultArgs<ExtArgs>
     buyer?: boolean | Item$buyerArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
+    seller?: boolean | SellerDefaultArgs<ExtArgs>
   }
 
   export type $ItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Item"
     objects: {
-      seller: Prisma.$SellerPayload<ExtArgs>
       buyer: Prisma.$BuyerPayload<ExtArgs> | null
       category: Prisma.$CategoryPayload<ExtArgs>
+      seller: Prisma.$SellerPayload<ExtArgs>
       comments: Prisma.$ItemCommentPayload<ExtArgs>[]
       reviews: Prisma.$ReviewPayload<ExtArgs>[]
     }
@@ -16084,9 +16084,9 @@ export namespace Prisma {
    */
   export interface Prisma__ItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    seller<T extends SellerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SellerDefaultArgs<ExtArgs>>): Prisma__SellerClient<$Result.GetResult<Prisma.$SellerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     buyer<T extends Item$buyerArgs<ExtArgs> = {}>(args?: Subset<T, Item$buyerArgs<ExtArgs>>): Prisma__BuyerClient<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     category<T extends CategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CategoryDefaultArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    seller<T extends SellerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SellerDefaultArgs<ExtArgs>>): Prisma__SellerClient<$Result.GetResult<Prisma.$SellerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     comments<T extends Item$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Item$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviews<T extends Item$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, Item$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -16813,8 +16813,8 @@ export namespace Prisma {
     createdAt?: boolean
     userId?: boolean
     itemId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     item?: boolean | ItemDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["itemComment"]>
 
   export type ItemCommentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -16823,8 +16823,8 @@ export namespace Prisma {
     createdAt?: boolean
     userId?: boolean
     itemId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     item?: boolean | ItemDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["itemComment"]>
 
   export type ItemCommentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -16833,8 +16833,8 @@ export namespace Prisma {
     createdAt?: boolean
     userId?: boolean
     itemId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     item?: boolean | ItemDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["itemComment"]>
 
   export type ItemCommentSelectScalar = {
@@ -16847,23 +16847,23 @@ export namespace Prisma {
 
   export type ItemCommentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "text" | "createdAt" | "userId" | "itemId", ExtArgs["result"]["itemComment"]>
   export type ItemCommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     item?: boolean | ItemDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type ItemCommentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     item?: boolean | ItemDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type ItemCommentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     item?: boolean | ItemDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $ItemCommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ItemComment"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       item: Prisma.$ItemPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -17265,8 +17265,8 @@ export namespace Prisma {
    */
   export interface Prisma__ItemCommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     item<T extends ItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ItemDefaultArgs<ExtArgs>>): Prisma__ItemClient<$Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19117,8 +19117,8 @@ export namespace Prisma {
     requestReceived?: boolean
     mentorId?: boolean
     menteeId?: boolean
-    mentor?: boolean | MentorDefaultArgs<ExtArgs>
     mentee?: boolean | MenteeDefaultArgs<ExtArgs>
+    mentor?: boolean | MentorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["request"]>
 
   export type RequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -19128,8 +19128,8 @@ export namespace Prisma {
     requestReceived?: boolean
     mentorId?: boolean
     menteeId?: boolean
-    mentor?: boolean | MentorDefaultArgs<ExtArgs>
     mentee?: boolean | MenteeDefaultArgs<ExtArgs>
+    mentor?: boolean | MentorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["request"]>
 
   export type RequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -19139,8 +19139,8 @@ export namespace Prisma {
     requestReceived?: boolean
     mentorId?: boolean
     menteeId?: boolean
-    mentor?: boolean | MentorDefaultArgs<ExtArgs>
     mentee?: boolean | MenteeDefaultArgs<ExtArgs>
+    mentor?: boolean | MentorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["request"]>
 
   export type RequestSelectScalar = {
@@ -19154,23 +19154,23 @@ export namespace Prisma {
 
   export type RequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "requestStatus" | "requestSent" | "requestReceived" | "mentorId" | "menteeId", ExtArgs["result"]["request"]>
   export type RequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    mentor?: boolean | MentorDefaultArgs<ExtArgs>
     mentee?: boolean | MenteeDefaultArgs<ExtArgs>
+    mentor?: boolean | MentorDefaultArgs<ExtArgs>
   }
   export type RequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    mentor?: boolean | MentorDefaultArgs<ExtArgs>
     mentee?: boolean | MenteeDefaultArgs<ExtArgs>
+    mentor?: boolean | MentorDefaultArgs<ExtArgs>
   }
   export type RequestIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    mentor?: boolean | MentorDefaultArgs<ExtArgs>
     mentee?: boolean | MenteeDefaultArgs<ExtArgs>
+    mentor?: boolean | MentorDefaultArgs<ExtArgs>
   }
 
   export type $RequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Request"
     objects: {
-      mentor: Prisma.$MentorPayload<ExtArgs>
       mentee: Prisma.$MenteePayload<ExtArgs>
+      mentor: Prisma.$MentorPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -19573,8 +19573,8 @@ export namespace Prisma {
    */
   export interface Prisma__RequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    mentor<T extends MentorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MentorDefaultArgs<ExtArgs>>): Prisma__MentorClient<$Result.GetResult<Prisma.$MentorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     mentee<T extends MenteeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MenteeDefaultArgs<ExtArgs>>): Prisma__MenteeClient<$Result.GetResult<Prisma.$MenteePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    mentor<T extends MentorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MentorDefaultArgs<ExtArgs>>): Prisma__MentorClient<$Result.GetResult<Prisma.$MentorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -22599,18 +22599,18 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     collegeId?: IntFilter<"User"> | number
-    college?: XOR<CollegeScalarRelationFilter, CollegeWhereInput>
+    buyer?: XOR<BuyerNullableScalarRelationFilter, BuyerWhereInput> | null
+    itemComments?: ItemCommentListRelationFilter
+    mentee?: XOR<MenteeNullableScalarRelationFilter, MenteeWhereInput> | null
+    mentor?: XOR<MentorNullableScalarRelationFilter, MentorWhereInput> | null
+    receivedMessages?: MessageListRelationFilter
+    sentMessages?: MessageListRelationFilter
+    notifications?: NotificationListRelationFilter
     otps?: OTPListRelationFilter
     refreshTokens?: RefreshTokenListRelationFilter
-    buyer?: XOR<BuyerNullableScalarRelationFilter, BuyerWhereInput> | null
     seller?: XOR<SellerNullableScalarRelationFilter, SellerWhereInput> | null
-    mentor?: XOR<MentorNullableScalarRelationFilter, MentorWhereInput> | null
-    mentee?: XOR<MenteeNullableScalarRelationFilter, MenteeWhereInput> | null
-    sentMessages?: MessageListRelationFilter
-    receivedMessages?: MessageListRelationFilter
-    itemComments?: ItemCommentListRelationFilter
     tasks?: TaskListRelationFilter
-    notifications?: NotificationListRelationFilter
+    college?: XOR<CollegeScalarRelationFilter, CollegeWhereInput>
   }
 
   export type UserOrderByWithRelationInput = {
@@ -22626,18 +22626,18 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     collegeId?: SortOrder
-    college?: CollegeOrderByWithRelationInput
+    buyer?: BuyerOrderByWithRelationInput
+    itemComments?: ItemCommentOrderByRelationAggregateInput
+    mentee?: MenteeOrderByWithRelationInput
+    mentor?: MentorOrderByWithRelationInput
+    receivedMessages?: MessageOrderByRelationAggregateInput
+    sentMessages?: MessageOrderByRelationAggregateInput
+    notifications?: NotificationOrderByRelationAggregateInput
     otps?: OTPOrderByRelationAggregateInput
     refreshTokens?: RefreshTokenOrderByRelationAggregateInput
-    buyer?: BuyerOrderByWithRelationInput
     seller?: SellerOrderByWithRelationInput
-    mentor?: MentorOrderByWithRelationInput
-    mentee?: MenteeOrderByWithRelationInput
-    sentMessages?: MessageOrderByRelationAggregateInput
-    receivedMessages?: MessageOrderByRelationAggregateInput
-    itemComments?: ItemCommentOrderByRelationAggregateInput
     tasks?: TaskOrderByRelationAggregateInput
-    notifications?: NotificationOrderByRelationAggregateInput
+    college?: CollegeOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -22656,18 +22656,18 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     collegeId?: IntFilter<"User"> | number
-    college?: XOR<CollegeScalarRelationFilter, CollegeWhereInput>
+    buyer?: XOR<BuyerNullableScalarRelationFilter, BuyerWhereInput> | null
+    itemComments?: ItemCommentListRelationFilter
+    mentee?: XOR<MenteeNullableScalarRelationFilter, MenteeWhereInput> | null
+    mentor?: XOR<MentorNullableScalarRelationFilter, MentorWhereInput> | null
+    receivedMessages?: MessageListRelationFilter
+    sentMessages?: MessageListRelationFilter
+    notifications?: NotificationListRelationFilter
     otps?: OTPListRelationFilter
     refreshTokens?: RefreshTokenListRelationFilter
-    buyer?: XOR<BuyerNullableScalarRelationFilter, BuyerWhereInput> | null
     seller?: XOR<SellerNullableScalarRelationFilter, SellerWhereInput> | null
-    mentor?: XOR<MentorNullableScalarRelationFilter, MentorWhereInput> | null
-    mentee?: XOR<MenteeNullableScalarRelationFilter, MenteeWhereInput> | null
-    sentMessages?: MessageListRelationFilter
-    receivedMessages?: MessageListRelationFilter
-    itemComments?: ItemCommentListRelationFilter
     tasks?: TaskListRelationFilter
-    notifications?: NotificationListRelationFilter
+    college?: XOR<CollegeScalarRelationFilter, CollegeWhereInput>
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -22837,8 +22837,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Message"> | Date | string
     senderId?: IntFilter<"Message"> | number
     receiverId?: IntFilter<"Message"> | number
-    sender?: XOR<UserScalarRelationFilter, UserWhereInput>
     receiver?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sender?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type MessageOrderByWithRelationInput = {
@@ -22848,8 +22848,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     senderId?: SortOrder
     receiverId?: SortOrder
-    sender?: UserOrderByWithRelationInput
     receiver?: UserOrderByWithRelationInput
+    sender?: UserOrderByWithRelationInput
   }
 
   export type MessageWhereUniqueInput = Prisma.AtLeast<{
@@ -22862,8 +22862,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Message"> | Date | string
     senderId?: IntFilter<"Message"> | number
     receiverId?: IntFilter<"Message"> | number
-    sender?: XOR<UserScalarRelationFilter, UserWhereInput>
     receiver?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sender?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type MessageOrderByWithAggregationInput = {
@@ -22899,16 +22899,16 @@ export namespace Prisma {
     id?: IntFilter<"College"> | number
     name?: StringFilter<"College"> | string
     location?: StringFilter<"College"> | string
-    users?: UserListRelationFilter
     students?: StudentListRelationFilter
+    users?: UserListRelationFilter
   }
 
   export type CollegeOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
     location?: SortOrder
-    users?: UserOrderByRelationAggregateInput
     students?: StudentOrderByRelationAggregateInput
+    users?: UserOrderByRelationAggregateInput
   }
 
   export type CollegeWhereUniqueInput = Prisma.AtLeast<{
@@ -22918,8 +22918,8 @@ export namespace Prisma {
     NOT?: CollegeWhereInput | CollegeWhereInput[]
     name?: StringFilter<"College"> | string
     location?: StringFilter<"College"> | string
-    users?: UserListRelationFilter
     students?: StudentListRelationFilter
+    users?: UserListRelationFilter
   }, "id">
 
   export type CollegeOrderByWithAggregationInput = {
@@ -22952,11 +22952,11 @@ export namespace Prisma {
     phoneNumber?: StringNullableFilter<"Student"> | string | null
     department?: StringNullableFilter<"Student"> | string | null
     collegeId?: IntFilter<"Student"> | number
-    college?: XOR<CollegeScalarRelationFilter, CollegeWhereInput>
     buyer?: XOR<BuyerNullableScalarRelationFilter, BuyerWhereInput> | null
-    seller?: XOR<SellerNullableScalarRelationFilter, SellerWhereInput> | null
-    mentor?: XOR<MentorNullableScalarRelationFilter, MentorWhereInput> | null
     mentee?: XOR<MenteeNullableScalarRelationFilter, MenteeWhereInput> | null
+    mentor?: XOR<MentorNullableScalarRelationFilter, MentorWhereInput> | null
+    seller?: XOR<SellerNullableScalarRelationFilter, SellerWhereInput> | null
+    college?: XOR<CollegeScalarRelationFilter, CollegeWhereInput>
   }
 
   export type StudentOrderByWithRelationInput = {
@@ -22966,11 +22966,11 @@ export namespace Prisma {
     phoneNumber?: SortOrderInput | SortOrder
     department?: SortOrderInput | SortOrder
     collegeId?: SortOrder
-    college?: CollegeOrderByWithRelationInput
     buyer?: BuyerOrderByWithRelationInput
-    seller?: SellerOrderByWithRelationInput
-    mentor?: MentorOrderByWithRelationInput
     mentee?: MenteeOrderByWithRelationInput
+    mentor?: MentorOrderByWithRelationInput
+    seller?: SellerOrderByWithRelationInput
+    college?: CollegeOrderByWithRelationInput
   }
 
   export type StudentWhereUniqueInput = Prisma.AtLeast<{
@@ -22983,11 +22983,11 @@ export namespace Prisma {
     phoneNumber?: StringNullableFilter<"Student"> | string | null
     department?: StringNullableFilter<"Student"> | string | null
     collegeId?: IntFilter<"Student"> | number
-    college?: XOR<CollegeScalarRelationFilter, CollegeWhereInput>
     buyer?: XOR<BuyerNullableScalarRelationFilter, BuyerWhereInput> | null
-    seller?: XOR<SellerNullableScalarRelationFilter, SellerWhereInput> | null
-    mentor?: XOR<MentorNullableScalarRelationFilter, MentorWhereInput> | null
     mentee?: XOR<MenteeNullableScalarRelationFilter, MenteeWhereInput> | null
+    mentor?: XOR<MentorNullableScalarRelationFilter, MentorWhereInput> | null
+    seller?: XOR<SellerNullableScalarRelationFilter, SellerWhereInput> | null
+    college?: XOR<CollegeScalarRelationFilter, CollegeWhereInput>
   }, "id" | "email">
 
   export type StudentOrderByWithAggregationInput = {
@@ -23073,17 +23073,17 @@ export namespace Prisma {
     NOT?: SellerWhereInput | SellerWhereInput[]
     studentId?: IntNullableFilter<"Seller"> | number | null
     userId?: IntFilter<"Seller"> | number
+    items?: ItemListRelationFilter
     student?: XOR<StudentNullableScalarRelationFilter, StudentWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    items?: ItemListRelationFilter
   }
 
   export type SellerOrderByWithRelationInput = {
     studentId?: SortOrderInput | SortOrder
     userId?: SortOrder
+    items?: ItemOrderByRelationAggregateInput
     student?: StudentOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
-    items?: ItemOrderByRelationAggregateInput
   }
 
   export type SellerWhereUniqueInput = Prisma.AtLeast<{
@@ -23092,9 +23092,9 @@ export namespace Prisma {
     AND?: SellerWhereInput | SellerWhereInput[]
     OR?: SellerWhereInput[]
     NOT?: SellerWhereInput | SellerWhereInput[]
+    items?: ItemListRelationFilter
     student?: XOR<StudentNullableScalarRelationFilter, StudentWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    items?: ItemListRelationFilter
   }, "userId" | "studentId">
 
   export type SellerOrderByWithAggregationInput = {
@@ -23278,9 +23278,9 @@ export namespace Prisma {
     sellerId?: IntFilter<"Item"> | number
     buyerId?: IntNullableFilter<"Item"> | number | null
     categoryId?: IntFilter<"Item"> | number
-    seller?: XOR<SellerScalarRelationFilter, SellerWhereInput>
     buyer?: XOR<BuyerNullableScalarRelationFilter, BuyerWhereInput> | null
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
+    seller?: XOR<SellerScalarRelationFilter, SellerWhereInput>
     comments?: ItemCommentListRelationFilter
     reviews?: ReviewListRelationFilter
   }
@@ -23294,9 +23294,9 @@ export namespace Prisma {
     sellerId?: SortOrder
     buyerId?: SortOrderInput | SortOrder
     categoryId?: SortOrder
-    seller?: SellerOrderByWithRelationInput
     buyer?: BuyerOrderByWithRelationInput
     category?: CategoryOrderByWithRelationInput
+    seller?: SellerOrderByWithRelationInput
     comments?: ItemCommentOrderByRelationAggregateInput
     reviews?: ReviewOrderByRelationAggregateInput
   }
@@ -23313,9 +23313,9 @@ export namespace Prisma {
     sellerId?: IntFilter<"Item"> | number
     buyerId?: IntNullableFilter<"Item"> | number | null
     categoryId?: IntFilter<"Item"> | number
-    seller?: XOR<SellerScalarRelationFilter, SellerWhereInput>
     buyer?: XOR<BuyerNullableScalarRelationFilter, BuyerWhereInput> | null
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
+    seller?: XOR<SellerScalarRelationFilter, SellerWhereInput>
     comments?: ItemCommentListRelationFilter
     reviews?: ReviewListRelationFilter
   }, "id">
@@ -23359,8 +23359,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ItemComment"> | Date | string
     userId?: IntFilter<"ItemComment"> | number
     itemId?: IntFilter<"ItemComment"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     item?: XOR<ItemScalarRelationFilter, ItemWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type ItemCommentOrderByWithRelationInput = {
@@ -23369,8 +23369,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     userId?: SortOrder
     itemId?: SortOrder
-    user?: UserOrderByWithRelationInput
     item?: ItemOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type ItemCommentWhereUniqueInput = Prisma.AtLeast<{
@@ -23382,8 +23382,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ItemComment"> | Date | string
     userId?: IntFilter<"ItemComment"> | number
     itemId?: IntFilter<"ItemComment"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     item?: XOR<ItemScalarRelationFilter, ItemWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type ItemCommentOrderByWithAggregationInput = {
@@ -23493,8 +23493,8 @@ export namespace Prisma {
     requestReceived?: DateTimeNullableFilter<"Request"> | Date | string | null
     mentorId?: IntFilter<"Request"> | number
     menteeId?: IntFilter<"Request"> | number
-    mentor?: XOR<MentorScalarRelationFilter, MentorWhereInput>
     mentee?: XOR<MenteeScalarRelationFilter, MenteeWhereInput>
+    mentor?: XOR<MentorScalarRelationFilter, MentorWhereInput>
   }
 
   export type RequestOrderByWithRelationInput = {
@@ -23504,8 +23504,8 @@ export namespace Prisma {
     requestReceived?: SortOrderInput | SortOrder
     mentorId?: SortOrder
     menteeId?: SortOrder
-    mentor?: MentorOrderByWithRelationInput
     mentee?: MenteeOrderByWithRelationInput
+    mentor?: MentorOrderByWithRelationInput
   }
 
   export type RequestWhereUniqueInput = Prisma.AtLeast<{
@@ -23518,8 +23518,8 @@ export namespace Prisma {
     requestReceived?: DateTimeNullableFilter<"Request"> | Date | string | null
     mentorId?: IntFilter<"Request"> | number
     menteeId?: IntFilter<"Request"> | number
-    mentor?: XOR<MentorScalarRelationFilter, MentorWhereInput>
     mentee?: XOR<MenteeScalarRelationFilter, MenteeWhereInput>
+    mentor?: XOR<MentorScalarRelationFilter, MentorWhereInput>
   }, "id">
 
   export type RequestOrderByWithAggregationInput = {
@@ -23698,18 +23698,18 @@ export namespace Prisma {
     isVerified?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    college: CollegeCreateNestedOneWithoutUsersInput
+    buyer?: BuyerCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
+    mentee?: MenteeCreateNestedOneWithoutUserInput
+    mentor?: MentorCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     otps?: OTPCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    buyer?: BuyerCreateNestedOneWithoutUserInput
     seller?: SellerCreateNestedOneWithoutUserInput
-    mentor?: MentorCreateNestedOneWithoutUserInput
-    mentee?: MenteeCreateNestedOneWithoutUserInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
+    college: CollegeCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -23725,17 +23725,17 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     collegeId: number
+    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     otps?: OTPUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
     seller?: SellerUncheckedCreateNestedOneWithoutUserInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
-    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -23749,18 +23749,18 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
+    buyer?: BuyerUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUpdateOneWithoutUserNestedInput
+    mentor?: MentorUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     otps?: OTPUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUpdateOneWithoutUserNestedInput
     seller?: SellerUpdateOneWithoutUserNestedInput
-    mentor?: MentorUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -23776,17 +23776,17 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     collegeId?: IntFieldUpdateOperationsInput | number
+    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
     seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -23947,8 +23947,8 @@ export namespace Prisma {
     content: string
     read?: boolean
     createdAt?: Date | string
-    sender: UserCreateNestedOneWithoutSentMessagesInput
     receiver: UserCreateNestedOneWithoutReceivedMessagesInput
+    sender: UserCreateNestedOneWithoutSentMessagesInput
   }
 
   export type MessageUncheckedCreateInput = {
@@ -23964,8 +23964,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     read?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sender?: UserUpdateOneRequiredWithoutSentMessagesNestedInput
     receiver?: UserUpdateOneRequiredWithoutReceivedMessagesNestedInput
+    sender?: UserUpdateOneRequiredWithoutSentMessagesNestedInput
   }
 
   export type MessageUncheckedUpdateInput = {
@@ -24004,31 +24004,31 @@ export namespace Prisma {
   export type CollegeCreateInput = {
     name: string
     location: string
-    users?: UserCreateNestedManyWithoutCollegeInput
     students?: StudentCreateNestedManyWithoutCollegeInput
+    users?: UserCreateNestedManyWithoutCollegeInput
   }
 
   export type CollegeUncheckedCreateInput = {
     id?: number
     name: string
     location: string
-    users?: UserUncheckedCreateNestedManyWithoutCollegeInput
     students?: StudentUncheckedCreateNestedManyWithoutCollegeInput
+    users?: UserUncheckedCreateNestedManyWithoutCollegeInput
   }
 
   export type CollegeUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
-    users?: UserUpdateManyWithoutCollegeNestedInput
     students?: StudentUpdateManyWithoutCollegeNestedInput
+    users?: UserUpdateManyWithoutCollegeNestedInput
   }
 
   export type CollegeUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
-    users?: UserUncheckedUpdateManyWithoutCollegeNestedInput
     students?: StudentUncheckedUpdateManyWithoutCollegeNestedInput
+    users?: UserUncheckedUpdateManyWithoutCollegeNestedInput
   }
 
   export type CollegeCreateManyInput = {
@@ -24053,11 +24053,11 @@ export namespace Prisma {
     email: string
     phoneNumber?: string | null
     department?: string | null
-    college: CollegeCreateNestedOneWithoutStudentsInput
     buyer?: BuyerCreateNestedOneWithoutStudentInput
-    seller?: SellerCreateNestedOneWithoutStudentInput
-    mentor?: MentorCreateNestedOneWithoutStudentInput
     mentee?: MenteeCreateNestedOneWithoutStudentInput
+    mentor?: MentorCreateNestedOneWithoutStudentInput
+    seller?: SellerCreateNestedOneWithoutStudentInput
+    college: CollegeCreateNestedOneWithoutStudentsInput
   }
 
   export type StudentUncheckedCreateInput = {
@@ -24068,9 +24068,9 @@ export namespace Prisma {
     department?: string | null
     collegeId: number
     buyer?: BuyerUncheckedCreateNestedOneWithoutStudentInput
-    seller?: SellerUncheckedCreateNestedOneWithoutStudentInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutStudentInput
     mentee?: MenteeUncheckedCreateNestedOneWithoutStudentInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutStudentInput
+    seller?: SellerUncheckedCreateNestedOneWithoutStudentInput
   }
 
   export type StudentUpdateInput = {
@@ -24078,11 +24078,11 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    college?: CollegeUpdateOneRequiredWithoutStudentsNestedInput
     buyer?: BuyerUpdateOneWithoutStudentNestedInput
-    seller?: SellerUpdateOneWithoutStudentNestedInput
-    mentor?: MentorUpdateOneWithoutStudentNestedInput
     mentee?: MenteeUpdateOneWithoutStudentNestedInput
+    mentor?: MentorUpdateOneWithoutStudentNestedInput
+    seller?: SellerUpdateOneWithoutStudentNestedInput
+    college?: CollegeUpdateOneRequiredWithoutStudentsNestedInput
   }
 
   export type StudentUncheckedUpdateInput = {
@@ -24093,9 +24093,9 @@ export namespace Prisma {
     department?: NullableStringFieldUpdateOperationsInput | string | null
     collegeId?: IntFieldUpdateOperationsInput | number
     buyer?: BuyerUncheckedUpdateOneWithoutStudentNestedInput
-    seller?: SellerUncheckedUpdateOneWithoutStudentNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutStudentNestedInput
     mentee?: MenteeUncheckedUpdateOneWithoutStudentNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutStudentNestedInput
+    seller?: SellerUncheckedUpdateOneWithoutStudentNestedInput
   }
 
   export type StudentCreateManyInput = {
@@ -24166,9 +24166,9 @@ export namespace Prisma {
   }
 
   export type SellerCreateInput = {
+    items?: ItemCreateNestedManyWithoutSellerInput
     student?: StudentCreateNestedOneWithoutSellerInput
     user: UserCreateNestedOneWithoutSellerInput
-    items?: ItemCreateNestedManyWithoutSellerInput
   }
 
   export type SellerUncheckedCreateInput = {
@@ -24178,9 +24178,9 @@ export namespace Prisma {
   }
 
   export type SellerUpdateInput = {
+    items?: ItemUpdateManyWithoutSellerNestedInput
     student?: StudentUpdateOneWithoutSellerNestedInput
     user?: UserUpdateOneRequiredWithoutSellerNestedInput
-    items?: ItemUpdateManyWithoutSellerNestedInput
   }
 
   export type SellerUncheckedUpdateInput = {
@@ -24336,9 +24336,9 @@ export namespace Prisma {
     cost: number
     condition: string
     imageUrl?: string | null
-    seller: SellerCreateNestedOneWithoutItemsInput
     buyer?: BuyerCreateNestedOneWithoutPurchasesInput
     category: CategoryCreateNestedOneWithoutItemsInput
+    seller: SellerCreateNestedOneWithoutItemsInput
     comments?: ItemCommentCreateNestedManyWithoutItemInput
     reviews?: ReviewCreateNestedManyWithoutItemInput
   }
@@ -24361,9 +24361,9 @@ export namespace Prisma {
     cost?: FloatFieldUpdateOperationsInput | number
     condition?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
     buyer?: BuyerUpdateOneWithoutPurchasesNestedInput
     category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
+    seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
     comments?: ItemCommentUpdateManyWithoutItemNestedInput
     reviews?: ReviewUpdateManyWithoutItemNestedInput
   }
@@ -24413,8 +24413,8 @@ export namespace Prisma {
   export type ItemCommentCreateInput = {
     text: string
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutItemCommentsInput
     item: ItemCreateNestedOneWithoutCommentsInput
+    user: UserCreateNestedOneWithoutItemCommentsInput
   }
 
   export type ItemCommentUncheckedCreateInput = {
@@ -24428,8 +24428,8 @@ export namespace Prisma {
   export type ItemCommentUpdateInput = {
     text?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutItemCommentsNestedInput
     item?: ItemUpdateOneRequiredWithoutCommentsNestedInput
+    user?: UserUpdateOneRequiredWithoutItemCommentsNestedInput
   }
 
   export type ItemCommentUncheckedUpdateInput = {
@@ -24529,8 +24529,8 @@ export namespace Prisma {
     requestStatus: string
     requestSent?: Date | string
     requestReceived?: Date | string | null
-    mentor: MentorCreateNestedOneWithoutRequestsReceivedInput
     mentee: MenteeCreateNestedOneWithoutRequestsSentInput
+    mentor: MentorCreateNestedOneWithoutRequestsReceivedInput
   }
 
   export type RequestUncheckedCreateInput = {
@@ -24546,8 +24546,8 @@ export namespace Prisma {
     requestStatus?: StringFieldUpdateOperationsInput | string
     requestSent?: DateTimeFieldUpdateOperationsInput | Date | string
     requestReceived?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    mentor?: MentorUpdateOneRequiredWithoutRequestsReceivedNestedInput
     mentee?: MenteeUpdateOneRequiredWithoutRequestsSentNestedInput
+    mentor?: MentorUpdateOneRequiredWithoutRequestsReceivedNestedInput
   }
 
   export type RequestUncheckedUpdateInput = {
@@ -24779,9 +24779,37 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type CollegeScalarRelationFilter = {
-    is?: CollegeWhereInput
-    isNot?: CollegeWhereInput
+  export type BuyerNullableScalarRelationFilter = {
+    is?: BuyerWhereInput | null
+    isNot?: BuyerWhereInput | null
+  }
+
+  export type ItemCommentListRelationFilter = {
+    every?: ItemCommentWhereInput
+    some?: ItemCommentWhereInput
+    none?: ItemCommentWhereInput
+  }
+
+  export type MenteeNullableScalarRelationFilter = {
+    is?: MenteeWhereInput | null
+    isNot?: MenteeWhereInput | null
+  }
+
+  export type MentorNullableScalarRelationFilter = {
+    is?: MentorWhereInput | null
+    isNot?: MentorWhereInput | null
+  }
+
+  export type MessageListRelationFilter = {
+    every?: MessageWhereInput
+    some?: MessageWhereInput
+    none?: MessageWhereInput
+  }
+
+  export type NotificationListRelationFilter = {
+    every?: NotificationWhereInput
+    some?: NotificationWhereInput
+    none?: NotificationWhereInput
   }
 
   export type OTPListRelationFilter = {
@@ -24796,36 +24824,9 @@ export namespace Prisma {
     none?: RefreshTokenWhereInput
   }
 
-  export type BuyerNullableScalarRelationFilter = {
-    is?: BuyerWhereInput | null
-    isNot?: BuyerWhereInput | null
-  }
-
   export type SellerNullableScalarRelationFilter = {
     is?: SellerWhereInput | null
     isNot?: SellerWhereInput | null
-  }
-
-  export type MentorNullableScalarRelationFilter = {
-    is?: MentorWhereInput | null
-    isNot?: MentorWhereInput | null
-  }
-
-  export type MenteeNullableScalarRelationFilter = {
-    is?: MenteeWhereInput | null
-    isNot?: MenteeWhereInput | null
-  }
-
-  export type MessageListRelationFilter = {
-    every?: MessageWhereInput
-    some?: MessageWhereInput
-    none?: MessageWhereInput
-  }
-
-  export type ItemCommentListRelationFilter = {
-    every?: ItemCommentWhereInput
-    some?: ItemCommentWhereInput
-    none?: ItemCommentWhereInput
   }
 
   export type TaskListRelationFilter = {
@@ -24834,15 +24835,26 @@ export namespace Prisma {
     none?: TaskWhereInput
   }
 
-  export type NotificationListRelationFilter = {
-    every?: NotificationWhereInput
-    some?: NotificationWhereInput
-    none?: NotificationWhereInput
+  export type CollegeScalarRelationFilter = {
+    is?: CollegeWhereInput
+    isNot?: CollegeWhereInput
   }
 
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type ItemCommentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MessageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type NotificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type OTPOrderByRelationAggregateInput = {
@@ -24853,19 +24865,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type MessageOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ItemCommentOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type TaskOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type NotificationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -25113,23 +25113,23 @@ export namespace Prisma {
     receiverId?: SortOrder
   }
 
-  export type UserListRelationFilter = {
-    every?: UserWhereInput
-    some?: UserWhereInput
-    none?: UserWhereInput
-  }
-
   export type StudentListRelationFilter = {
     every?: StudentWhereInput
     some?: StudentWhereInput
     none?: StudentWhereInput
   }
 
-  export type UserOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
   }
 
   export type StudentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -25398,14 +25398,14 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type SellerScalarRelationFilter = {
-    is?: SellerWhereInput
-    isNot?: SellerWhereInput
-  }
-
   export type CategoryScalarRelationFilter = {
     is?: CategoryWhereInput
     isNot?: CategoryWhereInput
+  }
+
+  export type SellerScalarRelationFilter = {
+    is?: SellerWhereInput
+    isNot?: SellerWhereInput
   }
 
   export type ItemCountOrderByAggregateInput = {
@@ -25581,14 +25581,14 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type MentorScalarRelationFilter = {
-    is?: MentorWhereInput
-    isNot?: MentorWhereInput
-  }
-
   export type MenteeScalarRelationFilter = {
     is?: MenteeWhereInput
     isNot?: MenteeWhereInput
+  }
+
+  export type MentorScalarRelationFilter = {
+    is?: MentorWhereInput
+    isNot?: MentorWhereInput
   }
 
   export type RequestCountOrderByAggregateInput = {
@@ -25727,10 +25727,50 @@ export namespace Prisma {
     userId?: SortOrder
   }
 
-  export type CollegeCreateNestedOneWithoutUsersInput = {
-    create?: XOR<CollegeCreateWithoutUsersInput, CollegeUncheckedCreateWithoutUsersInput>
-    connectOrCreate?: CollegeCreateOrConnectWithoutUsersInput
-    connect?: CollegeWhereUniqueInput
+  export type BuyerCreateNestedOneWithoutUserInput = {
+    create?: XOR<BuyerCreateWithoutUserInput, BuyerUncheckedCreateWithoutUserInput>
+    connectOrCreate?: BuyerCreateOrConnectWithoutUserInput
+    connect?: BuyerWhereUniqueInput
+  }
+
+  export type ItemCommentCreateNestedManyWithoutUserInput = {
+    create?: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput> | ItemCommentCreateWithoutUserInput[] | ItemCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemCommentCreateOrConnectWithoutUserInput | ItemCommentCreateOrConnectWithoutUserInput[]
+    createMany?: ItemCommentCreateManyUserInputEnvelope
+    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+  }
+
+  export type MenteeCreateNestedOneWithoutUserInput = {
+    create?: XOR<MenteeCreateWithoutUserInput, MenteeUncheckedCreateWithoutUserInput>
+    connectOrCreate?: MenteeCreateOrConnectWithoutUserInput
+    connect?: MenteeWhereUniqueInput
+  }
+
+  export type MentorCreateNestedOneWithoutUserInput = {
+    create?: XOR<MentorCreateWithoutUserInput, MentorUncheckedCreateWithoutUserInput>
+    connectOrCreate?: MentorCreateOrConnectWithoutUserInput
+    connect?: MentorWhereUniqueInput
+  }
+
+  export type MessageCreateNestedManyWithoutReceiverInput = {
+    create?: XOR<MessageCreateWithoutReceiverInput, MessageUncheckedCreateWithoutReceiverInput> | MessageCreateWithoutReceiverInput[] | MessageUncheckedCreateWithoutReceiverInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutReceiverInput | MessageCreateOrConnectWithoutReceiverInput[]
+    createMany?: MessageCreateManyReceiverInputEnvelope
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+  }
+
+  export type MessageCreateNestedManyWithoutSenderInput = {
+    create?: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput> | MessageCreateWithoutSenderInput[] | MessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutSenderInput | MessageCreateOrConnectWithoutSenderInput[]
+    createMany?: MessageCreateManySenderInputEnvelope
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+  }
+
+  export type NotificationCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
   export type OTPCreateNestedManyWithoutUserInput = {
@@ -25747,49 +25787,10 @@ export namespace Prisma {
     connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
   }
 
-  export type BuyerCreateNestedOneWithoutUserInput = {
-    create?: XOR<BuyerCreateWithoutUserInput, BuyerUncheckedCreateWithoutUserInput>
-    connectOrCreate?: BuyerCreateOrConnectWithoutUserInput
-    connect?: BuyerWhereUniqueInput
-  }
-
   export type SellerCreateNestedOneWithoutUserInput = {
     create?: XOR<SellerCreateWithoutUserInput, SellerUncheckedCreateWithoutUserInput>
     connectOrCreate?: SellerCreateOrConnectWithoutUserInput
     connect?: SellerWhereUniqueInput
-  }
-
-  export type MentorCreateNestedOneWithoutUserInput = {
-    create?: XOR<MentorCreateWithoutUserInput, MentorUncheckedCreateWithoutUserInput>
-    connectOrCreate?: MentorCreateOrConnectWithoutUserInput
-    connect?: MentorWhereUniqueInput
-  }
-
-  export type MenteeCreateNestedOneWithoutUserInput = {
-    create?: XOR<MenteeCreateWithoutUserInput, MenteeUncheckedCreateWithoutUserInput>
-    connectOrCreate?: MenteeCreateOrConnectWithoutUserInput
-    connect?: MenteeWhereUniqueInput
-  }
-
-  export type MessageCreateNestedManyWithoutSenderInput = {
-    create?: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput> | MessageCreateWithoutSenderInput[] | MessageUncheckedCreateWithoutSenderInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutSenderInput | MessageCreateOrConnectWithoutSenderInput[]
-    createMany?: MessageCreateManySenderInputEnvelope
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-  }
-
-  export type MessageCreateNestedManyWithoutReceiverInput = {
-    create?: XOR<MessageCreateWithoutReceiverInput, MessageUncheckedCreateWithoutReceiverInput> | MessageCreateWithoutReceiverInput[] | MessageUncheckedCreateWithoutReceiverInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutReceiverInput | MessageCreateOrConnectWithoutReceiverInput[]
-    createMany?: MessageCreateManyReceiverInputEnvelope
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-  }
-
-  export type ItemCommentCreateNestedManyWithoutUserInput = {
-    create?: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput> | ItemCommentCreateWithoutUserInput[] | ItemCommentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ItemCommentCreateOrConnectWithoutUserInput | ItemCommentCreateOrConnectWithoutUserInput[]
-    createMany?: ItemCommentCreateManyUserInputEnvelope
-    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
   }
 
   export type TaskCreateNestedManyWithoutUserInput = {
@@ -25799,7 +25800,52 @@ export namespace Prisma {
     connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
   }
 
-  export type NotificationCreateNestedManyWithoutUserInput = {
+  export type CollegeCreateNestedOneWithoutUsersInput = {
+    create?: XOR<CollegeCreateWithoutUsersInput, CollegeUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: CollegeCreateOrConnectWithoutUsersInput
+    connect?: CollegeWhereUniqueInput
+  }
+
+  export type BuyerUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<BuyerCreateWithoutUserInput, BuyerUncheckedCreateWithoutUserInput>
+    connectOrCreate?: BuyerCreateOrConnectWithoutUserInput
+    connect?: BuyerWhereUniqueInput
+  }
+
+  export type ItemCommentUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput> | ItemCommentCreateWithoutUserInput[] | ItemCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemCommentCreateOrConnectWithoutUserInput | ItemCommentCreateOrConnectWithoutUserInput[]
+    createMany?: ItemCommentCreateManyUserInputEnvelope
+    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+  }
+
+  export type MenteeUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<MenteeCreateWithoutUserInput, MenteeUncheckedCreateWithoutUserInput>
+    connectOrCreate?: MenteeCreateOrConnectWithoutUserInput
+    connect?: MenteeWhereUniqueInput
+  }
+
+  export type MentorUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<MentorCreateWithoutUserInput, MentorUncheckedCreateWithoutUserInput>
+    connectOrCreate?: MentorCreateOrConnectWithoutUserInput
+    connect?: MentorWhereUniqueInput
+  }
+
+  export type MessageUncheckedCreateNestedManyWithoutReceiverInput = {
+    create?: XOR<MessageCreateWithoutReceiverInput, MessageUncheckedCreateWithoutReceiverInput> | MessageCreateWithoutReceiverInput[] | MessageUncheckedCreateWithoutReceiverInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutReceiverInput | MessageCreateOrConnectWithoutReceiverInput[]
+    createMany?: MessageCreateManyReceiverInputEnvelope
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+  }
+
+  export type MessageUncheckedCreateNestedManyWithoutSenderInput = {
+    create?: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput> | MessageCreateWithoutSenderInput[] | MessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutSenderInput | MessageCreateOrConnectWithoutSenderInput[]
+    createMany?: MessageCreateManySenderInputEnvelope
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
     createMany?: NotificationCreateManyUserInputEnvelope
@@ -25820,49 +25866,10 @@ export namespace Prisma {
     connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
   }
 
-  export type BuyerUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<BuyerCreateWithoutUserInput, BuyerUncheckedCreateWithoutUserInput>
-    connectOrCreate?: BuyerCreateOrConnectWithoutUserInput
-    connect?: BuyerWhereUniqueInput
-  }
-
   export type SellerUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<SellerCreateWithoutUserInput, SellerUncheckedCreateWithoutUserInput>
     connectOrCreate?: SellerCreateOrConnectWithoutUserInput
     connect?: SellerWhereUniqueInput
-  }
-
-  export type MentorUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<MentorCreateWithoutUserInput, MentorUncheckedCreateWithoutUserInput>
-    connectOrCreate?: MentorCreateOrConnectWithoutUserInput
-    connect?: MentorWhereUniqueInput
-  }
-
-  export type MenteeUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<MenteeCreateWithoutUserInput, MenteeUncheckedCreateWithoutUserInput>
-    connectOrCreate?: MenteeCreateOrConnectWithoutUserInput
-    connect?: MenteeWhereUniqueInput
-  }
-
-  export type MessageUncheckedCreateNestedManyWithoutSenderInput = {
-    create?: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput> | MessageCreateWithoutSenderInput[] | MessageUncheckedCreateWithoutSenderInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutSenderInput | MessageCreateOrConnectWithoutSenderInput[]
-    createMany?: MessageCreateManySenderInputEnvelope
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-  }
-
-  export type MessageUncheckedCreateNestedManyWithoutReceiverInput = {
-    create?: XOR<MessageCreateWithoutReceiverInput, MessageUncheckedCreateWithoutReceiverInput> | MessageCreateWithoutReceiverInput[] | MessageUncheckedCreateWithoutReceiverInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutReceiverInput | MessageCreateOrConnectWithoutReceiverInput[]
-    createMany?: MessageCreateManyReceiverInputEnvelope
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-  }
-
-  export type ItemCommentUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput> | ItemCommentCreateWithoutUserInput[] | ItemCommentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ItemCommentCreateOrConnectWithoutUserInput | ItemCommentCreateOrConnectWithoutUserInput[]
-    createMany?: ItemCommentCreateManyUserInputEnvelope
-    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
   }
 
   export type TaskUncheckedCreateNestedManyWithoutUserInput = {
@@ -25870,13 +25877,6 @@ export namespace Prisma {
     connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
     createMany?: TaskCreateManyUserInputEnvelope
     connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-  }
-
-  export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -25895,12 +25895,90 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type CollegeUpdateOneRequiredWithoutUsersNestedInput = {
-    create?: XOR<CollegeCreateWithoutUsersInput, CollegeUncheckedCreateWithoutUsersInput>
-    connectOrCreate?: CollegeCreateOrConnectWithoutUsersInput
-    upsert?: CollegeUpsertWithoutUsersInput
-    connect?: CollegeWhereUniqueInput
-    update?: XOR<XOR<CollegeUpdateToOneWithWhereWithoutUsersInput, CollegeUpdateWithoutUsersInput>, CollegeUncheckedUpdateWithoutUsersInput>
+  export type BuyerUpdateOneWithoutUserNestedInput = {
+    create?: XOR<BuyerCreateWithoutUserInput, BuyerUncheckedCreateWithoutUserInput>
+    connectOrCreate?: BuyerCreateOrConnectWithoutUserInput
+    upsert?: BuyerUpsertWithoutUserInput
+    disconnect?: BuyerWhereInput | boolean
+    delete?: BuyerWhereInput | boolean
+    connect?: BuyerWhereUniqueInput
+    update?: XOR<XOR<BuyerUpdateToOneWithWhereWithoutUserInput, BuyerUpdateWithoutUserInput>, BuyerUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ItemCommentUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput> | ItemCommentCreateWithoutUserInput[] | ItemCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemCommentCreateOrConnectWithoutUserInput | ItemCommentCreateOrConnectWithoutUserInput[]
+    upsert?: ItemCommentUpsertWithWhereUniqueWithoutUserInput | ItemCommentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ItemCommentCreateManyUserInputEnvelope
+    set?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    disconnect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    delete?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    update?: ItemCommentUpdateWithWhereUniqueWithoutUserInput | ItemCommentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ItemCommentUpdateManyWithWhereWithoutUserInput | ItemCommentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
+  }
+
+  export type MenteeUpdateOneWithoutUserNestedInput = {
+    create?: XOR<MenteeCreateWithoutUserInput, MenteeUncheckedCreateWithoutUserInput>
+    connectOrCreate?: MenteeCreateOrConnectWithoutUserInput
+    upsert?: MenteeUpsertWithoutUserInput
+    disconnect?: MenteeWhereInput | boolean
+    delete?: MenteeWhereInput | boolean
+    connect?: MenteeWhereUniqueInput
+    update?: XOR<XOR<MenteeUpdateToOneWithWhereWithoutUserInput, MenteeUpdateWithoutUserInput>, MenteeUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MentorUpdateOneWithoutUserNestedInput = {
+    create?: XOR<MentorCreateWithoutUserInput, MentorUncheckedCreateWithoutUserInput>
+    connectOrCreate?: MentorCreateOrConnectWithoutUserInput
+    upsert?: MentorUpsertWithoutUserInput
+    disconnect?: MentorWhereInput | boolean
+    delete?: MentorWhereInput | boolean
+    connect?: MentorWhereUniqueInput
+    update?: XOR<XOR<MentorUpdateToOneWithWhereWithoutUserInput, MentorUpdateWithoutUserInput>, MentorUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MessageUpdateManyWithoutReceiverNestedInput = {
+    create?: XOR<MessageCreateWithoutReceiverInput, MessageUncheckedCreateWithoutReceiverInput> | MessageCreateWithoutReceiverInput[] | MessageUncheckedCreateWithoutReceiverInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutReceiverInput | MessageCreateOrConnectWithoutReceiverInput[]
+    upsert?: MessageUpsertWithWhereUniqueWithoutReceiverInput | MessageUpsertWithWhereUniqueWithoutReceiverInput[]
+    createMany?: MessageCreateManyReceiverInputEnvelope
+    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    update?: MessageUpdateWithWhereUniqueWithoutReceiverInput | MessageUpdateWithWhereUniqueWithoutReceiverInput[]
+    updateMany?: MessageUpdateManyWithWhereWithoutReceiverInput | MessageUpdateManyWithWhereWithoutReceiverInput[]
+    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  }
+
+  export type MessageUpdateManyWithoutSenderNestedInput = {
+    create?: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput> | MessageCreateWithoutSenderInput[] | MessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutSenderInput | MessageCreateOrConnectWithoutSenderInput[]
+    upsert?: MessageUpsertWithWhereUniqueWithoutSenderInput | MessageUpsertWithWhereUniqueWithoutSenderInput[]
+    createMany?: MessageCreateManySenderInputEnvelope
+    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    update?: MessageUpdateWithWhereUniqueWithoutSenderInput | MessageUpdateWithWhereUniqueWithoutSenderInput[]
+    updateMany?: MessageUpdateManyWithWhereWithoutSenderInput | MessageUpdateManyWithWhereWithoutSenderInput[]
+    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  }
+
+  export type NotificationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type OTPUpdateManyWithoutUserNestedInput = {
@@ -25931,16 +26009,6 @@ export namespace Prisma {
     deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
   }
 
-  export type BuyerUpdateOneWithoutUserNestedInput = {
-    create?: XOR<BuyerCreateWithoutUserInput, BuyerUncheckedCreateWithoutUserInput>
-    connectOrCreate?: BuyerCreateOrConnectWithoutUserInput
-    upsert?: BuyerUpsertWithoutUserInput
-    disconnect?: BuyerWhereInput | boolean
-    delete?: BuyerWhereInput | boolean
-    connect?: BuyerWhereUniqueInput
-    update?: XOR<XOR<BuyerUpdateToOneWithWhereWithoutUserInput, BuyerUpdateWithoutUserInput>, BuyerUncheckedUpdateWithoutUserInput>
-  }
-
   export type SellerUpdateOneWithoutUserNestedInput = {
     create?: XOR<SellerCreateWithoutUserInput, SellerUncheckedCreateWithoutUserInput>
     connectOrCreate?: SellerCreateOrConnectWithoutUserInput
@@ -25949,68 +26017,6 @@ export namespace Prisma {
     delete?: SellerWhereInput | boolean
     connect?: SellerWhereUniqueInput
     update?: XOR<XOR<SellerUpdateToOneWithWhereWithoutUserInput, SellerUpdateWithoutUserInput>, SellerUncheckedUpdateWithoutUserInput>
-  }
-
-  export type MentorUpdateOneWithoutUserNestedInput = {
-    create?: XOR<MentorCreateWithoutUserInput, MentorUncheckedCreateWithoutUserInput>
-    connectOrCreate?: MentorCreateOrConnectWithoutUserInput
-    upsert?: MentorUpsertWithoutUserInput
-    disconnect?: MentorWhereInput | boolean
-    delete?: MentorWhereInput | boolean
-    connect?: MentorWhereUniqueInput
-    update?: XOR<XOR<MentorUpdateToOneWithWhereWithoutUserInput, MentorUpdateWithoutUserInput>, MentorUncheckedUpdateWithoutUserInput>
-  }
-
-  export type MenteeUpdateOneWithoutUserNestedInput = {
-    create?: XOR<MenteeCreateWithoutUserInput, MenteeUncheckedCreateWithoutUserInput>
-    connectOrCreate?: MenteeCreateOrConnectWithoutUserInput
-    upsert?: MenteeUpsertWithoutUserInput
-    disconnect?: MenteeWhereInput | boolean
-    delete?: MenteeWhereInput | boolean
-    connect?: MenteeWhereUniqueInput
-    update?: XOR<XOR<MenteeUpdateToOneWithWhereWithoutUserInput, MenteeUpdateWithoutUserInput>, MenteeUncheckedUpdateWithoutUserInput>
-  }
-
-  export type MessageUpdateManyWithoutSenderNestedInput = {
-    create?: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput> | MessageCreateWithoutSenderInput[] | MessageUncheckedCreateWithoutSenderInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutSenderInput | MessageCreateOrConnectWithoutSenderInput[]
-    upsert?: MessageUpsertWithWhereUniqueWithoutSenderInput | MessageUpsertWithWhereUniqueWithoutSenderInput[]
-    createMany?: MessageCreateManySenderInputEnvelope
-    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    update?: MessageUpdateWithWhereUniqueWithoutSenderInput | MessageUpdateWithWhereUniqueWithoutSenderInput[]
-    updateMany?: MessageUpdateManyWithWhereWithoutSenderInput | MessageUpdateManyWithWhereWithoutSenderInput[]
-    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
-  }
-
-  export type MessageUpdateManyWithoutReceiverNestedInput = {
-    create?: XOR<MessageCreateWithoutReceiverInput, MessageUncheckedCreateWithoutReceiverInput> | MessageCreateWithoutReceiverInput[] | MessageUncheckedCreateWithoutReceiverInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutReceiverInput | MessageCreateOrConnectWithoutReceiverInput[]
-    upsert?: MessageUpsertWithWhereUniqueWithoutReceiverInput | MessageUpsertWithWhereUniqueWithoutReceiverInput[]
-    createMany?: MessageCreateManyReceiverInputEnvelope
-    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    update?: MessageUpdateWithWhereUniqueWithoutReceiverInput | MessageUpdateWithWhereUniqueWithoutReceiverInput[]
-    updateMany?: MessageUpdateManyWithWhereWithoutReceiverInput | MessageUpdateManyWithWhereWithoutReceiverInput[]
-    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
-  }
-
-  export type ItemCommentUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput> | ItemCommentCreateWithoutUserInput[] | ItemCommentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ItemCommentCreateOrConnectWithoutUserInput | ItemCommentCreateOrConnectWithoutUserInput[]
-    upsert?: ItemCommentUpsertWithWhereUniqueWithoutUserInput | ItemCommentUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ItemCommentCreateManyUserInputEnvelope
-    set?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
-    disconnect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
-    delete?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
-    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
-    update?: ItemCommentUpdateWithWhereUniqueWithoutUserInput | ItemCommentUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ItemCommentUpdateManyWithWhereWithoutUserInput | ItemCommentUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
   }
 
   export type TaskUpdateManyWithoutUserNestedInput = {
@@ -26027,7 +26033,95 @@ export namespace Prisma {
     deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
   }
 
-  export type NotificationUpdateManyWithoutUserNestedInput = {
+  export type CollegeUpdateOneRequiredWithoutUsersNestedInput = {
+    create?: XOR<CollegeCreateWithoutUsersInput, CollegeUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: CollegeCreateOrConnectWithoutUsersInput
+    upsert?: CollegeUpsertWithoutUsersInput
+    connect?: CollegeWhereUniqueInput
+    update?: XOR<XOR<CollegeUpdateToOneWithWhereWithoutUsersInput, CollegeUpdateWithoutUsersInput>, CollegeUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type BuyerUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<BuyerCreateWithoutUserInput, BuyerUncheckedCreateWithoutUserInput>
+    connectOrCreate?: BuyerCreateOrConnectWithoutUserInput
+    upsert?: BuyerUpsertWithoutUserInput
+    disconnect?: BuyerWhereInput | boolean
+    delete?: BuyerWhereInput | boolean
+    connect?: BuyerWhereUniqueInput
+    update?: XOR<XOR<BuyerUpdateToOneWithWhereWithoutUserInput, BuyerUpdateWithoutUserInput>, BuyerUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ItemCommentUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput> | ItemCommentCreateWithoutUserInput[] | ItemCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemCommentCreateOrConnectWithoutUserInput | ItemCommentCreateOrConnectWithoutUserInput[]
+    upsert?: ItemCommentUpsertWithWhereUniqueWithoutUserInput | ItemCommentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ItemCommentCreateManyUserInputEnvelope
+    set?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    disconnect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    delete?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
+    update?: ItemCommentUpdateWithWhereUniqueWithoutUserInput | ItemCommentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ItemCommentUpdateManyWithWhereWithoutUserInput | ItemCommentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
+  }
+
+  export type MenteeUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<MenteeCreateWithoutUserInput, MenteeUncheckedCreateWithoutUserInput>
+    connectOrCreate?: MenteeCreateOrConnectWithoutUserInput
+    upsert?: MenteeUpsertWithoutUserInput
+    disconnect?: MenteeWhereInput | boolean
+    delete?: MenteeWhereInput | boolean
+    connect?: MenteeWhereUniqueInput
+    update?: XOR<XOR<MenteeUpdateToOneWithWhereWithoutUserInput, MenteeUpdateWithoutUserInput>, MenteeUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MentorUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<MentorCreateWithoutUserInput, MentorUncheckedCreateWithoutUserInput>
+    connectOrCreate?: MentorCreateOrConnectWithoutUserInput
+    upsert?: MentorUpsertWithoutUserInput
+    disconnect?: MentorWhereInput | boolean
+    delete?: MentorWhereInput | boolean
+    connect?: MentorWhereUniqueInput
+    update?: XOR<XOR<MentorUpdateToOneWithWhereWithoutUserInput, MentorUpdateWithoutUserInput>, MentorUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MessageUncheckedUpdateManyWithoutReceiverNestedInput = {
+    create?: XOR<MessageCreateWithoutReceiverInput, MessageUncheckedCreateWithoutReceiverInput> | MessageCreateWithoutReceiverInput[] | MessageUncheckedCreateWithoutReceiverInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutReceiverInput | MessageCreateOrConnectWithoutReceiverInput[]
+    upsert?: MessageUpsertWithWhereUniqueWithoutReceiverInput | MessageUpsertWithWhereUniqueWithoutReceiverInput[]
+    createMany?: MessageCreateManyReceiverInputEnvelope
+    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    update?: MessageUpdateWithWhereUniqueWithoutReceiverInput | MessageUpdateWithWhereUniqueWithoutReceiverInput[]
+    updateMany?: MessageUpdateManyWithWhereWithoutReceiverInput | MessageUpdateManyWithWhereWithoutReceiverInput[]
+    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  }
+
+  export type MessageUncheckedUpdateManyWithoutSenderNestedInput = {
+    create?: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput> | MessageCreateWithoutSenderInput[] | MessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutSenderInput | MessageCreateOrConnectWithoutSenderInput[]
+    upsert?: MessageUpsertWithWhereUniqueWithoutSenderInput | MessageUpsertWithWhereUniqueWithoutSenderInput[]
+    createMany?: MessageCreateManySenderInputEnvelope
+    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    update?: MessageUpdateWithWhereUniqueWithoutSenderInput | MessageUpdateWithWhereUniqueWithoutSenderInput[]
+    updateMany?: MessageUpdateManyWithWhereWithoutSenderInput | MessageUpdateManyWithWhereWithoutSenderInput[]
+    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
     upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
@@ -26039,14 +26133,6 @@ export namespace Prisma {
     update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type OTPUncheckedUpdateManyWithoutUserNestedInput = {
@@ -26077,16 +26163,6 @@ export namespace Prisma {
     deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
   }
 
-  export type BuyerUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<BuyerCreateWithoutUserInput, BuyerUncheckedCreateWithoutUserInput>
-    connectOrCreate?: BuyerCreateOrConnectWithoutUserInput
-    upsert?: BuyerUpsertWithoutUserInput
-    disconnect?: BuyerWhereInput | boolean
-    delete?: BuyerWhereInput | boolean
-    connect?: BuyerWhereUniqueInput
-    update?: XOR<XOR<BuyerUpdateToOneWithWhereWithoutUserInput, BuyerUpdateWithoutUserInput>, BuyerUncheckedUpdateWithoutUserInput>
-  }
-
   export type SellerUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<SellerCreateWithoutUserInput, SellerUncheckedCreateWithoutUserInput>
     connectOrCreate?: SellerCreateOrConnectWithoutUserInput
@@ -26095,68 +26171,6 @@ export namespace Prisma {
     delete?: SellerWhereInput | boolean
     connect?: SellerWhereUniqueInput
     update?: XOR<XOR<SellerUpdateToOneWithWhereWithoutUserInput, SellerUpdateWithoutUserInput>, SellerUncheckedUpdateWithoutUserInput>
-  }
-
-  export type MentorUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<MentorCreateWithoutUserInput, MentorUncheckedCreateWithoutUserInput>
-    connectOrCreate?: MentorCreateOrConnectWithoutUserInput
-    upsert?: MentorUpsertWithoutUserInput
-    disconnect?: MentorWhereInput | boolean
-    delete?: MentorWhereInput | boolean
-    connect?: MentorWhereUniqueInput
-    update?: XOR<XOR<MentorUpdateToOneWithWhereWithoutUserInput, MentorUpdateWithoutUserInput>, MentorUncheckedUpdateWithoutUserInput>
-  }
-
-  export type MenteeUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<MenteeCreateWithoutUserInput, MenteeUncheckedCreateWithoutUserInput>
-    connectOrCreate?: MenteeCreateOrConnectWithoutUserInput
-    upsert?: MenteeUpsertWithoutUserInput
-    disconnect?: MenteeWhereInput | boolean
-    delete?: MenteeWhereInput | boolean
-    connect?: MenteeWhereUniqueInput
-    update?: XOR<XOR<MenteeUpdateToOneWithWhereWithoutUserInput, MenteeUpdateWithoutUserInput>, MenteeUncheckedUpdateWithoutUserInput>
-  }
-
-  export type MessageUncheckedUpdateManyWithoutSenderNestedInput = {
-    create?: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput> | MessageCreateWithoutSenderInput[] | MessageUncheckedCreateWithoutSenderInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutSenderInput | MessageCreateOrConnectWithoutSenderInput[]
-    upsert?: MessageUpsertWithWhereUniqueWithoutSenderInput | MessageUpsertWithWhereUniqueWithoutSenderInput[]
-    createMany?: MessageCreateManySenderInputEnvelope
-    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    update?: MessageUpdateWithWhereUniqueWithoutSenderInput | MessageUpdateWithWhereUniqueWithoutSenderInput[]
-    updateMany?: MessageUpdateManyWithWhereWithoutSenderInput | MessageUpdateManyWithWhereWithoutSenderInput[]
-    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
-  }
-
-  export type MessageUncheckedUpdateManyWithoutReceiverNestedInput = {
-    create?: XOR<MessageCreateWithoutReceiverInput, MessageUncheckedCreateWithoutReceiverInput> | MessageCreateWithoutReceiverInput[] | MessageUncheckedCreateWithoutReceiverInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutReceiverInput | MessageCreateOrConnectWithoutReceiverInput[]
-    upsert?: MessageUpsertWithWhereUniqueWithoutReceiverInput | MessageUpsertWithWhereUniqueWithoutReceiverInput[]
-    createMany?: MessageCreateManyReceiverInputEnvelope
-    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    update?: MessageUpdateWithWhereUniqueWithoutReceiverInput | MessageUpdateWithWhereUniqueWithoutReceiverInput[]
-    updateMany?: MessageUpdateManyWithWhereWithoutReceiverInput | MessageUpdateManyWithWhereWithoutReceiverInput[]
-    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
-  }
-
-  export type ItemCommentUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput> | ItemCommentCreateWithoutUserInput[] | ItemCommentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ItemCommentCreateOrConnectWithoutUserInput | ItemCommentCreateOrConnectWithoutUserInput[]
-    upsert?: ItemCommentUpsertWithWhereUniqueWithoutUserInput | ItemCommentUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ItemCommentCreateManyUserInputEnvelope
-    set?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
-    disconnect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
-    delete?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
-    connect?: ItemCommentWhereUniqueInput | ItemCommentWhereUniqueInput[]
-    update?: ItemCommentUpdateWithWhereUniqueWithoutUserInput | ItemCommentUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ItemCommentUpdateManyWithWhereWithoutUserInput | ItemCommentUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
   }
 
   export type TaskUncheckedUpdateManyWithoutUserNestedInput = {
@@ -26171,20 +26185,6 @@ export namespace Prisma {
     update?: TaskUpdateWithWhereUniqueWithoutUserInput | TaskUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: TaskUpdateManyWithWhereWithoutUserInput | TaskUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
-  }
-
-  export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutOtpsInput = {
@@ -26215,24 +26215,16 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRefreshTokensInput, UserUpdateWithoutRefreshTokensInput>, UserUncheckedUpdateWithoutRefreshTokensInput>
   }
 
-  export type UserCreateNestedOneWithoutSentMessagesInput = {
-    create?: XOR<UserCreateWithoutSentMessagesInput, UserUncheckedCreateWithoutSentMessagesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSentMessagesInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type UserCreateNestedOneWithoutReceivedMessagesInput = {
     create?: XOR<UserCreateWithoutReceivedMessagesInput, UserUncheckedCreateWithoutReceivedMessagesInput>
     connectOrCreate?: UserCreateOrConnectWithoutReceivedMessagesInput
     connect?: UserWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutSentMessagesNestedInput = {
+  export type UserCreateNestedOneWithoutSentMessagesInput = {
     create?: XOR<UserCreateWithoutSentMessagesInput, UserUncheckedCreateWithoutSentMessagesInput>
     connectOrCreate?: UserCreateOrConnectWithoutSentMessagesInput
-    upsert?: UserUpsertWithoutSentMessagesInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSentMessagesInput, UserUpdateWithoutSentMessagesInput>, UserUncheckedUpdateWithoutSentMessagesInput>
   }
 
   export type UserUpdateOneRequiredWithoutReceivedMessagesNestedInput = {
@@ -26243,11 +26235,12 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReceivedMessagesInput, UserUpdateWithoutReceivedMessagesInput>, UserUncheckedUpdateWithoutReceivedMessagesInput>
   }
 
-  export type UserCreateNestedManyWithoutCollegeInput = {
-    create?: XOR<UserCreateWithoutCollegeInput, UserUncheckedCreateWithoutCollegeInput> | UserCreateWithoutCollegeInput[] | UserUncheckedCreateWithoutCollegeInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutCollegeInput | UserCreateOrConnectWithoutCollegeInput[]
-    createMany?: UserCreateManyCollegeInputEnvelope
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  export type UserUpdateOneRequiredWithoutSentMessagesNestedInput = {
+    create?: XOR<UserCreateWithoutSentMessagesInput, UserUncheckedCreateWithoutSentMessagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSentMessagesInput
+    upsert?: UserUpsertWithoutSentMessagesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSentMessagesInput, UserUpdateWithoutSentMessagesInput>, UserUncheckedUpdateWithoutSentMessagesInput>
   }
 
   export type StudentCreateNestedManyWithoutCollegeInput = {
@@ -26257,7 +26250,7 @@ export namespace Prisma {
     connect?: StudentWhereUniqueInput | StudentWhereUniqueInput[]
   }
 
-  export type UserUncheckedCreateNestedManyWithoutCollegeInput = {
+  export type UserCreateNestedManyWithoutCollegeInput = {
     create?: XOR<UserCreateWithoutCollegeInput, UserUncheckedCreateWithoutCollegeInput> | UserCreateWithoutCollegeInput[] | UserUncheckedCreateWithoutCollegeInput[]
     connectOrCreate?: UserCreateOrConnectWithoutCollegeInput | UserCreateOrConnectWithoutCollegeInput[]
     createMany?: UserCreateManyCollegeInputEnvelope
@@ -26271,18 +26264,11 @@ export namespace Prisma {
     connect?: StudentWhereUniqueInput | StudentWhereUniqueInput[]
   }
 
-  export type UserUpdateManyWithoutCollegeNestedInput = {
+  export type UserUncheckedCreateNestedManyWithoutCollegeInput = {
     create?: XOR<UserCreateWithoutCollegeInput, UserUncheckedCreateWithoutCollegeInput> | UserCreateWithoutCollegeInput[] | UserUncheckedCreateWithoutCollegeInput[]
     connectOrCreate?: UserCreateOrConnectWithoutCollegeInput | UserCreateOrConnectWithoutCollegeInput[]
-    upsert?: UserUpsertWithWhereUniqueWithoutCollegeInput | UserUpsertWithWhereUniqueWithoutCollegeInput[]
     createMany?: UserCreateManyCollegeInputEnvelope
-    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    update?: UserUpdateWithWhereUniqueWithoutCollegeInput | UserUpdateWithWhereUniqueWithoutCollegeInput[]
-    updateMany?: UserUpdateManyWithWhereWithoutCollegeInput | UserUpdateManyWithWhereWithoutCollegeInput[]
-    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type StudentUpdateManyWithoutCollegeNestedInput = {
@@ -26299,7 +26285,7 @@ export namespace Prisma {
     deleteMany?: StudentScalarWhereInput | StudentScalarWhereInput[]
   }
 
-  export type UserUncheckedUpdateManyWithoutCollegeNestedInput = {
+  export type UserUpdateManyWithoutCollegeNestedInput = {
     create?: XOR<UserCreateWithoutCollegeInput, UserUncheckedCreateWithoutCollegeInput> | UserCreateWithoutCollegeInput[] | UserUncheckedCreateWithoutCollegeInput[]
     connectOrCreate?: UserCreateOrConnectWithoutCollegeInput | UserCreateOrConnectWithoutCollegeInput[]
     upsert?: UserUpsertWithWhereUniqueWithoutCollegeInput | UserUpsertWithWhereUniqueWithoutCollegeInput[]
@@ -26327,10 +26313,18 @@ export namespace Prisma {
     deleteMany?: StudentScalarWhereInput | StudentScalarWhereInput[]
   }
 
-  export type CollegeCreateNestedOneWithoutStudentsInput = {
-    create?: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
-    connectOrCreate?: CollegeCreateOrConnectWithoutStudentsInput
-    connect?: CollegeWhereUniqueInput
+  export type UserUncheckedUpdateManyWithoutCollegeNestedInput = {
+    create?: XOR<UserCreateWithoutCollegeInput, UserUncheckedCreateWithoutCollegeInput> | UserCreateWithoutCollegeInput[] | UserUncheckedCreateWithoutCollegeInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCollegeInput | UserCreateOrConnectWithoutCollegeInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutCollegeInput | UserUpsertWithWhereUniqueWithoutCollegeInput[]
+    createMany?: UserCreateManyCollegeInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutCollegeInput | UserUpdateWithWhereUniqueWithoutCollegeInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutCollegeInput | UserUpdateManyWithWhereWithoutCollegeInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type BuyerCreateNestedOneWithoutStudentInput = {
@@ -26339,10 +26333,10 @@ export namespace Prisma {
     connect?: BuyerWhereUniqueInput
   }
 
-  export type SellerCreateNestedOneWithoutStudentInput = {
-    create?: XOR<SellerCreateWithoutStudentInput, SellerUncheckedCreateWithoutStudentInput>
-    connectOrCreate?: SellerCreateOrConnectWithoutStudentInput
-    connect?: SellerWhereUniqueInput
+  export type MenteeCreateNestedOneWithoutStudentInput = {
+    create?: XOR<MenteeCreateWithoutStudentInput, MenteeUncheckedCreateWithoutStudentInput>
+    connectOrCreate?: MenteeCreateOrConnectWithoutStudentInput
+    connect?: MenteeWhereUniqueInput
   }
 
   export type MentorCreateNestedOneWithoutStudentInput = {
@@ -26351,10 +26345,16 @@ export namespace Prisma {
     connect?: MentorWhereUniqueInput
   }
 
-  export type MenteeCreateNestedOneWithoutStudentInput = {
-    create?: XOR<MenteeCreateWithoutStudentInput, MenteeUncheckedCreateWithoutStudentInput>
-    connectOrCreate?: MenteeCreateOrConnectWithoutStudentInput
-    connect?: MenteeWhereUniqueInput
+  export type SellerCreateNestedOneWithoutStudentInput = {
+    create?: XOR<SellerCreateWithoutStudentInput, SellerUncheckedCreateWithoutStudentInput>
+    connectOrCreate?: SellerCreateOrConnectWithoutStudentInput
+    connect?: SellerWhereUniqueInput
+  }
+
+  export type CollegeCreateNestedOneWithoutStudentsInput = {
+    create?: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
+    connectOrCreate?: CollegeCreateOrConnectWithoutStudentsInput
+    connect?: CollegeWhereUniqueInput
   }
 
   export type BuyerUncheckedCreateNestedOneWithoutStudentInput = {
@@ -26363,10 +26363,10 @@ export namespace Prisma {
     connect?: BuyerWhereUniqueInput
   }
 
-  export type SellerUncheckedCreateNestedOneWithoutStudentInput = {
-    create?: XOR<SellerCreateWithoutStudentInput, SellerUncheckedCreateWithoutStudentInput>
-    connectOrCreate?: SellerCreateOrConnectWithoutStudentInput
-    connect?: SellerWhereUniqueInput
+  export type MenteeUncheckedCreateNestedOneWithoutStudentInput = {
+    create?: XOR<MenteeCreateWithoutStudentInput, MenteeUncheckedCreateWithoutStudentInput>
+    connectOrCreate?: MenteeCreateOrConnectWithoutStudentInput
+    connect?: MenteeWhereUniqueInput
   }
 
   export type MentorUncheckedCreateNestedOneWithoutStudentInput = {
@@ -26375,18 +26375,10 @@ export namespace Prisma {
     connect?: MentorWhereUniqueInput
   }
 
-  export type MenteeUncheckedCreateNestedOneWithoutStudentInput = {
-    create?: XOR<MenteeCreateWithoutStudentInput, MenteeUncheckedCreateWithoutStudentInput>
-    connectOrCreate?: MenteeCreateOrConnectWithoutStudentInput
-    connect?: MenteeWhereUniqueInput
-  }
-
-  export type CollegeUpdateOneRequiredWithoutStudentsNestedInput = {
-    create?: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
-    connectOrCreate?: CollegeCreateOrConnectWithoutStudentsInput
-    upsert?: CollegeUpsertWithoutStudentsInput
-    connect?: CollegeWhereUniqueInput
-    update?: XOR<XOR<CollegeUpdateToOneWithWhereWithoutStudentsInput, CollegeUpdateWithoutStudentsInput>, CollegeUncheckedUpdateWithoutStudentsInput>
+  export type SellerUncheckedCreateNestedOneWithoutStudentInput = {
+    create?: XOR<SellerCreateWithoutStudentInput, SellerUncheckedCreateWithoutStudentInput>
+    connectOrCreate?: SellerCreateOrConnectWithoutStudentInput
+    connect?: SellerWhereUniqueInput
   }
 
   export type BuyerUpdateOneWithoutStudentNestedInput = {
@@ -26399,14 +26391,14 @@ export namespace Prisma {
     update?: XOR<XOR<BuyerUpdateToOneWithWhereWithoutStudentInput, BuyerUpdateWithoutStudentInput>, BuyerUncheckedUpdateWithoutStudentInput>
   }
 
-  export type SellerUpdateOneWithoutStudentNestedInput = {
-    create?: XOR<SellerCreateWithoutStudentInput, SellerUncheckedCreateWithoutStudentInput>
-    connectOrCreate?: SellerCreateOrConnectWithoutStudentInput
-    upsert?: SellerUpsertWithoutStudentInput
-    disconnect?: SellerWhereInput | boolean
-    delete?: SellerWhereInput | boolean
-    connect?: SellerWhereUniqueInput
-    update?: XOR<XOR<SellerUpdateToOneWithWhereWithoutStudentInput, SellerUpdateWithoutStudentInput>, SellerUncheckedUpdateWithoutStudentInput>
+  export type MenteeUpdateOneWithoutStudentNestedInput = {
+    create?: XOR<MenteeCreateWithoutStudentInput, MenteeUncheckedCreateWithoutStudentInput>
+    connectOrCreate?: MenteeCreateOrConnectWithoutStudentInput
+    upsert?: MenteeUpsertWithoutStudentInput
+    disconnect?: MenteeWhereInput | boolean
+    delete?: MenteeWhereInput | boolean
+    connect?: MenteeWhereUniqueInput
+    update?: XOR<XOR<MenteeUpdateToOneWithWhereWithoutStudentInput, MenteeUpdateWithoutStudentInput>, MenteeUncheckedUpdateWithoutStudentInput>
   }
 
   export type MentorUpdateOneWithoutStudentNestedInput = {
@@ -26419,14 +26411,22 @@ export namespace Prisma {
     update?: XOR<XOR<MentorUpdateToOneWithWhereWithoutStudentInput, MentorUpdateWithoutStudentInput>, MentorUncheckedUpdateWithoutStudentInput>
   }
 
-  export type MenteeUpdateOneWithoutStudentNestedInput = {
-    create?: XOR<MenteeCreateWithoutStudentInput, MenteeUncheckedCreateWithoutStudentInput>
-    connectOrCreate?: MenteeCreateOrConnectWithoutStudentInput
-    upsert?: MenteeUpsertWithoutStudentInput
-    disconnect?: MenteeWhereInput | boolean
-    delete?: MenteeWhereInput | boolean
-    connect?: MenteeWhereUniqueInput
-    update?: XOR<XOR<MenteeUpdateToOneWithWhereWithoutStudentInput, MenteeUpdateWithoutStudentInput>, MenteeUncheckedUpdateWithoutStudentInput>
+  export type SellerUpdateOneWithoutStudentNestedInput = {
+    create?: XOR<SellerCreateWithoutStudentInput, SellerUncheckedCreateWithoutStudentInput>
+    connectOrCreate?: SellerCreateOrConnectWithoutStudentInput
+    upsert?: SellerUpsertWithoutStudentInput
+    disconnect?: SellerWhereInput | boolean
+    delete?: SellerWhereInput | boolean
+    connect?: SellerWhereUniqueInput
+    update?: XOR<XOR<SellerUpdateToOneWithWhereWithoutStudentInput, SellerUpdateWithoutStudentInput>, SellerUncheckedUpdateWithoutStudentInput>
+  }
+
+  export type CollegeUpdateOneRequiredWithoutStudentsNestedInput = {
+    create?: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
+    connectOrCreate?: CollegeCreateOrConnectWithoutStudentsInput
+    upsert?: CollegeUpsertWithoutStudentsInput
+    connect?: CollegeWhereUniqueInput
+    update?: XOR<XOR<CollegeUpdateToOneWithWhereWithoutStudentsInput, CollegeUpdateWithoutStudentsInput>, CollegeUncheckedUpdateWithoutStudentsInput>
   }
 
   export type BuyerUncheckedUpdateOneWithoutStudentNestedInput = {
@@ -26439,14 +26439,14 @@ export namespace Prisma {
     update?: XOR<XOR<BuyerUpdateToOneWithWhereWithoutStudentInput, BuyerUpdateWithoutStudentInput>, BuyerUncheckedUpdateWithoutStudentInput>
   }
 
-  export type SellerUncheckedUpdateOneWithoutStudentNestedInput = {
-    create?: XOR<SellerCreateWithoutStudentInput, SellerUncheckedCreateWithoutStudentInput>
-    connectOrCreate?: SellerCreateOrConnectWithoutStudentInput
-    upsert?: SellerUpsertWithoutStudentInput
-    disconnect?: SellerWhereInput | boolean
-    delete?: SellerWhereInput | boolean
-    connect?: SellerWhereUniqueInput
-    update?: XOR<XOR<SellerUpdateToOneWithWhereWithoutStudentInput, SellerUpdateWithoutStudentInput>, SellerUncheckedUpdateWithoutStudentInput>
+  export type MenteeUncheckedUpdateOneWithoutStudentNestedInput = {
+    create?: XOR<MenteeCreateWithoutStudentInput, MenteeUncheckedCreateWithoutStudentInput>
+    connectOrCreate?: MenteeCreateOrConnectWithoutStudentInput
+    upsert?: MenteeUpsertWithoutStudentInput
+    disconnect?: MenteeWhereInput | boolean
+    delete?: MenteeWhereInput | boolean
+    connect?: MenteeWhereUniqueInput
+    update?: XOR<XOR<MenteeUpdateToOneWithWhereWithoutStudentInput, MenteeUpdateWithoutStudentInput>, MenteeUncheckedUpdateWithoutStudentInput>
   }
 
   export type MentorUncheckedUpdateOneWithoutStudentNestedInput = {
@@ -26459,14 +26459,14 @@ export namespace Prisma {
     update?: XOR<XOR<MentorUpdateToOneWithWhereWithoutStudentInput, MentorUpdateWithoutStudentInput>, MentorUncheckedUpdateWithoutStudentInput>
   }
 
-  export type MenteeUncheckedUpdateOneWithoutStudentNestedInput = {
-    create?: XOR<MenteeCreateWithoutStudentInput, MenteeUncheckedCreateWithoutStudentInput>
-    connectOrCreate?: MenteeCreateOrConnectWithoutStudentInput
-    upsert?: MenteeUpsertWithoutStudentInput
-    disconnect?: MenteeWhereInput | boolean
-    delete?: MenteeWhereInput | boolean
-    connect?: MenteeWhereUniqueInput
-    update?: XOR<XOR<MenteeUpdateToOneWithWhereWithoutStudentInput, MenteeUpdateWithoutStudentInput>, MenteeUncheckedUpdateWithoutStudentInput>
+  export type SellerUncheckedUpdateOneWithoutStudentNestedInput = {
+    create?: XOR<SellerCreateWithoutStudentInput, SellerUncheckedCreateWithoutStudentInput>
+    connectOrCreate?: SellerCreateOrConnectWithoutStudentInput
+    upsert?: SellerUpsertWithoutStudentInput
+    disconnect?: SellerWhereInput | boolean
+    delete?: SellerWhereInput | boolean
+    connect?: SellerWhereUniqueInput
+    update?: XOR<XOR<SellerUpdateToOneWithWhereWithoutStudentInput, SellerUpdateWithoutStudentInput>, SellerUncheckedUpdateWithoutStudentInput>
   }
 
   export type StudentCreateNestedOneWithoutBuyerInput = {
@@ -26591,6 +26591,13 @@ export namespace Prisma {
     deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
   }
 
+  export type ItemCreateNestedManyWithoutSellerInput = {
+    create?: XOR<ItemCreateWithoutSellerInput, ItemUncheckedCreateWithoutSellerInput> | ItemCreateWithoutSellerInput[] | ItemUncheckedCreateWithoutSellerInput[]
+    connectOrCreate?: ItemCreateOrConnectWithoutSellerInput | ItemCreateOrConnectWithoutSellerInput[]
+    createMany?: ItemCreateManySellerInputEnvelope
+    connect?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
+  }
+
   export type StudentCreateNestedOneWithoutSellerInput = {
     create?: XOR<StudentCreateWithoutSellerInput, StudentUncheckedCreateWithoutSellerInput>
     connectOrCreate?: StudentCreateOrConnectWithoutSellerInput
@@ -26603,18 +26610,25 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type ItemCreateNestedManyWithoutSellerInput = {
+  export type ItemUncheckedCreateNestedManyWithoutSellerInput = {
     create?: XOR<ItemCreateWithoutSellerInput, ItemUncheckedCreateWithoutSellerInput> | ItemCreateWithoutSellerInput[] | ItemUncheckedCreateWithoutSellerInput[]
     connectOrCreate?: ItemCreateOrConnectWithoutSellerInput | ItemCreateOrConnectWithoutSellerInput[]
     createMany?: ItemCreateManySellerInputEnvelope
     connect?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
   }
 
-  export type ItemUncheckedCreateNestedManyWithoutSellerInput = {
+  export type ItemUpdateManyWithoutSellerNestedInput = {
     create?: XOR<ItemCreateWithoutSellerInput, ItemUncheckedCreateWithoutSellerInput> | ItemCreateWithoutSellerInput[] | ItemUncheckedCreateWithoutSellerInput[]
     connectOrCreate?: ItemCreateOrConnectWithoutSellerInput | ItemCreateOrConnectWithoutSellerInput[]
+    upsert?: ItemUpsertWithWhereUniqueWithoutSellerInput | ItemUpsertWithWhereUniqueWithoutSellerInput[]
     createMany?: ItemCreateManySellerInputEnvelope
+    set?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
+    disconnect?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
+    delete?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
     connect?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
+    update?: ItemUpdateWithWhereUniqueWithoutSellerInput | ItemUpdateWithWhereUniqueWithoutSellerInput[]
+    updateMany?: ItemUpdateManyWithWhereWithoutSellerInput | ItemUpdateManyWithWhereWithoutSellerInput[]
+    deleteMany?: ItemScalarWhereInput | ItemScalarWhereInput[]
   }
 
   export type StudentUpdateOneWithoutSellerNestedInput = {
@@ -26633,20 +26647,6 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutSellerInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSellerInput, UserUpdateWithoutSellerInput>, UserUncheckedUpdateWithoutSellerInput>
-  }
-
-  export type ItemUpdateManyWithoutSellerNestedInput = {
-    create?: XOR<ItemCreateWithoutSellerInput, ItemUncheckedCreateWithoutSellerInput> | ItemCreateWithoutSellerInput[] | ItemUncheckedCreateWithoutSellerInput[]
-    connectOrCreate?: ItemCreateOrConnectWithoutSellerInput | ItemCreateOrConnectWithoutSellerInput[]
-    upsert?: ItemUpsertWithWhereUniqueWithoutSellerInput | ItemUpsertWithWhereUniqueWithoutSellerInput[]
-    createMany?: ItemCreateManySellerInputEnvelope
-    set?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
-    disconnect?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
-    delete?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
-    connect?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
-    update?: ItemUpdateWithWhereUniqueWithoutSellerInput | ItemUpdateWithWhereUniqueWithoutSellerInput[]
-    updateMany?: ItemUpdateManyWithWhereWithoutSellerInput | ItemUpdateManyWithWhereWithoutSellerInput[]
-    deleteMany?: ItemScalarWhereInput | ItemScalarWhereInput[]
   }
 
   export type ItemUncheckedUpdateManyWithoutSellerNestedInput = {
@@ -26891,12 +26891,6 @@ export namespace Prisma {
     deleteMany?: ItemScalarWhereInput | ItemScalarWhereInput[]
   }
 
-  export type SellerCreateNestedOneWithoutItemsInput = {
-    create?: XOR<SellerCreateWithoutItemsInput, SellerUncheckedCreateWithoutItemsInput>
-    connectOrCreate?: SellerCreateOrConnectWithoutItemsInput
-    connect?: SellerWhereUniqueInput
-  }
-
   export type BuyerCreateNestedOneWithoutPurchasesInput = {
     create?: XOR<BuyerCreateWithoutPurchasesInput, BuyerUncheckedCreateWithoutPurchasesInput>
     connectOrCreate?: BuyerCreateOrConnectWithoutPurchasesInput
@@ -26907,6 +26901,12 @@ export namespace Prisma {
     create?: XOR<CategoryCreateWithoutItemsInput, CategoryUncheckedCreateWithoutItemsInput>
     connectOrCreate?: CategoryCreateOrConnectWithoutItemsInput
     connect?: CategoryWhereUniqueInput
+  }
+
+  export type SellerCreateNestedOneWithoutItemsInput = {
+    create?: XOR<SellerCreateWithoutItemsInput, SellerUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: SellerCreateOrConnectWithoutItemsInput
+    connect?: SellerWhereUniqueInput
   }
 
   export type ItemCommentCreateNestedManyWithoutItemInput = {
@@ -26945,14 +26945,6 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type SellerUpdateOneRequiredWithoutItemsNestedInput = {
-    create?: XOR<SellerCreateWithoutItemsInput, SellerUncheckedCreateWithoutItemsInput>
-    connectOrCreate?: SellerCreateOrConnectWithoutItemsInput
-    upsert?: SellerUpsertWithoutItemsInput
-    connect?: SellerWhereUniqueInput
-    update?: XOR<XOR<SellerUpdateToOneWithWhereWithoutItemsInput, SellerUpdateWithoutItemsInput>, SellerUncheckedUpdateWithoutItemsInput>
-  }
-
   export type BuyerUpdateOneWithoutPurchasesNestedInput = {
     create?: XOR<BuyerCreateWithoutPurchasesInput, BuyerUncheckedCreateWithoutPurchasesInput>
     connectOrCreate?: BuyerCreateOrConnectWithoutPurchasesInput
@@ -26969,6 +26961,14 @@ export namespace Prisma {
     upsert?: CategoryUpsertWithoutItemsInput
     connect?: CategoryWhereUniqueInput
     update?: XOR<XOR<CategoryUpdateToOneWithWhereWithoutItemsInput, CategoryUpdateWithoutItemsInput>, CategoryUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type SellerUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<SellerCreateWithoutItemsInput, SellerUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: SellerCreateOrConnectWithoutItemsInput
+    upsert?: SellerUpsertWithoutItemsInput
+    connect?: SellerWhereUniqueInput
+    update?: XOR<XOR<SellerUpdateToOneWithWhereWithoutItemsInput, SellerUpdateWithoutItemsInput>, SellerUncheckedUpdateWithoutItemsInput>
   }
 
   export type ItemCommentUpdateManyWithoutItemNestedInput = {
@@ -27027,24 +27027,16 @@ export namespace Prisma {
     deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutItemCommentsInput = {
-    create?: XOR<UserCreateWithoutItemCommentsInput, UserUncheckedCreateWithoutItemCommentsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutItemCommentsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type ItemCreateNestedOneWithoutCommentsInput = {
     create?: XOR<ItemCreateWithoutCommentsInput, ItemUncheckedCreateWithoutCommentsInput>
     connectOrCreate?: ItemCreateOrConnectWithoutCommentsInput
     connect?: ItemWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutItemCommentsNestedInput = {
+  export type UserCreateNestedOneWithoutItemCommentsInput = {
     create?: XOR<UserCreateWithoutItemCommentsInput, UserUncheckedCreateWithoutItemCommentsInput>
     connectOrCreate?: UserCreateOrConnectWithoutItemCommentsInput
-    upsert?: UserUpsertWithoutItemCommentsInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutItemCommentsInput, UserUpdateWithoutItemCommentsInput>, UserUncheckedUpdateWithoutItemCommentsInput>
   }
 
   export type ItemUpdateOneRequiredWithoutCommentsNestedInput = {
@@ -27053,6 +27045,14 @@ export namespace Prisma {
     upsert?: ItemUpsertWithoutCommentsInput
     connect?: ItemWhereUniqueInput
     update?: XOR<XOR<ItemUpdateToOneWithWhereWithoutCommentsInput, ItemUpdateWithoutCommentsInput>, ItemUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutItemCommentsNestedInput = {
+    create?: XOR<UserCreateWithoutItemCommentsInput, UserUncheckedCreateWithoutItemCommentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutItemCommentsInput
+    upsert?: UserUpsertWithoutItemCommentsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutItemCommentsInput, UserUpdateWithoutItemCommentsInput>, UserUncheckedUpdateWithoutItemCommentsInput>
   }
 
   export type BuyerCreateNestedOneWithoutReviewsInput = {
@@ -27101,28 +27101,20 @@ export namespace Prisma {
     update?: XOR<XOR<MentorUpdateToOneWithWhereWithoutReviewsInput, MentorUpdateWithoutReviewsInput>, MentorUncheckedUpdateWithoutReviewsInput>
   }
 
-  export type MentorCreateNestedOneWithoutRequestsReceivedInput = {
-    create?: XOR<MentorCreateWithoutRequestsReceivedInput, MentorUncheckedCreateWithoutRequestsReceivedInput>
-    connectOrCreate?: MentorCreateOrConnectWithoutRequestsReceivedInput
-    connect?: MentorWhereUniqueInput
-  }
-
   export type MenteeCreateNestedOneWithoutRequestsSentInput = {
     create?: XOR<MenteeCreateWithoutRequestsSentInput, MenteeUncheckedCreateWithoutRequestsSentInput>
     connectOrCreate?: MenteeCreateOrConnectWithoutRequestsSentInput
     connect?: MenteeWhereUniqueInput
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
-  export type MentorUpdateOneRequiredWithoutRequestsReceivedNestedInput = {
+  export type MentorCreateNestedOneWithoutRequestsReceivedInput = {
     create?: XOR<MentorCreateWithoutRequestsReceivedInput, MentorUncheckedCreateWithoutRequestsReceivedInput>
     connectOrCreate?: MentorCreateOrConnectWithoutRequestsReceivedInput
-    upsert?: MentorUpsertWithoutRequestsReceivedInput
     connect?: MentorWhereUniqueInput
-    update?: XOR<XOR<MentorUpdateToOneWithWhereWithoutRequestsReceivedInput, MentorUpdateWithoutRequestsReceivedInput>, MentorUncheckedUpdateWithoutRequestsReceivedInput>
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type MenteeUpdateOneRequiredWithoutRequestsSentNestedInput = {
@@ -27131,6 +27123,14 @@ export namespace Prisma {
     upsert?: MenteeUpsertWithoutRequestsSentInput
     connect?: MenteeWhereUniqueInput
     update?: XOR<XOR<MenteeUpdateToOneWithWhereWithoutRequestsSentInput, MenteeUpdateWithoutRequestsSentInput>, MenteeUncheckedUpdateWithoutRequestsSentInput>
+  }
+
+  export type MentorUpdateOneRequiredWithoutRequestsReceivedNestedInput = {
+    create?: XOR<MentorCreateWithoutRequestsReceivedInput, MentorUncheckedCreateWithoutRequestsReceivedInput>
+    connectOrCreate?: MentorCreateOrConnectWithoutRequestsReceivedInput
+    upsert?: MentorUpsertWithoutRequestsReceivedInput
+    connect?: MentorWhereUniqueInput
+    update?: XOR<XOR<MentorUpdateToOneWithWhereWithoutRequestsReceivedInput, MentorUpdateWithoutRequestsReceivedInput>, MentorUncheckedUpdateWithoutRequestsReceivedInput>
   }
 
   export type UserCreateNestedOneWithoutTasksInput = {
@@ -27378,22 +27378,159 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type CollegeCreateWithoutUsersInput = {
-    name: string
-    location: string
-    students?: StudentCreateNestedManyWithoutCollegeInput
+  export type BuyerCreateWithoutUserInput = {
+    student?: StudentCreateNestedOneWithoutBuyerInput
+    purchases?: ItemCreateNestedManyWithoutBuyerInput
+    reviews?: ReviewCreateNestedManyWithoutBuyerInput
   }
 
-  export type CollegeUncheckedCreateWithoutUsersInput = {
+  export type BuyerUncheckedCreateWithoutUserInput = {
+    studentId?: number | null
+    purchases?: ItemUncheckedCreateNestedManyWithoutBuyerInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutBuyerInput
+  }
+
+  export type BuyerCreateOrConnectWithoutUserInput = {
+    where: BuyerWhereUniqueInput
+    create: XOR<BuyerCreateWithoutUserInput, BuyerUncheckedCreateWithoutUserInput>
+  }
+
+  export type ItemCommentCreateWithoutUserInput = {
+    text: string
+    createdAt?: Date | string
+    item: ItemCreateNestedOneWithoutCommentsInput
+  }
+
+  export type ItemCommentUncheckedCreateWithoutUserInput = {
     id?: number
-    name: string
-    location: string
-    students?: StudentUncheckedCreateNestedManyWithoutCollegeInput
+    text: string
+    createdAt?: Date | string
+    itemId: number
   }
 
-  export type CollegeCreateOrConnectWithoutUsersInput = {
-    where: CollegeWhereUniqueInput
-    create: XOR<CollegeCreateWithoutUsersInput, CollegeUncheckedCreateWithoutUsersInput>
+  export type ItemCommentCreateOrConnectWithoutUserInput = {
+    where: ItemCommentWhereUniqueInput
+    create: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput>
+  }
+
+  export type ItemCommentCreateManyUserInputEnvelope = {
+    data: ItemCommentCreateManyUserInput | ItemCommentCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MenteeCreateWithoutUserInput = {
+    interestArea?: string | null
+    student?: StudentCreateNestedOneWithoutMenteeInput
+    requestsSent?: RequestCreateNestedManyWithoutMenteeInput
+  }
+
+  export type MenteeUncheckedCreateWithoutUserInput = {
+    studentId?: number | null
+    interestArea?: string | null
+    requestsSent?: RequestUncheckedCreateNestedManyWithoutMenteeInput
+  }
+
+  export type MenteeCreateOrConnectWithoutUserInput = {
+    where: MenteeWhereUniqueInput
+    create: XOR<MenteeCreateWithoutUserInput, MenteeUncheckedCreateWithoutUserInput>
+  }
+
+  export type MentorCreateWithoutUserInput = {
+    expertiseArea?: string | null
+    student?: StudentCreateNestedOneWithoutMentorInput
+    requestsReceived?: RequestCreateNestedManyWithoutMentorInput
+    reviews?: ReviewCreateNestedManyWithoutMentorInput
+  }
+
+  export type MentorUncheckedCreateWithoutUserInput = {
+    studentId?: number | null
+    expertiseArea?: string | null
+    requestsReceived?: RequestUncheckedCreateNestedManyWithoutMentorInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutMentorInput
+  }
+
+  export type MentorCreateOrConnectWithoutUserInput = {
+    where: MentorWhereUniqueInput
+    create: XOR<MentorCreateWithoutUserInput, MentorUncheckedCreateWithoutUserInput>
+  }
+
+  export type MessageCreateWithoutReceiverInput = {
+    content: string
+    read?: boolean
+    createdAt?: Date | string
+    sender: UserCreateNestedOneWithoutSentMessagesInput
+  }
+
+  export type MessageUncheckedCreateWithoutReceiverInput = {
+    id?: number
+    content: string
+    read?: boolean
+    createdAt?: Date | string
+    senderId: number
+  }
+
+  export type MessageCreateOrConnectWithoutReceiverInput = {
+    where: MessageWhereUniqueInput
+    create: XOR<MessageCreateWithoutReceiverInput, MessageUncheckedCreateWithoutReceiverInput>
+  }
+
+  export type MessageCreateManyReceiverInputEnvelope = {
+    data: MessageCreateManyReceiverInput | MessageCreateManyReceiverInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MessageCreateWithoutSenderInput = {
+    content: string
+    read?: boolean
+    createdAt?: Date | string
+    receiver: UserCreateNestedOneWithoutReceivedMessagesInput
+  }
+
+  export type MessageUncheckedCreateWithoutSenderInput = {
+    id?: number
+    content: string
+    read?: boolean
+    createdAt?: Date | string
+    receiverId: number
+  }
+
+  export type MessageCreateOrConnectWithoutSenderInput = {
+    where: MessageWhereUniqueInput
+    create: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput>
+  }
+
+  export type MessageCreateManySenderInputEnvelope = {
+    data: MessageCreateManySenderInput | MessageCreateManySenderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type NotificationCreateWithoutUserInput = {
+    type: string
+    title: string
+    message: string
+    read?: boolean
+    data?: string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationUncheckedCreateWithoutUserInput = {
+    id?: number
+    type: string
+    title: string
+    message: string
+    read?: boolean
+    data?: string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationCreateManyUserInputEnvelope = {
+    data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type OTPCreateWithoutUserInput = {
@@ -27444,26 +27581,9 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type BuyerCreateWithoutUserInput = {
-    student?: StudentCreateNestedOneWithoutBuyerInput
-    purchases?: ItemCreateNestedManyWithoutBuyerInput
-    reviews?: ReviewCreateNestedManyWithoutBuyerInput
-  }
-
-  export type BuyerUncheckedCreateWithoutUserInput = {
-    studentId?: number | null
-    purchases?: ItemUncheckedCreateNestedManyWithoutBuyerInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutBuyerInput
-  }
-
-  export type BuyerCreateOrConnectWithoutUserInput = {
-    where: BuyerWhereUniqueInput
-    create: XOR<BuyerCreateWithoutUserInput, BuyerUncheckedCreateWithoutUserInput>
-  }
-
   export type SellerCreateWithoutUserInput = {
-    student?: StudentCreateNestedOneWithoutSellerInput
     items?: ItemCreateNestedManyWithoutSellerInput
+    student?: StudentCreateNestedOneWithoutSellerInput
   }
 
   export type SellerUncheckedCreateWithoutUserInput = {
@@ -27474,115 +27594,6 @@ export namespace Prisma {
   export type SellerCreateOrConnectWithoutUserInput = {
     where: SellerWhereUniqueInput
     create: XOR<SellerCreateWithoutUserInput, SellerUncheckedCreateWithoutUserInput>
-  }
-
-  export type MentorCreateWithoutUserInput = {
-    expertiseArea?: string | null
-    student?: StudentCreateNestedOneWithoutMentorInput
-    requestsReceived?: RequestCreateNestedManyWithoutMentorInput
-    reviews?: ReviewCreateNestedManyWithoutMentorInput
-  }
-
-  export type MentorUncheckedCreateWithoutUserInput = {
-    studentId?: number | null
-    expertiseArea?: string | null
-    requestsReceived?: RequestUncheckedCreateNestedManyWithoutMentorInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutMentorInput
-  }
-
-  export type MentorCreateOrConnectWithoutUserInput = {
-    where: MentorWhereUniqueInput
-    create: XOR<MentorCreateWithoutUserInput, MentorUncheckedCreateWithoutUserInput>
-  }
-
-  export type MenteeCreateWithoutUserInput = {
-    interestArea?: string | null
-    student?: StudentCreateNestedOneWithoutMenteeInput
-    requestsSent?: RequestCreateNestedManyWithoutMenteeInput
-  }
-
-  export type MenteeUncheckedCreateWithoutUserInput = {
-    studentId?: number | null
-    interestArea?: string | null
-    requestsSent?: RequestUncheckedCreateNestedManyWithoutMenteeInput
-  }
-
-  export type MenteeCreateOrConnectWithoutUserInput = {
-    where: MenteeWhereUniqueInput
-    create: XOR<MenteeCreateWithoutUserInput, MenteeUncheckedCreateWithoutUserInput>
-  }
-
-  export type MessageCreateWithoutSenderInput = {
-    content: string
-    read?: boolean
-    createdAt?: Date | string
-    receiver: UserCreateNestedOneWithoutReceivedMessagesInput
-  }
-
-  export type MessageUncheckedCreateWithoutSenderInput = {
-    id?: number
-    content: string
-    read?: boolean
-    createdAt?: Date | string
-    receiverId: number
-  }
-
-  export type MessageCreateOrConnectWithoutSenderInput = {
-    where: MessageWhereUniqueInput
-    create: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput>
-  }
-
-  export type MessageCreateManySenderInputEnvelope = {
-    data: MessageCreateManySenderInput | MessageCreateManySenderInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type MessageCreateWithoutReceiverInput = {
-    content: string
-    read?: boolean
-    createdAt?: Date | string
-    sender: UserCreateNestedOneWithoutSentMessagesInput
-  }
-
-  export type MessageUncheckedCreateWithoutReceiverInput = {
-    id?: number
-    content: string
-    read?: boolean
-    createdAt?: Date | string
-    senderId: number
-  }
-
-  export type MessageCreateOrConnectWithoutReceiverInput = {
-    where: MessageWhereUniqueInput
-    create: XOR<MessageCreateWithoutReceiverInput, MessageUncheckedCreateWithoutReceiverInput>
-  }
-
-  export type MessageCreateManyReceiverInputEnvelope = {
-    data: MessageCreateManyReceiverInput | MessageCreateManyReceiverInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ItemCommentCreateWithoutUserInput = {
-    text: string
-    createdAt?: Date | string
-    item: ItemCreateNestedOneWithoutCommentsInput
-  }
-
-  export type ItemCommentUncheckedCreateWithoutUserInput = {
-    id?: number
-    text: string
-    createdAt?: Date | string
-    itemId: number
-  }
-
-  export type ItemCommentCreateOrConnectWithoutUserInput = {
-    where: ItemCommentWhereUniqueInput
-    create: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput>
-  }
-
-  export type ItemCommentCreateManyUserInputEnvelope = {
-    data: ItemCommentCreateManyUserInput | ItemCommentCreateManyUserInput[]
-    skipDuplicates?: boolean
   }
 
   export type TaskCreateWithoutUserInput = {
@@ -27612,57 +27623,194 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type NotificationCreateWithoutUserInput = {
-    type: string
-    title: string
-    message: string
-    read?: boolean
-    data?: string | null
-    createdAt?: Date | string
+  export type CollegeCreateWithoutUsersInput = {
+    name: string
+    location: string
+    students?: StudentCreateNestedManyWithoutCollegeInput
   }
 
-  export type NotificationUncheckedCreateWithoutUserInput = {
+  export type CollegeUncheckedCreateWithoutUsersInput = {
     id?: number
-    type: string
-    title: string
-    message: string
-    read?: boolean
-    data?: string | null
-    createdAt?: Date | string
+    name: string
+    location: string
+    students?: StudentUncheckedCreateNestedManyWithoutCollegeInput
   }
 
-  export type NotificationCreateOrConnectWithoutUserInput = {
+  export type CollegeCreateOrConnectWithoutUsersInput = {
+    where: CollegeWhereUniqueInput
+    create: XOR<CollegeCreateWithoutUsersInput, CollegeUncheckedCreateWithoutUsersInput>
+  }
+
+  export type BuyerUpsertWithoutUserInput = {
+    update: XOR<BuyerUpdateWithoutUserInput, BuyerUncheckedUpdateWithoutUserInput>
+    create: XOR<BuyerCreateWithoutUserInput, BuyerUncheckedCreateWithoutUserInput>
+    where?: BuyerWhereInput
+  }
+
+  export type BuyerUpdateToOneWithWhereWithoutUserInput = {
+    where?: BuyerWhereInput
+    data: XOR<BuyerUpdateWithoutUserInput, BuyerUncheckedUpdateWithoutUserInput>
+  }
+
+  export type BuyerUpdateWithoutUserInput = {
+    student?: StudentUpdateOneWithoutBuyerNestedInput
+    purchases?: ItemUpdateManyWithoutBuyerNestedInput
+    reviews?: ReviewUpdateManyWithoutBuyerNestedInput
+  }
+
+  export type BuyerUncheckedUpdateWithoutUserInput = {
+    studentId?: NullableIntFieldUpdateOperationsInput | number | null
+    purchases?: ItemUncheckedUpdateManyWithoutBuyerNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutBuyerNestedInput
+  }
+
+  export type ItemCommentUpsertWithWhereUniqueWithoutUserInput = {
+    where: ItemCommentWhereUniqueInput
+    update: XOR<ItemCommentUpdateWithoutUserInput, ItemCommentUncheckedUpdateWithoutUserInput>
+    create: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput>
+  }
+
+  export type ItemCommentUpdateWithWhereUniqueWithoutUserInput = {
+    where: ItemCommentWhereUniqueInput
+    data: XOR<ItemCommentUpdateWithoutUserInput, ItemCommentUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ItemCommentUpdateManyWithWhereWithoutUserInput = {
+    where: ItemCommentScalarWhereInput
+    data: XOR<ItemCommentUpdateManyMutationInput, ItemCommentUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ItemCommentScalarWhereInput = {
+    AND?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
+    OR?: ItemCommentScalarWhereInput[]
+    NOT?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
+    id?: IntFilter<"ItemComment"> | number
+    text?: StringFilter<"ItemComment"> | string
+    createdAt?: DateTimeFilter<"ItemComment"> | Date | string
+    userId?: IntFilter<"ItemComment"> | number
+    itemId?: IntFilter<"ItemComment"> | number
+  }
+
+  export type MenteeUpsertWithoutUserInput = {
+    update: XOR<MenteeUpdateWithoutUserInput, MenteeUncheckedUpdateWithoutUserInput>
+    create: XOR<MenteeCreateWithoutUserInput, MenteeUncheckedCreateWithoutUserInput>
+    where?: MenteeWhereInput
+  }
+
+  export type MenteeUpdateToOneWithWhereWithoutUserInput = {
+    where?: MenteeWhereInput
+    data: XOR<MenteeUpdateWithoutUserInput, MenteeUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MenteeUpdateWithoutUserInput = {
+    interestArea?: NullableStringFieldUpdateOperationsInput | string | null
+    student?: StudentUpdateOneWithoutMenteeNestedInput
+    requestsSent?: RequestUpdateManyWithoutMenteeNestedInput
+  }
+
+  export type MenteeUncheckedUpdateWithoutUserInput = {
+    studentId?: NullableIntFieldUpdateOperationsInput | number | null
+    interestArea?: NullableStringFieldUpdateOperationsInput | string | null
+    requestsSent?: RequestUncheckedUpdateManyWithoutMenteeNestedInput
+  }
+
+  export type MentorUpsertWithoutUserInput = {
+    update: XOR<MentorUpdateWithoutUserInput, MentorUncheckedUpdateWithoutUserInput>
+    create: XOR<MentorCreateWithoutUserInput, MentorUncheckedCreateWithoutUserInput>
+    where?: MentorWhereInput
+  }
+
+  export type MentorUpdateToOneWithWhereWithoutUserInput = {
+    where?: MentorWhereInput
+    data: XOR<MentorUpdateWithoutUserInput, MentorUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MentorUpdateWithoutUserInput = {
+    expertiseArea?: NullableStringFieldUpdateOperationsInput | string | null
+    student?: StudentUpdateOneWithoutMentorNestedInput
+    requestsReceived?: RequestUpdateManyWithoutMentorNestedInput
+    reviews?: ReviewUpdateManyWithoutMentorNestedInput
+  }
+
+  export type MentorUncheckedUpdateWithoutUserInput = {
+    studentId?: NullableIntFieldUpdateOperationsInput | number | null
+    expertiseArea?: NullableStringFieldUpdateOperationsInput | string | null
+    requestsReceived?: RequestUncheckedUpdateManyWithoutMentorNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutMentorNestedInput
+  }
+
+  export type MessageUpsertWithWhereUniqueWithoutReceiverInput = {
+    where: MessageWhereUniqueInput
+    update: XOR<MessageUpdateWithoutReceiverInput, MessageUncheckedUpdateWithoutReceiverInput>
+    create: XOR<MessageCreateWithoutReceiverInput, MessageUncheckedCreateWithoutReceiverInput>
+  }
+
+  export type MessageUpdateWithWhereUniqueWithoutReceiverInput = {
+    where: MessageWhereUniqueInput
+    data: XOR<MessageUpdateWithoutReceiverInput, MessageUncheckedUpdateWithoutReceiverInput>
+  }
+
+  export type MessageUpdateManyWithWhereWithoutReceiverInput = {
+    where: MessageScalarWhereInput
+    data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyWithoutReceiverInput>
+  }
+
+  export type MessageScalarWhereInput = {
+    AND?: MessageScalarWhereInput | MessageScalarWhereInput[]
+    OR?: MessageScalarWhereInput[]
+    NOT?: MessageScalarWhereInput | MessageScalarWhereInput[]
+    id?: IntFilter<"Message"> | number
+    content?: StringFilter<"Message"> | string
+    read?: BoolFilter<"Message"> | boolean
+    createdAt?: DateTimeFilter<"Message"> | Date | string
+    senderId?: IntFilter<"Message"> | number
+    receiverId?: IntFilter<"Message"> | number
+  }
+
+  export type MessageUpsertWithWhereUniqueWithoutSenderInput = {
+    where: MessageWhereUniqueInput
+    update: XOR<MessageUpdateWithoutSenderInput, MessageUncheckedUpdateWithoutSenderInput>
+    create: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput>
+  }
+
+  export type MessageUpdateWithWhereUniqueWithoutSenderInput = {
+    where: MessageWhereUniqueInput
+    data: XOR<MessageUpdateWithoutSenderInput, MessageUncheckedUpdateWithoutSenderInput>
+  }
+
+  export type MessageUpdateManyWithWhereWithoutSenderInput = {
+    where: MessageScalarWhereInput
+    data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyWithoutSenderInput>
+  }
+
+  export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
     where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
     create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
   }
 
-  export type NotificationCreateManyUserInputEnvelope = {
-    data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
-    skipDuplicates?: boolean
+  export type NotificationUpdateWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
   }
 
-  export type CollegeUpsertWithoutUsersInput = {
-    update: XOR<CollegeUpdateWithoutUsersInput, CollegeUncheckedUpdateWithoutUsersInput>
-    create: XOR<CollegeCreateWithoutUsersInput, CollegeUncheckedCreateWithoutUsersInput>
-    where?: CollegeWhereInput
+  export type NotificationUpdateManyWithWhereWithoutUserInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type CollegeUpdateToOneWithWhereWithoutUsersInput = {
-    where?: CollegeWhereInput
-    data: XOR<CollegeUpdateWithoutUsersInput, CollegeUncheckedUpdateWithoutUsersInput>
-  }
-
-  export type CollegeUpdateWithoutUsersInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    students?: StudentUpdateManyWithoutCollegeNestedInput
-  }
-
-  export type CollegeUncheckedUpdateWithoutUsersInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    students?: StudentUncheckedUpdateManyWithoutCollegeNestedInput
+  export type NotificationScalarWhereInput = {
+    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    OR?: NotificationScalarWhereInput[]
+    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    id?: IntFilter<"Notification"> | number
+    type?: StringFilter<"Notification"> | string
+    title?: StringFilter<"Notification"> | string
+    message?: StringFilter<"Notification"> | string
+    read?: BoolFilter<"Notification"> | boolean
+    data?: StringNullableFilter<"Notification"> | string | null
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+    userId?: IntFilter<"Notification"> | number
   }
 
   export type OTPUpsertWithWhereUniqueWithoutUserInput = {
@@ -27720,29 +27868,6 @@ export namespace Prisma {
     userId?: IntFilter<"RefreshToken"> | number
   }
 
-  export type BuyerUpsertWithoutUserInput = {
-    update: XOR<BuyerUpdateWithoutUserInput, BuyerUncheckedUpdateWithoutUserInput>
-    create: XOR<BuyerCreateWithoutUserInput, BuyerUncheckedCreateWithoutUserInput>
-    where?: BuyerWhereInput
-  }
-
-  export type BuyerUpdateToOneWithWhereWithoutUserInput = {
-    where?: BuyerWhereInput
-    data: XOR<BuyerUpdateWithoutUserInput, BuyerUncheckedUpdateWithoutUserInput>
-  }
-
-  export type BuyerUpdateWithoutUserInput = {
-    student?: StudentUpdateOneWithoutBuyerNestedInput
-    purchases?: ItemUpdateManyWithoutBuyerNestedInput
-    reviews?: ReviewUpdateManyWithoutBuyerNestedInput
-  }
-
-  export type BuyerUncheckedUpdateWithoutUserInput = {
-    studentId?: NullableIntFieldUpdateOperationsInput | number | null
-    purchases?: ItemUncheckedUpdateManyWithoutBuyerNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutBuyerNestedInput
-  }
-
   export type SellerUpsertWithoutUserInput = {
     update: XOR<SellerUpdateWithoutUserInput, SellerUncheckedUpdateWithoutUserInput>
     create: XOR<SellerCreateWithoutUserInput, SellerUncheckedCreateWithoutUserInput>
@@ -27755,132 +27880,13 @@ export namespace Prisma {
   }
 
   export type SellerUpdateWithoutUserInput = {
-    student?: StudentUpdateOneWithoutSellerNestedInput
     items?: ItemUpdateManyWithoutSellerNestedInput
+    student?: StudentUpdateOneWithoutSellerNestedInput
   }
 
   export type SellerUncheckedUpdateWithoutUserInput = {
     studentId?: NullableIntFieldUpdateOperationsInput | number | null
     items?: ItemUncheckedUpdateManyWithoutSellerNestedInput
-  }
-
-  export type MentorUpsertWithoutUserInput = {
-    update: XOR<MentorUpdateWithoutUserInput, MentorUncheckedUpdateWithoutUserInput>
-    create: XOR<MentorCreateWithoutUserInput, MentorUncheckedCreateWithoutUserInput>
-    where?: MentorWhereInput
-  }
-
-  export type MentorUpdateToOneWithWhereWithoutUserInput = {
-    where?: MentorWhereInput
-    data: XOR<MentorUpdateWithoutUserInput, MentorUncheckedUpdateWithoutUserInput>
-  }
-
-  export type MentorUpdateWithoutUserInput = {
-    expertiseArea?: NullableStringFieldUpdateOperationsInput | string | null
-    student?: StudentUpdateOneWithoutMentorNestedInput
-    requestsReceived?: RequestUpdateManyWithoutMentorNestedInput
-    reviews?: ReviewUpdateManyWithoutMentorNestedInput
-  }
-
-  export type MentorUncheckedUpdateWithoutUserInput = {
-    studentId?: NullableIntFieldUpdateOperationsInput | number | null
-    expertiseArea?: NullableStringFieldUpdateOperationsInput | string | null
-    requestsReceived?: RequestUncheckedUpdateManyWithoutMentorNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutMentorNestedInput
-  }
-
-  export type MenteeUpsertWithoutUserInput = {
-    update: XOR<MenteeUpdateWithoutUserInput, MenteeUncheckedUpdateWithoutUserInput>
-    create: XOR<MenteeCreateWithoutUserInput, MenteeUncheckedCreateWithoutUserInput>
-    where?: MenteeWhereInput
-  }
-
-  export type MenteeUpdateToOneWithWhereWithoutUserInput = {
-    where?: MenteeWhereInput
-    data: XOR<MenteeUpdateWithoutUserInput, MenteeUncheckedUpdateWithoutUserInput>
-  }
-
-  export type MenteeUpdateWithoutUserInput = {
-    interestArea?: NullableStringFieldUpdateOperationsInput | string | null
-    student?: StudentUpdateOneWithoutMenteeNestedInput
-    requestsSent?: RequestUpdateManyWithoutMenteeNestedInput
-  }
-
-  export type MenteeUncheckedUpdateWithoutUserInput = {
-    studentId?: NullableIntFieldUpdateOperationsInput | number | null
-    interestArea?: NullableStringFieldUpdateOperationsInput | string | null
-    requestsSent?: RequestUncheckedUpdateManyWithoutMenteeNestedInput
-  }
-
-  export type MessageUpsertWithWhereUniqueWithoutSenderInput = {
-    where: MessageWhereUniqueInput
-    update: XOR<MessageUpdateWithoutSenderInput, MessageUncheckedUpdateWithoutSenderInput>
-    create: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput>
-  }
-
-  export type MessageUpdateWithWhereUniqueWithoutSenderInput = {
-    where: MessageWhereUniqueInput
-    data: XOR<MessageUpdateWithoutSenderInput, MessageUncheckedUpdateWithoutSenderInput>
-  }
-
-  export type MessageUpdateManyWithWhereWithoutSenderInput = {
-    where: MessageScalarWhereInput
-    data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyWithoutSenderInput>
-  }
-
-  export type MessageScalarWhereInput = {
-    AND?: MessageScalarWhereInput | MessageScalarWhereInput[]
-    OR?: MessageScalarWhereInput[]
-    NOT?: MessageScalarWhereInput | MessageScalarWhereInput[]
-    id?: IntFilter<"Message"> | number
-    content?: StringFilter<"Message"> | string
-    read?: BoolFilter<"Message"> | boolean
-    createdAt?: DateTimeFilter<"Message"> | Date | string
-    senderId?: IntFilter<"Message"> | number
-    receiverId?: IntFilter<"Message"> | number
-  }
-
-  export type MessageUpsertWithWhereUniqueWithoutReceiverInput = {
-    where: MessageWhereUniqueInput
-    update: XOR<MessageUpdateWithoutReceiverInput, MessageUncheckedUpdateWithoutReceiverInput>
-    create: XOR<MessageCreateWithoutReceiverInput, MessageUncheckedCreateWithoutReceiverInput>
-  }
-
-  export type MessageUpdateWithWhereUniqueWithoutReceiverInput = {
-    where: MessageWhereUniqueInput
-    data: XOR<MessageUpdateWithoutReceiverInput, MessageUncheckedUpdateWithoutReceiverInput>
-  }
-
-  export type MessageUpdateManyWithWhereWithoutReceiverInput = {
-    where: MessageScalarWhereInput
-    data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyWithoutReceiverInput>
-  }
-
-  export type ItemCommentUpsertWithWhereUniqueWithoutUserInput = {
-    where: ItemCommentWhereUniqueInput
-    update: XOR<ItemCommentUpdateWithoutUserInput, ItemCommentUncheckedUpdateWithoutUserInput>
-    create: XOR<ItemCommentCreateWithoutUserInput, ItemCommentUncheckedCreateWithoutUserInput>
-  }
-
-  export type ItemCommentUpdateWithWhereUniqueWithoutUserInput = {
-    where: ItemCommentWhereUniqueInput
-    data: XOR<ItemCommentUpdateWithoutUserInput, ItemCommentUncheckedUpdateWithoutUserInput>
-  }
-
-  export type ItemCommentUpdateManyWithWhereWithoutUserInput = {
-    where: ItemCommentScalarWhereInput
-    data: XOR<ItemCommentUpdateManyMutationInput, ItemCommentUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type ItemCommentScalarWhereInput = {
-    AND?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
-    OR?: ItemCommentScalarWhereInput[]
-    NOT?: ItemCommentScalarWhereInput | ItemCommentScalarWhereInput[]
-    id?: IntFilter<"ItemComment"> | number
-    text?: StringFilter<"ItemComment"> | string
-    createdAt?: DateTimeFilter<"ItemComment"> | Date | string
-    userId?: IntFilter<"ItemComment"> | number
-    itemId?: IntFilter<"ItemComment"> | number
   }
 
   export type TaskUpsertWithWhereUniqueWithoutUserInput = {
@@ -27912,34 +27918,28 @@ export namespace Prisma {
     userId?: IntFilter<"Task"> | number
   }
 
-  export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
-    where: NotificationWhereUniqueInput
-    update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
-    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  export type CollegeUpsertWithoutUsersInput = {
+    update: XOR<CollegeUpdateWithoutUsersInput, CollegeUncheckedUpdateWithoutUsersInput>
+    create: XOR<CollegeCreateWithoutUsersInput, CollegeUncheckedCreateWithoutUsersInput>
+    where?: CollegeWhereInput
   }
 
-  export type NotificationUpdateWithWhereUniqueWithoutUserInput = {
-    where: NotificationWhereUniqueInput
-    data: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+  export type CollegeUpdateToOneWithWhereWithoutUsersInput = {
+    where?: CollegeWhereInput
+    data: XOR<CollegeUpdateWithoutUsersInput, CollegeUncheckedUpdateWithoutUsersInput>
   }
 
-  export type NotificationUpdateManyWithWhereWithoutUserInput = {
-    where: NotificationScalarWhereInput
-    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUserInput>
+  export type CollegeUpdateWithoutUsersInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    students?: StudentUpdateManyWithoutCollegeNestedInput
   }
 
-  export type NotificationScalarWhereInput = {
-    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-    OR?: NotificationScalarWhereInput[]
-    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-    id?: IntFilter<"Notification"> | number
-    type?: StringFilter<"Notification"> | string
-    title?: StringFilter<"Notification"> | string
-    message?: StringFilter<"Notification"> | string
-    read?: BoolFilter<"Notification"> | boolean
-    data?: StringNullableFilter<"Notification"> | string | null
-    createdAt?: DateTimeFilter<"Notification"> | Date | string
-    userId?: IntFilter<"Notification"> | number
+  export type CollegeUncheckedUpdateWithoutUsersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    students?: StudentUncheckedUpdateManyWithoutCollegeNestedInput
   }
 
   export type UserCreateWithoutOtpsInput = {
@@ -27953,17 +27953,17 @@ export namespace Prisma {
     isVerified?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    college: CollegeCreateNestedOneWithoutUsersInput
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
     buyer?: BuyerCreateNestedOneWithoutUserInput
-    seller?: SellerCreateNestedOneWithoutUserInput
-    mentor?: MentorCreateNestedOneWithoutUserInput
-    mentee?: MenteeCreateNestedOneWithoutUserInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     itemComments?: ItemCommentCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
+    mentee?: MenteeCreateNestedOneWithoutUserInput
+    mentor?: MentorCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    seller?: SellerCreateNestedOneWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    college: CollegeCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateWithoutOtpsInput = {
@@ -27979,16 +27979,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     collegeId: number
-    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
     buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
-    seller?: SellerUncheckedCreateNestedOneWithoutUserInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
-    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    seller?: SellerUncheckedCreateNestedOneWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOtpsInput = {
@@ -28018,17 +28018,17 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
-    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
     buyer?: BuyerUpdateOneWithoutUserNestedInput
-    seller?: SellerUpdateOneWithoutUserNestedInput
-    mentor?: MentorUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUpdateOneWithoutUserNestedInput
+    mentor?: MentorUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    seller?: SellerUpdateOneWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOtpsInput = {
@@ -28044,16 +28044,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     collegeId?: IntFieldUpdateOperationsInput | number
-    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
     buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
-    seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutRefreshTokensInput = {
@@ -28067,17 +28067,17 @@ export namespace Prisma {
     isVerified?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    college: CollegeCreateNestedOneWithoutUsersInput
-    otps?: OTPCreateNestedManyWithoutUserInput
     buyer?: BuyerCreateNestedOneWithoutUserInput
-    seller?: SellerCreateNestedOneWithoutUserInput
-    mentor?: MentorCreateNestedOneWithoutUserInput
-    mentee?: MenteeCreateNestedOneWithoutUserInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     itemComments?: ItemCommentCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
+    mentee?: MenteeCreateNestedOneWithoutUserInput
+    mentor?: MentorCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    otps?: OTPCreateNestedManyWithoutUserInput
+    seller?: SellerCreateNestedOneWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    college: CollegeCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -28093,16 +28093,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     collegeId: number
-    otps?: OTPUncheckedCreateNestedManyWithoutUserInput
     buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
-    seller?: SellerUncheckedCreateNestedOneWithoutUserInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
-    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    otps?: OTPUncheckedCreateNestedManyWithoutUserInput
+    seller?: SellerUncheckedCreateNestedOneWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -28132,17 +28132,17 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
-    otps?: OTPUpdateManyWithoutUserNestedInput
     buyer?: BuyerUpdateOneWithoutUserNestedInput
-    seller?: SellerUpdateOneWithoutUserNestedInput
-    mentor?: MentorUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUpdateOneWithoutUserNestedInput
+    mentor?: MentorUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    otps?: OTPUpdateManyWithoutUserNestedInput
+    seller?: SellerUpdateOneWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -28158,70 +28158,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     collegeId?: IntFieldUpdateOperationsInput | number
-    otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
     buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
-    seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserCreateWithoutSentMessagesInput = {
-    email: string
-    password: string
-    name: string
-    phoneNumber?: string | null
-    department?: string | null
-    profileImageUrl?: string | null
-    coverImageUrl?: string | null
-    isVerified?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    college: CollegeCreateNestedOneWithoutUsersInput
-    otps?: OTPCreateNestedManyWithoutUserInput
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    buyer?: BuyerCreateNestedOneWithoutUserInput
-    seller?: SellerCreateNestedOneWithoutUserInput
-    mentor?: MentorCreateNestedOneWithoutUserInput
-    mentee?: MenteeCreateNestedOneWithoutUserInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutSentMessagesInput = {
-    id?: number
-    email: string
-    password: string
-    name: string
-    phoneNumber?: string | null
-    department?: string | null
-    profileImageUrl?: string | null
-    coverImageUrl?: string | null
-    isVerified?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    collegeId: number
-    otps?: OTPUncheckedCreateNestedManyWithoutUserInput
-    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
-    seller?: SellerUncheckedCreateNestedOneWithoutUserInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
-    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutSentMessagesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutSentMessagesInput, UserUncheckedCreateWithoutSentMessagesInput>
+    otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
+    seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutReceivedMessagesInput = {
@@ -28235,17 +28181,17 @@ export namespace Prisma {
     isVerified?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    college: CollegeCreateNestedOneWithoutUsersInput
+    buyer?: BuyerCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
+    mentee?: MenteeCreateNestedOneWithoutUserInput
+    mentor?: MentorCreateNestedOneWithoutUserInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     otps?: OTPCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    buyer?: BuyerCreateNestedOneWithoutUserInput
     seller?: SellerCreateNestedOneWithoutUserInput
-    mentor?: MentorCreateNestedOneWithoutUserInput
-    mentee?: MenteeCreateNestedOneWithoutUserInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
+    college: CollegeCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateWithoutReceivedMessagesInput = {
@@ -28261,16 +28207,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     collegeId: number
+    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     otps?: OTPUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
     seller?: SellerUncheckedCreateNestedOneWithoutUserInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
-    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedMessagesInput = {
@@ -28278,64 +28224,58 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutReceivedMessagesInput, UserUncheckedCreateWithoutReceivedMessagesInput>
   }
 
-  export type UserUpsertWithoutSentMessagesInput = {
-    update: XOR<UserUpdateWithoutSentMessagesInput, UserUncheckedUpdateWithoutSentMessagesInput>
+  export type UserCreateWithoutSentMessagesInput = {
+    email: string
+    password: string
+    name: string
+    phoneNumber?: string | null
+    department?: string | null
+    profileImageUrl?: string | null
+    coverImageUrl?: string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    buyer?: BuyerCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
+    mentee?: MenteeCreateNestedOneWithoutUserInput
+    mentor?: MentorCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    otps?: OTPCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    seller?: SellerCreateNestedOneWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    college: CollegeCreateNestedOneWithoutUsersInput
+  }
+
+  export type UserUncheckedCreateWithoutSentMessagesInput = {
+    id?: number
+    email: string
+    password: string
+    name: string
+    phoneNumber?: string | null
+    department?: string | null
+    profileImageUrl?: string | null
+    coverImageUrl?: string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    collegeId: number
+    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    otps?: OTPUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    seller?: SellerUncheckedCreateNestedOneWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSentMessagesInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutSentMessagesInput, UserUncheckedCreateWithoutSentMessagesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutSentMessagesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutSentMessagesInput, UserUncheckedUpdateWithoutSentMessagesInput>
-  }
-
-  export type UserUpdateWithoutSentMessagesInput = {
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
-    otps?: OTPUpdateManyWithoutUserNestedInput
-    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUpdateOneWithoutUserNestedInput
-    seller?: SellerUpdateOneWithoutUserNestedInput
-    mentor?: MentorUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUpdateOneWithoutUserNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutSentMessagesInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    collegeId?: IntFieldUpdateOperationsInput | number
-    otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
-    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
-    seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedMessagesInput = {
@@ -28360,17 +28300,17 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
+    buyer?: BuyerUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUpdateOneWithoutUserNestedInput
+    mentor?: MentorUpdateOneWithoutUserNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     otps?: OTPUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUpdateOneWithoutUserNestedInput
     seller?: SellerUpdateOneWithoutUserNestedInput
-    mentor?: MentorUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedMessagesInput = {
@@ -28386,16 +28326,109 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     collegeId?: IntFieldUpdateOperationsInput | number
+    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
     seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutSentMessagesInput = {
+    update: XOR<UserUpdateWithoutSentMessagesInput, UserUncheckedUpdateWithoutSentMessagesInput>
+    create: XOR<UserCreateWithoutSentMessagesInput, UserUncheckedCreateWithoutSentMessagesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSentMessagesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSentMessagesInput, UserUncheckedUpdateWithoutSentMessagesInput>
+  }
+
+  export type UserUpdateWithoutSentMessagesInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    buyer?: BuyerUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUpdateOneWithoutUserNestedInput
+    mentor?: MentorUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    otps?: OTPUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    seller?: SellerUpdateOneWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSentMessagesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    collegeId?: IntFieldUpdateOperationsInput | number
+    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type StudentCreateWithoutCollegeInput = {
+    name: string
+    email: string
+    phoneNumber?: string | null
+    department?: string | null
+    buyer?: BuyerCreateNestedOneWithoutStudentInput
+    mentee?: MenteeCreateNestedOneWithoutStudentInput
+    mentor?: MentorCreateNestedOneWithoutStudentInput
+    seller?: SellerCreateNestedOneWithoutStudentInput
+  }
+
+  export type StudentUncheckedCreateWithoutCollegeInput = {
+    id?: number
+    name: string
+    email: string
+    phoneNumber?: string | null
+    department?: string | null
+    buyer?: BuyerUncheckedCreateNestedOneWithoutStudentInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutStudentInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutStudentInput
+    seller?: SellerUncheckedCreateNestedOneWithoutStudentInput
+  }
+
+  export type StudentCreateOrConnectWithoutCollegeInput = {
+    where: StudentWhereUniqueInput
+    create: XOR<StudentCreateWithoutCollegeInput, StudentUncheckedCreateWithoutCollegeInput>
+  }
+
+  export type StudentCreateManyCollegeInputEnvelope = {
+    data: StudentCreateManyCollegeInput | StudentCreateManyCollegeInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserCreateWithoutCollegeInput = {
@@ -28409,17 +28442,17 @@ export namespace Prisma {
     isVerified?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    buyer?: BuyerCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
+    mentee?: MenteeCreateNestedOneWithoutUserInput
+    mentor?: MentorCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     otps?: OTPCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    buyer?: BuyerCreateNestedOneWithoutUserInput
     seller?: SellerCreateNestedOneWithoutUserInput
-    mentor?: MentorCreateNestedOneWithoutUserInput
-    mentee?: MenteeCreateNestedOneWithoutUserInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCollegeInput = {
@@ -28434,17 +28467,17 @@ export namespace Prisma {
     isVerified?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     otps?: OTPUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
     seller?: SellerUncheckedCreateNestedOneWithoutUserInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
-    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCollegeInput = {
@@ -28457,37 +28490,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type StudentCreateWithoutCollegeInput = {
-    name: string
-    email: string
-    phoneNumber?: string | null
-    department?: string | null
-    buyer?: BuyerCreateNestedOneWithoutStudentInput
-    seller?: SellerCreateNestedOneWithoutStudentInput
-    mentor?: MentorCreateNestedOneWithoutStudentInput
-    mentee?: MenteeCreateNestedOneWithoutStudentInput
-  }
-
-  export type StudentUncheckedCreateWithoutCollegeInput = {
-    id?: number
-    name: string
-    email: string
-    phoneNumber?: string | null
-    department?: string | null
-    buyer?: BuyerUncheckedCreateNestedOneWithoutStudentInput
-    seller?: SellerUncheckedCreateNestedOneWithoutStudentInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutStudentInput
-    mentee?: MenteeUncheckedCreateNestedOneWithoutStudentInput
-  }
-
-  export type StudentCreateOrConnectWithoutCollegeInput = {
+  export type StudentUpsertWithWhereUniqueWithoutCollegeInput = {
     where: StudentWhereUniqueInput
+    update: XOR<StudentUpdateWithoutCollegeInput, StudentUncheckedUpdateWithoutCollegeInput>
     create: XOR<StudentCreateWithoutCollegeInput, StudentUncheckedCreateWithoutCollegeInput>
   }
 
-  export type StudentCreateManyCollegeInputEnvelope = {
-    data: StudentCreateManyCollegeInput | StudentCreateManyCollegeInput[]
-    skipDuplicates?: boolean
+  export type StudentUpdateWithWhereUniqueWithoutCollegeInput = {
+    where: StudentWhereUniqueInput
+    data: XOR<StudentUpdateWithoutCollegeInput, StudentUncheckedUpdateWithoutCollegeInput>
+  }
+
+  export type StudentUpdateManyWithWhereWithoutCollegeInput = {
+    where: StudentScalarWhereInput
+    data: XOR<StudentUpdateManyMutationInput, StudentUncheckedUpdateManyWithoutCollegeInput>
+  }
+
+  export type StudentScalarWhereInput = {
+    AND?: StudentScalarWhereInput | StudentScalarWhereInput[]
+    OR?: StudentScalarWhereInput[]
+    NOT?: StudentScalarWhereInput | StudentScalarWhereInput[]
+    id?: IntFilter<"Student"> | number
+    name?: StringFilter<"Student"> | string
+    email?: StringFilter<"Student"> | string
+    phoneNumber?: StringNullableFilter<"Student"> | string | null
+    department?: StringNullableFilter<"Student"> | string | null
+    collegeId?: IntFilter<"Student"> | number
   }
 
   export type UserUpsertWithWhereUniqueWithoutCollegeInput = {
@@ -28524,52 +28552,6 @@ export namespace Prisma {
     collegeId?: IntFilter<"User"> | number
   }
 
-  export type StudentUpsertWithWhereUniqueWithoutCollegeInput = {
-    where: StudentWhereUniqueInput
-    update: XOR<StudentUpdateWithoutCollegeInput, StudentUncheckedUpdateWithoutCollegeInput>
-    create: XOR<StudentCreateWithoutCollegeInput, StudentUncheckedCreateWithoutCollegeInput>
-  }
-
-  export type StudentUpdateWithWhereUniqueWithoutCollegeInput = {
-    where: StudentWhereUniqueInput
-    data: XOR<StudentUpdateWithoutCollegeInput, StudentUncheckedUpdateWithoutCollegeInput>
-  }
-
-  export type StudentUpdateManyWithWhereWithoutCollegeInput = {
-    where: StudentScalarWhereInput
-    data: XOR<StudentUpdateManyMutationInput, StudentUncheckedUpdateManyWithoutCollegeInput>
-  }
-
-  export type StudentScalarWhereInput = {
-    AND?: StudentScalarWhereInput | StudentScalarWhereInput[]
-    OR?: StudentScalarWhereInput[]
-    NOT?: StudentScalarWhereInput | StudentScalarWhereInput[]
-    id?: IntFilter<"Student"> | number
-    name?: StringFilter<"Student"> | string
-    email?: StringFilter<"Student"> | string
-    phoneNumber?: StringNullableFilter<"Student"> | string | null
-    department?: StringNullableFilter<"Student"> | string | null
-    collegeId?: IntFilter<"Student"> | number
-  }
-
-  export type CollegeCreateWithoutStudentsInput = {
-    name: string
-    location: string
-    users?: UserCreateNestedManyWithoutCollegeInput
-  }
-
-  export type CollegeUncheckedCreateWithoutStudentsInput = {
-    id?: number
-    name: string
-    location: string
-    users?: UserUncheckedCreateNestedManyWithoutCollegeInput
-  }
-
-  export type CollegeCreateOrConnectWithoutStudentsInput = {
-    where: CollegeWhereUniqueInput
-    create: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
-  }
-
   export type BuyerCreateWithoutStudentInput = {
     user: UserCreateNestedOneWithoutBuyerInput
     purchases?: ItemCreateNestedManyWithoutBuyerInput
@@ -28587,19 +28569,21 @@ export namespace Prisma {
     create: XOR<BuyerCreateWithoutStudentInput, BuyerUncheckedCreateWithoutStudentInput>
   }
 
-  export type SellerCreateWithoutStudentInput = {
-    user: UserCreateNestedOneWithoutSellerInput
-    items?: ItemCreateNestedManyWithoutSellerInput
+  export type MenteeCreateWithoutStudentInput = {
+    interestArea?: string | null
+    user: UserCreateNestedOneWithoutMenteeInput
+    requestsSent?: RequestCreateNestedManyWithoutMenteeInput
   }
 
-  export type SellerUncheckedCreateWithoutStudentInput = {
+  export type MenteeUncheckedCreateWithoutStudentInput = {
     userId: number
-    items?: ItemUncheckedCreateNestedManyWithoutSellerInput
+    interestArea?: string | null
+    requestsSent?: RequestUncheckedCreateNestedManyWithoutMenteeInput
   }
 
-  export type SellerCreateOrConnectWithoutStudentInput = {
-    where: SellerWhereUniqueInput
-    create: XOR<SellerCreateWithoutStudentInput, SellerUncheckedCreateWithoutStudentInput>
+  export type MenteeCreateOrConnectWithoutStudentInput = {
+    where: MenteeWhereUniqueInput
+    create: XOR<MenteeCreateWithoutStudentInput, MenteeUncheckedCreateWithoutStudentInput>
   }
 
   export type MentorCreateWithoutStudentInput = {
@@ -28621,45 +28605,37 @@ export namespace Prisma {
     create: XOR<MentorCreateWithoutStudentInput, MentorUncheckedCreateWithoutStudentInput>
   }
 
-  export type MenteeCreateWithoutStudentInput = {
-    interestArea?: string | null
-    user: UserCreateNestedOneWithoutMenteeInput
-    requestsSent?: RequestCreateNestedManyWithoutMenteeInput
+  export type SellerCreateWithoutStudentInput = {
+    items?: ItemCreateNestedManyWithoutSellerInput
+    user: UserCreateNestedOneWithoutSellerInput
   }
 
-  export type MenteeUncheckedCreateWithoutStudentInput = {
+  export type SellerUncheckedCreateWithoutStudentInput = {
     userId: number
-    interestArea?: string | null
-    requestsSent?: RequestUncheckedCreateNestedManyWithoutMenteeInput
+    items?: ItemUncheckedCreateNestedManyWithoutSellerInput
   }
 
-  export type MenteeCreateOrConnectWithoutStudentInput = {
-    where: MenteeWhereUniqueInput
-    create: XOR<MenteeCreateWithoutStudentInput, MenteeUncheckedCreateWithoutStudentInput>
+  export type SellerCreateOrConnectWithoutStudentInput = {
+    where: SellerWhereUniqueInput
+    create: XOR<SellerCreateWithoutStudentInput, SellerUncheckedCreateWithoutStudentInput>
   }
 
-  export type CollegeUpsertWithoutStudentsInput = {
-    update: XOR<CollegeUpdateWithoutStudentsInput, CollegeUncheckedUpdateWithoutStudentsInput>
+  export type CollegeCreateWithoutStudentsInput = {
+    name: string
+    location: string
+    users?: UserCreateNestedManyWithoutCollegeInput
+  }
+
+  export type CollegeUncheckedCreateWithoutStudentsInput = {
+    id?: number
+    name: string
+    location: string
+    users?: UserUncheckedCreateNestedManyWithoutCollegeInput
+  }
+
+  export type CollegeCreateOrConnectWithoutStudentsInput = {
+    where: CollegeWhereUniqueInput
     create: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
-    where?: CollegeWhereInput
-  }
-
-  export type CollegeUpdateToOneWithWhereWithoutStudentsInput = {
-    where?: CollegeWhereInput
-    data: XOR<CollegeUpdateWithoutStudentsInput, CollegeUncheckedUpdateWithoutStudentsInput>
-  }
-
-  export type CollegeUpdateWithoutStudentsInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    users?: UserUpdateManyWithoutCollegeNestedInput
-  }
-
-  export type CollegeUncheckedUpdateWithoutStudentsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    users?: UserUncheckedUpdateManyWithoutCollegeNestedInput
   }
 
   export type BuyerUpsertWithoutStudentInput = {
@@ -28685,25 +28661,27 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutBuyerNestedInput
   }
 
-  export type SellerUpsertWithoutStudentInput = {
-    update: XOR<SellerUpdateWithoutStudentInput, SellerUncheckedUpdateWithoutStudentInput>
-    create: XOR<SellerCreateWithoutStudentInput, SellerUncheckedCreateWithoutStudentInput>
-    where?: SellerWhereInput
+  export type MenteeUpsertWithoutStudentInput = {
+    update: XOR<MenteeUpdateWithoutStudentInput, MenteeUncheckedUpdateWithoutStudentInput>
+    create: XOR<MenteeCreateWithoutStudentInput, MenteeUncheckedCreateWithoutStudentInput>
+    where?: MenteeWhereInput
   }
 
-  export type SellerUpdateToOneWithWhereWithoutStudentInput = {
-    where?: SellerWhereInput
-    data: XOR<SellerUpdateWithoutStudentInput, SellerUncheckedUpdateWithoutStudentInput>
+  export type MenteeUpdateToOneWithWhereWithoutStudentInput = {
+    where?: MenteeWhereInput
+    data: XOR<MenteeUpdateWithoutStudentInput, MenteeUncheckedUpdateWithoutStudentInput>
   }
 
-  export type SellerUpdateWithoutStudentInput = {
-    user?: UserUpdateOneRequiredWithoutSellerNestedInput
-    items?: ItemUpdateManyWithoutSellerNestedInput
+  export type MenteeUpdateWithoutStudentInput = {
+    interestArea?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutMenteeNestedInput
+    requestsSent?: RequestUpdateManyWithoutMenteeNestedInput
   }
 
-  export type SellerUncheckedUpdateWithoutStudentInput = {
+  export type MenteeUncheckedUpdateWithoutStudentInput = {
     userId?: IntFieldUpdateOperationsInput | number
-    items?: ItemUncheckedUpdateManyWithoutSellerNestedInput
+    interestArea?: NullableStringFieldUpdateOperationsInput | string | null
+    requestsSent?: RequestUncheckedUpdateManyWithoutMenteeNestedInput
   }
 
   export type MentorUpsertWithoutStudentInput = {
@@ -28731,27 +28709,49 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutMentorNestedInput
   }
 
-  export type MenteeUpsertWithoutStudentInput = {
-    update: XOR<MenteeUpdateWithoutStudentInput, MenteeUncheckedUpdateWithoutStudentInput>
-    create: XOR<MenteeCreateWithoutStudentInput, MenteeUncheckedCreateWithoutStudentInput>
-    where?: MenteeWhereInput
+  export type SellerUpsertWithoutStudentInput = {
+    update: XOR<SellerUpdateWithoutStudentInput, SellerUncheckedUpdateWithoutStudentInput>
+    create: XOR<SellerCreateWithoutStudentInput, SellerUncheckedCreateWithoutStudentInput>
+    where?: SellerWhereInput
   }
 
-  export type MenteeUpdateToOneWithWhereWithoutStudentInput = {
-    where?: MenteeWhereInput
-    data: XOR<MenteeUpdateWithoutStudentInput, MenteeUncheckedUpdateWithoutStudentInput>
+  export type SellerUpdateToOneWithWhereWithoutStudentInput = {
+    where?: SellerWhereInput
+    data: XOR<SellerUpdateWithoutStudentInput, SellerUncheckedUpdateWithoutStudentInput>
   }
 
-  export type MenteeUpdateWithoutStudentInput = {
-    interestArea?: NullableStringFieldUpdateOperationsInput | string | null
-    user?: UserUpdateOneRequiredWithoutMenteeNestedInput
-    requestsSent?: RequestUpdateManyWithoutMenteeNestedInput
+  export type SellerUpdateWithoutStudentInput = {
+    items?: ItemUpdateManyWithoutSellerNestedInput
+    user?: UserUpdateOneRequiredWithoutSellerNestedInput
   }
 
-  export type MenteeUncheckedUpdateWithoutStudentInput = {
+  export type SellerUncheckedUpdateWithoutStudentInput = {
     userId?: IntFieldUpdateOperationsInput | number
-    interestArea?: NullableStringFieldUpdateOperationsInput | string | null
-    requestsSent?: RequestUncheckedUpdateManyWithoutMenteeNestedInput
+    items?: ItemUncheckedUpdateManyWithoutSellerNestedInput
+  }
+
+  export type CollegeUpsertWithoutStudentsInput = {
+    update: XOR<CollegeUpdateWithoutStudentsInput, CollegeUncheckedUpdateWithoutStudentsInput>
+    create: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
+    where?: CollegeWhereInput
+  }
+
+  export type CollegeUpdateToOneWithWhereWithoutStudentsInput = {
+    where?: CollegeWhereInput
+    data: XOR<CollegeUpdateWithoutStudentsInput, CollegeUncheckedUpdateWithoutStudentsInput>
+  }
+
+  export type CollegeUpdateWithoutStudentsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    users?: UserUpdateManyWithoutCollegeNestedInput
+  }
+
+  export type CollegeUncheckedUpdateWithoutStudentsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    users?: UserUncheckedUpdateManyWithoutCollegeNestedInput
   }
 
   export type StudentCreateWithoutBuyerInput = {
@@ -28759,10 +28759,10 @@ export namespace Prisma {
     email: string
     phoneNumber?: string | null
     department?: string | null
-    college: CollegeCreateNestedOneWithoutStudentsInput
-    seller?: SellerCreateNestedOneWithoutStudentInput
-    mentor?: MentorCreateNestedOneWithoutStudentInput
     mentee?: MenteeCreateNestedOneWithoutStudentInput
+    mentor?: MentorCreateNestedOneWithoutStudentInput
+    seller?: SellerCreateNestedOneWithoutStudentInput
+    college: CollegeCreateNestedOneWithoutStudentsInput
   }
 
   export type StudentUncheckedCreateWithoutBuyerInput = {
@@ -28772,9 +28772,9 @@ export namespace Prisma {
     phoneNumber?: string | null
     department?: string | null
     collegeId: number
-    seller?: SellerUncheckedCreateNestedOneWithoutStudentInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutStudentInput
     mentee?: MenteeUncheckedCreateNestedOneWithoutStudentInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutStudentInput
+    seller?: SellerUncheckedCreateNestedOneWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutBuyerInput = {
@@ -28793,17 +28793,17 @@ export namespace Prisma {
     isVerified?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    college: CollegeCreateNestedOneWithoutUsersInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
+    mentee?: MenteeCreateNestedOneWithoutUserInput
+    mentor?: MentorCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     otps?: OTPCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
     seller?: SellerCreateNestedOneWithoutUserInput
-    mentor?: MentorCreateNestedOneWithoutUserInput
-    mentee?: MenteeCreateNestedOneWithoutUserInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
+    college: CollegeCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateWithoutBuyerInput = {
@@ -28819,16 +28819,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     collegeId: number
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     otps?: OTPUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
     seller?: SellerUncheckedCreateNestedOneWithoutUserInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
-    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBuyerInput = {
@@ -28841,8 +28841,8 @@ export namespace Prisma {
     cost: number
     condition: string
     imageUrl?: string | null
-    seller: SellerCreateNestedOneWithoutItemsInput
     category: CategoryCreateNestedOneWithoutItemsInput
+    seller: SellerCreateNestedOneWithoutItemsInput
     comments?: ItemCommentCreateNestedManyWithoutItemInput
     reviews?: ReviewCreateNestedManyWithoutItemInput
   }
@@ -28912,10 +28912,10 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    college?: CollegeUpdateOneRequiredWithoutStudentsNestedInput
-    seller?: SellerUpdateOneWithoutStudentNestedInput
-    mentor?: MentorUpdateOneWithoutStudentNestedInput
     mentee?: MenteeUpdateOneWithoutStudentNestedInput
+    mentor?: MentorUpdateOneWithoutStudentNestedInput
+    seller?: SellerUpdateOneWithoutStudentNestedInput
+    college?: CollegeUpdateOneRequiredWithoutStudentsNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutBuyerInput = {
@@ -28925,9 +28925,9 @@ export namespace Prisma {
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     collegeId?: IntFieldUpdateOperationsInput | number
-    seller?: SellerUncheckedUpdateOneWithoutStudentNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutStudentNestedInput
     mentee?: MenteeUncheckedUpdateOneWithoutStudentNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutStudentNestedInput
+    seller?: SellerUncheckedUpdateOneWithoutStudentNestedInput
   }
 
   export type UserUpsertWithoutBuyerInput = {
@@ -28952,17 +28952,17 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUpdateOneWithoutUserNestedInput
+    mentor?: MentorUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     otps?: OTPUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
     seller?: SellerUpdateOneWithoutUserNestedInput
-    mentor?: MentorUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBuyerInput = {
@@ -28978,16 +28978,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     collegeId?: IntFieldUpdateOperationsInput | number
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
     seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ItemUpsertWithWhereUniqueWithoutBuyerInput = {
@@ -29049,88 +29049,6 @@ export namespace Prisma {
     mentorId?: IntNullableFilter<"Review"> | number | null
   }
 
-  export type StudentCreateWithoutSellerInput = {
-    name: string
-    email: string
-    phoneNumber?: string | null
-    department?: string | null
-    college: CollegeCreateNestedOneWithoutStudentsInput
-    buyer?: BuyerCreateNestedOneWithoutStudentInput
-    mentor?: MentorCreateNestedOneWithoutStudentInput
-    mentee?: MenteeCreateNestedOneWithoutStudentInput
-  }
-
-  export type StudentUncheckedCreateWithoutSellerInput = {
-    id?: number
-    name: string
-    email: string
-    phoneNumber?: string | null
-    department?: string | null
-    collegeId: number
-    buyer?: BuyerUncheckedCreateNestedOneWithoutStudentInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutStudentInput
-    mentee?: MenteeUncheckedCreateNestedOneWithoutStudentInput
-  }
-
-  export type StudentCreateOrConnectWithoutSellerInput = {
-    where: StudentWhereUniqueInput
-    create: XOR<StudentCreateWithoutSellerInput, StudentUncheckedCreateWithoutSellerInput>
-  }
-
-  export type UserCreateWithoutSellerInput = {
-    email: string
-    password: string
-    name: string
-    phoneNumber?: string | null
-    department?: string | null
-    profileImageUrl?: string | null
-    coverImageUrl?: string | null
-    isVerified?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    college: CollegeCreateNestedOneWithoutUsersInput
-    otps?: OTPCreateNestedManyWithoutUserInput
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    buyer?: BuyerCreateNestedOneWithoutUserInput
-    mentor?: MentorCreateNestedOneWithoutUserInput
-    mentee?: MenteeCreateNestedOneWithoutUserInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutSellerInput = {
-    id?: number
-    email: string
-    password: string
-    name: string
-    phoneNumber?: string | null
-    department?: string | null
-    profileImageUrl?: string | null
-    coverImageUrl?: string | null
-    isVerified?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    collegeId: number
-    otps?: OTPUncheckedCreateNestedManyWithoutUserInput
-    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
-    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutSellerInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutSellerInput, UserUncheckedCreateWithoutSellerInput>
-  }
-
   export type ItemCreateWithoutSellerInput = {
     itemName: string
     cost: number
@@ -29164,6 +29082,104 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type StudentCreateWithoutSellerInput = {
+    name: string
+    email: string
+    phoneNumber?: string | null
+    department?: string | null
+    buyer?: BuyerCreateNestedOneWithoutStudentInput
+    mentee?: MenteeCreateNestedOneWithoutStudentInput
+    mentor?: MentorCreateNestedOneWithoutStudentInput
+    college: CollegeCreateNestedOneWithoutStudentsInput
+  }
+
+  export type StudentUncheckedCreateWithoutSellerInput = {
+    id?: number
+    name: string
+    email: string
+    phoneNumber?: string | null
+    department?: string | null
+    collegeId: number
+    buyer?: BuyerUncheckedCreateNestedOneWithoutStudentInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutStudentInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutStudentInput
+  }
+
+  export type StudentCreateOrConnectWithoutSellerInput = {
+    where: StudentWhereUniqueInput
+    create: XOR<StudentCreateWithoutSellerInput, StudentUncheckedCreateWithoutSellerInput>
+  }
+
+  export type UserCreateWithoutSellerInput = {
+    email: string
+    password: string
+    name: string
+    phoneNumber?: string | null
+    department?: string | null
+    profileImageUrl?: string | null
+    coverImageUrl?: string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    buyer?: BuyerCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
+    mentee?: MenteeCreateNestedOneWithoutUserInput
+    mentor?: MentorCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    otps?: OTPCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    college: CollegeCreateNestedOneWithoutUsersInput
+  }
+
+  export type UserUncheckedCreateWithoutSellerInput = {
+    id?: number
+    email: string
+    password: string
+    name: string
+    phoneNumber?: string | null
+    department?: string | null
+    profileImageUrl?: string | null
+    coverImageUrl?: string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    collegeId: number
+    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    otps?: OTPUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSellerInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSellerInput, UserUncheckedCreateWithoutSellerInput>
+  }
+
+  export type ItemUpsertWithWhereUniqueWithoutSellerInput = {
+    where: ItemWhereUniqueInput
+    update: XOR<ItemUpdateWithoutSellerInput, ItemUncheckedUpdateWithoutSellerInput>
+    create: XOR<ItemCreateWithoutSellerInput, ItemUncheckedCreateWithoutSellerInput>
+  }
+
+  export type ItemUpdateWithWhereUniqueWithoutSellerInput = {
+    where: ItemWhereUniqueInput
+    data: XOR<ItemUpdateWithoutSellerInput, ItemUncheckedUpdateWithoutSellerInput>
+  }
+
+  export type ItemUpdateManyWithWhereWithoutSellerInput = {
+    where: ItemScalarWhereInput
+    data: XOR<ItemUpdateManyMutationInput, ItemUncheckedUpdateManyWithoutSellerInput>
+  }
+
   export type StudentUpsertWithoutSellerInput = {
     update: XOR<StudentUpdateWithoutSellerInput, StudentUncheckedUpdateWithoutSellerInput>
     create: XOR<StudentCreateWithoutSellerInput, StudentUncheckedCreateWithoutSellerInput>
@@ -29180,10 +29196,10 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    college?: CollegeUpdateOneRequiredWithoutStudentsNestedInput
     buyer?: BuyerUpdateOneWithoutStudentNestedInput
-    mentor?: MentorUpdateOneWithoutStudentNestedInput
     mentee?: MenteeUpdateOneWithoutStudentNestedInput
+    mentor?: MentorUpdateOneWithoutStudentNestedInput
+    college?: CollegeUpdateOneRequiredWithoutStudentsNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutSellerInput = {
@@ -29194,8 +29210,8 @@ export namespace Prisma {
     department?: NullableStringFieldUpdateOperationsInput | string | null
     collegeId?: IntFieldUpdateOperationsInput | number
     buyer?: BuyerUncheckedUpdateOneWithoutStudentNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutStudentNestedInput
     mentee?: MenteeUncheckedUpdateOneWithoutStudentNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutStudentNestedInput
   }
 
   export type UserUpsertWithoutSellerInput = {
@@ -29220,17 +29236,17 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
+    buyer?: BuyerUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUpdateOneWithoutUserNestedInput
+    mentor?: MentorUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     otps?: OTPUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUpdateOneWithoutUserNestedInput
-    mentor?: MentorUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSellerInput = {
@@ -29246,32 +29262,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     collegeId?: IntFieldUpdateOperationsInput | number
+    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type ItemUpsertWithWhereUniqueWithoutSellerInput = {
-    where: ItemWhereUniqueInput
-    update: XOR<ItemUpdateWithoutSellerInput, ItemUncheckedUpdateWithoutSellerInput>
-    create: XOR<ItemCreateWithoutSellerInput, ItemUncheckedCreateWithoutSellerInput>
-  }
-
-  export type ItemUpdateWithWhereUniqueWithoutSellerInput = {
-    where: ItemWhereUniqueInput
-    data: XOR<ItemUpdateWithoutSellerInput, ItemUncheckedUpdateWithoutSellerInput>
-  }
-
-  export type ItemUpdateManyWithWhereWithoutSellerInput = {
-    where: ItemScalarWhereInput
-    data: XOR<ItemUpdateManyMutationInput, ItemUncheckedUpdateManyWithoutSellerInput>
   }
 
   export type StudentCreateWithoutMentorInput = {
@@ -29279,10 +29279,10 @@ export namespace Prisma {
     email: string
     phoneNumber?: string | null
     department?: string | null
-    college: CollegeCreateNestedOneWithoutStudentsInput
     buyer?: BuyerCreateNestedOneWithoutStudentInput
-    seller?: SellerCreateNestedOneWithoutStudentInput
     mentee?: MenteeCreateNestedOneWithoutStudentInput
+    seller?: SellerCreateNestedOneWithoutStudentInput
+    college: CollegeCreateNestedOneWithoutStudentsInput
   }
 
   export type StudentUncheckedCreateWithoutMentorInput = {
@@ -29293,8 +29293,8 @@ export namespace Prisma {
     department?: string | null
     collegeId: number
     buyer?: BuyerUncheckedCreateNestedOneWithoutStudentInput
-    seller?: SellerUncheckedCreateNestedOneWithoutStudentInput
     mentee?: MenteeUncheckedCreateNestedOneWithoutStudentInput
+    seller?: SellerUncheckedCreateNestedOneWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutMentorInput = {
@@ -29313,17 +29313,17 @@ export namespace Prisma {
     isVerified?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    college: CollegeCreateNestedOneWithoutUsersInput
+    buyer?: BuyerCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
+    mentee?: MenteeCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     otps?: OTPCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    buyer?: BuyerCreateNestedOneWithoutUserInput
     seller?: SellerCreateNestedOneWithoutUserInput
-    mentee?: MenteeCreateNestedOneWithoutUserInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
+    college: CollegeCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateWithoutMentorInput = {
@@ -29339,16 +29339,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     collegeId: number
+    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     otps?: OTPUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
     seller?: SellerUncheckedCreateNestedOneWithoutUserInput
-    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMentorInput = {
@@ -29424,10 +29424,10 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    college?: CollegeUpdateOneRequiredWithoutStudentsNestedInput
     buyer?: BuyerUpdateOneWithoutStudentNestedInput
-    seller?: SellerUpdateOneWithoutStudentNestedInput
     mentee?: MenteeUpdateOneWithoutStudentNestedInput
+    seller?: SellerUpdateOneWithoutStudentNestedInput
+    college?: CollegeUpdateOneRequiredWithoutStudentsNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutMentorInput = {
@@ -29438,8 +29438,8 @@ export namespace Prisma {
     department?: NullableStringFieldUpdateOperationsInput | string | null
     collegeId?: IntFieldUpdateOperationsInput | number
     buyer?: BuyerUncheckedUpdateOneWithoutStudentNestedInput
-    seller?: SellerUncheckedUpdateOneWithoutStudentNestedInput
     mentee?: MenteeUncheckedUpdateOneWithoutStudentNestedInput
+    seller?: SellerUncheckedUpdateOneWithoutStudentNestedInput
   }
 
   export type UserUpsertWithoutMentorInput = {
@@ -29464,17 +29464,17 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
+    buyer?: BuyerUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     otps?: OTPUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUpdateOneWithoutUserNestedInput
     seller?: SellerUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentorInput = {
@@ -29490,16 +29490,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     collegeId?: IntFieldUpdateOperationsInput | number
+    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
     seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RequestUpsertWithWhereUniqueWithoutMentorInput = {
@@ -29551,10 +29551,10 @@ export namespace Prisma {
     email: string
     phoneNumber?: string | null
     department?: string | null
-    college: CollegeCreateNestedOneWithoutStudentsInput
     buyer?: BuyerCreateNestedOneWithoutStudentInput
-    seller?: SellerCreateNestedOneWithoutStudentInput
     mentor?: MentorCreateNestedOneWithoutStudentInput
+    seller?: SellerCreateNestedOneWithoutStudentInput
+    college: CollegeCreateNestedOneWithoutStudentsInput
   }
 
   export type StudentUncheckedCreateWithoutMenteeInput = {
@@ -29565,8 +29565,8 @@ export namespace Prisma {
     department?: string | null
     collegeId: number
     buyer?: BuyerUncheckedCreateNestedOneWithoutStudentInput
-    seller?: SellerUncheckedCreateNestedOneWithoutStudentInput
     mentor?: MentorUncheckedCreateNestedOneWithoutStudentInput
+    seller?: SellerUncheckedCreateNestedOneWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutMenteeInput = {
@@ -29585,17 +29585,17 @@ export namespace Prisma {
     isVerified?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    college: CollegeCreateNestedOneWithoutUsersInput
+    buyer?: BuyerCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
+    mentor?: MentorCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     otps?: OTPCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    buyer?: BuyerCreateNestedOneWithoutUserInput
     seller?: SellerCreateNestedOneWithoutUserInput
-    mentor?: MentorCreateNestedOneWithoutUserInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
+    college: CollegeCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateWithoutMenteeInput = {
@@ -29611,16 +29611,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     collegeId: number
+    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     otps?: OTPUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
     seller?: SellerUncheckedCreateNestedOneWithoutUserInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMenteeInput = {
@@ -29669,10 +29669,10 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    college?: CollegeUpdateOneRequiredWithoutStudentsNestedInput
     buyer?: BuyerUpdateOneWithoutStudentNestedInput
-    seller?: SellerUpdateOneWithoutStudentNestedInput
     mentor?: MentorUpdateOneWithoutStudentNestedInput
+    seller?: SellerUpdateOneWithoutStudentNestedInput
+    college?: CollegeUpdateOneRequiredWithoutStudentsNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutMenteeInput = {
@@ -29683,8 +29683,8 @@ export namespace Prisma {
     department?: NullableStringFieldUpdateOperationsInput | string | null
     collegeId?: IntFieldUpdateOperationsInput | number
     buyer?: BuyerUncheckedUpdateOneWithoutStudentNestedInput
-    seller?: SellerUncheckedUpdateOneWithoutStudentNestedInput
     mentor?: MentorUncheckedUpdateOneWithoutStudentNestedInput
+    seller?: SellerUncheckedUpdateOneWithoutStudentNestedInput
   }
 
   export type UserUpsertWithoutMenteeInput = {
@@ -29709,17 +29709,17 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
+    buyer?: BuyerUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
+    mentor?: MentorUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     otps?: OTPUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUpdateOneWithoutUserNestedInput
     seller?: SellerUpdateOneWithoutUserNestedInput
-    mentor?: MentorUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMenteeInput = {
@@ -29735,16 +29735,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     collegeId?: IntFieldUpdateOperationsInput | number
+    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
     seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RequestUpsertWithWhereUniqueWithoutMenteeInput = {
@@ -29768,8 +29768,8 @@ export namespace Prisma {
     cost: number
     condition: string
     imageUrl?: string | null
-    seller: SellerCreateNestedOneWithoutItemsInput
     buyer?: BuyerCreateNestedOneWithoutPurchasesInput
+    seller: SellerCreateNestedOneWithoutItemsInput
     comments?: ItemCommentCreateNestedManyWithoutItemInput
     reviews?: ReviewCreateNestedManyWithoutItemInput
   }
@@ -29812,21 +29812,6 @@ export namespace Prisma {
     data: XOR<ItemUpdateManyMutationInput, ItemUncheckedUpdateManyWithoutCategoryInput>
   }
 
-  export type SellerCreateWithoutItemsInput = {
-    student?: StudentCreateNestedOneWithoutSellerInput
-    user: UserCreateNestedOneWithoutSellerInput
-  }
-
-  export type SellerUncheckedCreateWithoutItemsInput = {
-    studentId?: number | null
-    userId: number
-  }
-
-  export type SellerCreateOrConnectWithoutItemsInput = {
-    where: SellerWhereUniqueInput
-    create: XOR<SellerCreateWithoutItemsInput, SellerUncheckedCreateWithoutItemsInput>
-  }
-
   export type BuyerCreateWithoutPurchasesInput = {
     student?: StudentCreateNestedOneWithoutBuyerInput
     user: UserCreateNestedOneWithoutBuyerInput
@@ -29856,6 +29841,21 @@ export namespace Prisma {
   export type CategoryCreateOrConnectWithoutItemsInput = {
     where: CategoryWhereUniqueInput
     create: XOR<CategoryCreateWithoutItemsInput, CategoryUncheckedCreateWithoutItemsInput>
+  }
+
+  export type SellerCreateWithoutItemsInput = {
+    student?: StudentCreateNestedOneWithoutSellerInput
+    user: UserCreateNestedOneWithoutSellerInput
+  }
+
+  export type SellerUncheckedCreateWithoutItemsInput = {
+    studentId?: number | null
+    userId: number
+  }
+
+  export type SellerCreateOrConnectWithoutItemsInput = {
+    where: SellerWhereUniqueInput
+    create: XOR<SellerCreateWithoutItemsInput, SellerUncheckedCreateWithoutItemsInput>
   }
 
   export type ItemCommentCreateWithoutItemInput = {
@@ -29908,27 +29908,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type SellerUpsertWithoutItemsInput = {
-    update: XOR<SellerUpdateWithoutItemsInput, SellerUncheckedUpdateWithoutItemsInput>
-    create: XOR<SellerCreateWithoutItemsInput, SellerUncheckedCreateWithoutItemsInput>
-    where?: SellerWhereInput
-  }
-
-  export type SellerUpdateToOneWithWhereWithoutItemsInput = {
-    where?: SellerWhereInput
-    data: XOR<SellerUpdateWithoutItemsInput, SellerUncheckedUpdateWithoutItemsInput>
-  }
-
-  export type SellerUpdateWithoutItemsInput = {
-    student?: StudentUpdateOneWithoutSellerNestedInput
-    user?: UserUpdateOneRequiredWithoutSellerNestedInput
-  }
-
-  export type SellerUncheckedUpdateWithoutItemsInput = {
-    studentId?: NullableIntFieldUpdateOperationsInput | number | null
-    userId?: IntFieldUpdateOperationsInput | number
-  }
-
   export type BuyerUpsertWithoutPurchasesInput = {
     update: XOR<BuyerUpdateWithoutPurchasesInput, BuyerUncheckedUpdateWithoutPurchasesInput>
     create: XOR<BuyerCreateWithoutPurchasesInput, BuyerUncheckedCreateWithoutPurchasesInput>
@@ -29972,6 +29951,27 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
   }
 
+  export type SellerUpsertWithoutItemsInput = {
+    update: XOR<SellerUpdateWithoutItemsInput, SellerUncheckedUpdateWithoutItemsInput>
+    create: XOR<SellerCreateWithoutItemsInput, SellerUncheckedCreateWithoutItemsInput>
+    where?: SellerWhereInput
+  }
+
+  export type SellerUpdateToOneWithWhereWithoutItemsInput = {
+    where?: SellerWhereInput
+    data: XOR<SellerUpdateWithoutItemsInput, SellerUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type SellerUpdateWithoutItemsInput = {
+    student?: StudentUpdateOneWithoutSellerNestedInput
+    user?: UserUpdateOneRequiredWithoutSellerNestedInput
+  }
+
+  export type SellerUncheckedUpdateWithoutItemsInput = {
+    studentId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
+  }
+
   export type ItemCommentUpsertWithWhereUniqueWithoutItemInput = {
     where: ItemCommentWhereUniqueInput
     update: XOR<ItemCommentUpdateWithoutItemInput, ItemCommentUncheckedUpdateWithoutItemInput>
@@ -30004,68 +30004,14 @@ export namespace Prisma {
     data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutItemInput>
   }
 
-  export type UserCreateWithoutItemCommentsInput = {
-    email: string
-    password: string
-    name: string
-    phoneNumber?: string | null
-    department?: string | null
-    profileImageUrl?: string | null
-    coverImageUrl?: string | null
-    isVerified?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    college: CollegeCreateNestedOneWithoutUsersInput
-    otps?: OTPCreateNestedManyWithoutUserInput
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    buyer?: BuyerCreateNestedOneWithoutUserInput
-    seller?: SellerCreateNestedOneWithoutUserInput
-    mentor?: MentorCreateNestedOneWithoutUserInput
-    mentee?: MenteeCreateNestedOneWithoutUserInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutItemCommentsInput = {
-    id?: number
-    email: string
-    password: string
-    name: string
-    phoneNumber?: string | null
-    department?: string | null
-    profileImageUrl?: string | null
-    coverImageUrl?: string | null
-    isVerified?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    collegeId: number
-    otps?: OTPUncheckedCreateNestedManyWithoutUserInput
-    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
-    seller?: SellerUncheckedCreateNestedOneWithoutUserInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
-    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutItemCommentsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutItemCommentsInput, UserUncheckedCreateWithoutItemCommentsInput>
-  }
-
   export type ItemCreateWithoutCommentsInput = {
     itemName: string
     cost: number
     condition: string
     imageUrl?: string | null
-    seller: SellerCreateNestedOneWithoutItemsInput
     buyer?: BuyerCreateNestedOneWithoutPurchasesInput
     category: CategoryCreateNestedOneWithoutItemsInput
+    seller: SellerCreateNestedOneWithoutItemsInput
     reviews?: ReviewCreateNestedManyWithoutItemInput
   }
 
@@ -30084,6 +30030,94 @@ export namespace Prisma {
   export type ItemCreateOrConnectWithoutCommentsInput = {
     where: ItemWhereUniqueInput
     create: XOR<ItemCreateWithoutCommentsInput, ItemUncheckedCreateWithoutCommentsInput>
+  }
+
+  export type UserCreateWithoutItemCommentsInput = {
+    email: string
+    password: string
+    name: string
+    phoneNumber?: string | null
+    department?: string | null
+    profileImageUrl?: string | null
+    coverImageUrl?: string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    buyer?: BuyerCreateNestedOneWithoutUserInput
+    mentee?: MenteeCreateNestedOneWithoutUserInput
+    mentor?: MentorCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    otps?: OTPCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    seller?: SellerCreateNestedOneWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    college: CollegeCreateNestedOneWithoutUsersInput
+  }
+
+  export type UserUncheckedCreateWithoutItemCommentsInput = {
+    id?: number
+    email: string
+    password: string
+    name: string
+    phoneNumber?: string | null
+    department?: string | null
+    profileImageUrl?: string | null
+    coverImageUrl?: string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    collegeId: number
+    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    otps?: OTPUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    seller?: SellerUncheckedCreateNestedOneWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutItemCommentsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutItemCommentsInput, UserUncheckedCreateWithoutItemCommentsInput>
+  }
+
+  export type ItemUpsertWithoutCommentsInput = {
+    update: XOR<ItemUpdateWithoutCommentsInput, ItemUncheckedUpdateWithoutCommentsInput>
+    create: XOR<ItemCreateWithoutCommentsInput, ItemUncheckedCreateWithoutCommentsInput>
+    where?: ItemWhereInput
+  }
+
+  export type ItemUpdateToOneWithWhereWithoutCommentsInput = {
+    where?: ItemWhereInput
+    data: XOR<ItemUpdateWithoutCommentsInput, ItemUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type ItemUpdateWithoutCommentsInput = {
+    itemName?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    condition?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    buyer?: BuyerUpdateOneWithoutPurchasesNestedInput
+    category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
+    seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
+    reviews?: ReviewUpdateManyWithoutItemNestedInput
+  }
+
+  export type ItemUncheckedUpdateWithoutCommentsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    itemName?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    condition?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sellerId?: IntFieldUpdateOperationsInput | number
+    buyerId?: NullableIntFieldUpdateOperationsInput | number | null
+    categoryId?: IntFieldUpdateOperationsInput | number
+    reviews?: ReviewUncheckedUpdateManyWithoutItemNestedInput
   }
 
   export type UserUpsertWithoutItemCommentsInput = {
@@ -30108,17 +30142,17 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
+    buyer?: BuyerUpdateOneWithoutUserNestedInput
+    mentee?: MenteeUpdateOneWithoutUserNestedInput
+    mentor?: MentorUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     otps?: OTPUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUpdateOneWithoutUserNestedInput
     seller?: SellerUpdateOneWithoutUserNestedInput
-    mentor?: MentorUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutItemCommentsInput = {
@@ -30134,50 +30168,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     collegeId?: IntFieldUpdateOperationsInput | number
+    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
+    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
     seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type ItemUpsertWithoutCommentsInput = {
-    update: XOR<ItemUpdateWithoutCommentsInput, ItemUncheckedUpdateWithoutCommentsInput>
-    create: XOR<ItemCreateWithoutCommentsInput, ItemUncheckedCreateWithoutCommentsInput>
-    where?: ItemWhereInput
-  }
-
-  export type ItemUpdateToOneWithWhereWithoutCommentsInput = {
-    where?: ItemWhereInput
-    data: XOR<ItemUpdateWithoutCommentsInput, ItemUncheckedUpdateWithoutCommentsInput>
-  }
-
-  export type ItemUpdateWithoutCommentsInput = {
-    itemName?: StringFieldUpdateOperationsInput | string
-    cost?: FloatFieldUpdateOperationsInput | number
-    condition?: StringFieldUpdateOperationsInput | string
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
-    buyer?: BuyerUpdateOneWithoutPurchasesNestedInput
-    category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
-    reviews?: ReviewUpdateManyWithoutItemNestedInput
-  }
-
-  export type ItemUncheckedUpdateWithoutCommentsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    itemName?: StringFieldUpdateOperationsInput | string
-    cost?: FloatFieldUpdateOperationsInput | number
-    condition?: StringFieldUpdateOperationsInput | string
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    sellerId?: IntFieldUpdateOperationsInput | number
-    buyerId?: NullableIntFieldUpdateOperationsInput | number | null
-    categoryId?: IntFieldUpdateOperationsInput | number
-    reviews?: ReviewUncheckedUpdateManyWithoutItemNestedInput
   }
 
   export type BuyerCreateWithoutReviewsInput = {
@@ -30202,9 +30202,9 @@ export namespace Prisma {
     cost: number
     condition: string
     imageUrl?: string | null
-    seller: SellerCreateNestedOneWithoutItemsInput
     buyer?: BuyerCreateNestedOneWithoutPurchasesInput
     category: CategoryCreateNestedOneWithoutItemsInput
+    seller: SellerCreateNestedOneWithoutItemsInput
     comments?: ItemCommentCreateNestedManyWithoutItemInput
   }
 
@@ -30283,9 +30283,9 @@ export namespace Prisma {
     cost?: FloatFieldUpdateOperationsInput | number
     condition?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
     buyer?: BuyerUpdateOneWithoutPurchasesNestedInput
     category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
+    seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
     comments?: ItemCommentUpdateManyWithoutItemNestedInput
   }
 
@@ -30326,6 +30326,23 @@ export namespace Prisma {
     requestsReceived?: RequestUncheckedUpdateManyWithoutMentorNestedInput
   }
 
+  export type MenteeCreateWithoutRequestsSentInput = {
+    interestArea?: string | null
+    student?: StudentCreateNestedOneWithoutMenteeInput
+    user: UserCreateNestedOneWithoutMenteeInput
+  }
+
+  export type MenteeUncheckedCreateWithoutRequestsSentInput = {
+    studentId?: number | null
+    userId: number
+    interestArea?: string | null
+  }
+
+  export type MenteeCreateOrConnectWithoutRequestsSentInput = {
+    where: MenteeWhereUniqueInput
+    create: XOR<MenteeCreateWithoutRequestsSentInput, MenteeUncheckedCreateWithoutRequestsSentInput>
+  }
+
   export type MentorCreateWithoutRequestsReceivedInput = {
     expertiseArea?: string | null
     student?: StudentCreateNestedOneWithoutMentorInput
@@ -30345,21 +30362,27 @@ export namespace Prisma {
     create: XOR<MentorCreateWithoutRequestsReceivedInput, MentorUncheckedCreateWithoutRequestsReceivedInput>
   }
 
-  export type MenteeCreateWithoutRequestsSentInput = {
-    interestArea?: string | null
-    student?: StudentCreateNestedOneWithoutMenteeInput
-    user: UserCreateNestedOneWithoutMenteeInput
-  }
-
-  export type MenteeUncheckedCreateWithoutRequestsSentInput = {
-    studentId?: number | null
-    userId: number
-    interestArea?: string | null
-  }
-
-  export type MenteeCreateOrConnectWithoutRequestsSentInput = {
-    where: MenteeWhereUniqueInput
+  export type MenteeUpsertWithoutRequestsSentInput = {
+    update: XOR<MenteeUpdateWithoutRequestsSentInput, MenteeUncheckedUpdateWithoutRequestsSentInput>
     create: XOR<MenteeCreateWithoutRequestsSentInput, MenteeUncheckedCreateWithoutRequestsSentInput>
+    where?: MenteeWhereInput
+  }
+
+  export type MenteeUpdateToOneWithWhereWithoutRequestsSentInput = {
+    where?: MenteeWhereInput
+    data: XOR<MenteeUpdateWithoutRequestsSentInput, MenteeUncheckedUpdateWithoutRequestsSentInput>
+  }
+
+  export type MenteeUpdateWithoutRequestsSentInput = {
+    interestArea?: NullableStringFieldUpdateOperationsInput | string | null
+    student?: StudentUpdateOneWithoutMenteeNestedInput
+    user?: UserUpdateOneRequiredWithoutMenteeNestedInput
+  }
+
+  export type MenteeUncheckedUpdateWithoutRequestsSentInput = {
+    studentId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
+    interestArea?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MentorUpsertWithoutRequestsReceivedInput = {
@@ -30387,29 +30410,6 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutMentorNestedInput
   }
 
-  export type MenteeUpsertWithoutRequestsSentInput = {
-    update: XOR<MenteeUpdateWithoutRequestsSentInput, MenteeUncheckedUpdateWithoutRequestsSentInput>
-    create: XOR<MenteeCreateWithoutRequestsSentInput, MenteeUncheckedCreateWithoutRequestsSentInput>
-    where?: MenteeWhereInput
-  }
-
-  export type MenteeUpdateToOneWithWhereWithoutRequestsSentInput = {
-    where?: MenteeWhereInput
-    data: XOR<MenteeUpdateWithoutRequestsSentInput, MenteeUncheckedUpdateWithoutRequestsSentInput>
-  }
-
-  export type MenteeUpdateWithoutRequestsSentInput = {
-    interestArea?: NullableStringFieldUpdateOperationsInput | string | null
-    student?: StudentUpdateOneWithoutMenteeNestedInput
-    user?: UserUpdateOneRequiredWithoutMenteeNestedInput
-  }
-
-  export type MenteeUncheckedUpdateWithoutRequestsSentInput = {
-    studentId?: NullableIntFieldUpdateOperationsInput | number | null
-    userId?: IntFieldUpdateOperationsInput | number
-    interestArea?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
   export type UserCreateWithoutTasksInput = {
     email: string
     password: string
@@ -30421,17 +30421,17 @@ export namespace Prisma {
     isVerified?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    college: CollegeCreateNestedOneWithoutUsersInput
+    buyer?: BuyerCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
+    mentee?: MenteeCreateNestedOneWithoutUserInput
+    mentor?: MentorCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     otps?: OTPCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    buyer?: BuyerCreateNestedOneWithoutUserInput
     seller?: SellerCreateNestedOneWithoutUserInput
-    mentor?: MentorCreateNestedOneWithoutUserInput
-    mentee?: MenteeCreateNestedOneWithoutUserInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
+    college: CollegeCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateWithoutTasksInput = {
@@ -30447,16 +30447,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     collegeId: number
+    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     otps?: OTPUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
     seller?: SellerUncheckedCreateNestedOneWithoutUserInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
-    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTasksInput = {
@@ -30486,17 +30486,17 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
+    buyer?: BuyerUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUpdateOneWithoutUserNestedInput
+    mentor?: MentorUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     otps?: OTPUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUpdateOneWithoutUserNestedInput
     seller?: SellerUpdateOneWithoutUserNestedInput
-    mentor?: MentorUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksInput = {
@@ -30512,16 +30512,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     collegeId?: IntFieldUpdateOperationsInput | number
+    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
     seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -30535,17 +30535,17 @@ export namespace Prisma {
     isVerified?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    college: CollegeCreateNestedOneWithoutUsersInput
+    buyer?: BuyerCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
+    mentee?: MenteeCreateNestedOneWithoutUserInput
+    mentor?: MentorCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
     otps?: OTPCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    buyer?: BuyerCreateNestedOneWithoutUserInput
     seller?: SellerCreateNestedOneWithoutUserInput
-    mentor?: MentorCreateNestedOneWithoutUserInput
-    mentee?: MenteeCreateNestedOneWithoutUserInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    college: CollegeCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -30561,15 +30561,15 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     collegeId: number
+    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
+    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
+    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
+    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     otps?: OTPUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    buyer?: BuyerUncheckedCreateNestedOneWithoutUserInput
     seller?: SellerUncheckedCreateNestedOneWithoutUserInput
-    mentor?: MentorUncheckedCreateNestedOneWithoutUserInput
-    mentee?: MenteeUncheckedCreateNestedOneWithoutUserInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    itemComments?: ItemCommentUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -30600,17 +30600,17 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
+    buyer?: BuyerUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUpdateOneWithoutUserNestedInput
+    mentor?: MentorUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     otps?: OTPUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUpdateOneWithoutUserNestedInput
     seller?: SellerUpdateOneWithoutUserNestedInput
-    mentor?: MentorUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    college?: CollegeUpdateOneRequiredWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -30626,16 +30626,49 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     collegeId?: IntFieldUpdateOperationsInput | number
+    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
     seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ItemCommentCreateManyUserInput = {
+    id?: number
+    text: string
+    createdAt?: Date | string
+    itemId: number
+  }
+
+  export type MessageCreateManyReceiverInput = {
+    id?: number
+    content: string
+    read?: boolean
+    createdAt?: Date | string
+    senderId: number
+  }
+
+  export type MessageCreateManySenderInput = {
+    id?: number
+    content: string
+    read?: boolean
+    createdAt?: Date | string
+    receiverId: number
+  }
+
+  export type NotificationCreateManyUserInput = {
+    id?: number
+    type: string
+    title: string
+    message: string
+    read?: boolean
+    data?: string | null
+    createdAt?: Date | string
   }
 
   export type OTPCreateManyUserInput = {
@@ -30653,29 +30686,6 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type MessageCreateManySenderInput = {
-    id?: number
-    content: string
-    read?: boolean
-    createdAt?: Date | string
-    receiverId: number
-  }
-
-  export type MessageCreateManyReceiverInput = {
-    id?: number
-    content: string
-    read?: boolean
-    createdAt?: Date | string
-    senderId: number
-  }
-
-  export type ItemCommentCreateManyUserInput = {
-    id?: number
-    text: string
-    createdAt?: Date | string
-    itemId: number
-  }
-
   export type TaskCreateManyUserInput = {
     id?: number
     title: string
@@ -30685,14 +30695,99 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type NotificationCreateManyUserInput = {
-    id?: number
-    type: string
-    title: string
-    message: string
-    read?: boolean
-    data?: string | null
-    createdAt?: Date | string
+  export type ItemCommentUpdateWithoutUserInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    item?: ItemUpdateOneRequiredWithoutCommentsNestedInput
+  }
+
+  export type ItemCommentUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    itemId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ItemCommentUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    itemId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type MessageUpdateWithoutReceiverInput = {
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sender?: UserUpdateOneRequiredWithoutSentMessagesNestedInput
+  }
+
+  export type MessageUncheckedUpdateWithoutReceiverInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    senderId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type MessageUncheckedUpdateManyWithoutReceiverInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    senderId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type MessageUpdateWithoutSenderInput = {
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receiver?: UserUpdateOneRequiredWithoutReceivedMessagesNestedInput
+  }
+
+  export type MessageUncheckedUpdateWithoutSenderInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receiverId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type MessageUncheckedUpdateManyWithoutSenderInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receiverId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type NotificationUpdateWithoutUserInput = {
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OTPUpdateWithoutUserInput = {
@@ -30738,72 +30833,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MessageUpdateWithoutSenderInput = {
-    content?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    receiver?: UserUpdateOneRequiredWithoutReceivedMessagesNestedInput
-  }
-
-  export type MessageUncheckedUpdateWithoutSenderInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    content?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    receiverId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type MessageUncheckedUpdateManyWithoutSenderInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    content?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    receiverId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type MessageUpdateWithoutReceiverInput = {
-    content?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sender?: UserUpdateOneRequiredWithoutSentMessagesNestedInput
-  }
-
-  export type MessageUncheckedUpdateWithoutReceiverInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    content?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    senderId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type MessageUncheckedUpdateManyWithoutReceiverInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    content?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    senderId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type ItemCommentUpdateWithoutUserInput = {
-    text?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    item?: ItemUpdateOneRequiredWithoutCommentsNestedInput
-  }
-
-  export type ItemCommentUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    text?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    itemId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type ItemCommentUncheckedUpdateManyWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    text?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    itemId?: IntFieldUpdateOperationsInput | number
-  }
-
   export type TaskUpdateWithoutUserInput = {
     title?: StringFieldUpdateOperationsInput | string
     date?: StringFieldUpdateOperationsInput | string
@@ -30830,33 +30859,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type NotificationUpdateWithoutUserInput = {
-    type?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    message?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    data?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NotificationUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    type?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    message?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    data?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NotificationUncheckedUpdateManyWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    type?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    message?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    data?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type StudentCreateManyCollegeInput = {
+    id?: number
+    name: string
+    email: string
+    phoneNumber?: string | null
+    department?: string | null
   }
 
   export type UserCreateManyCollegeInput = {
@@ -30873,12 +30881,35 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type StudentCreateManyCollegeInput = {
-    id?: number
-    name: string
-    email: string
-    phoneNumber?: string | null
-    department?: string | null
+  export type StudentUpdateWithoutCollegeInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    buyer?: BuyerUpdateOneWithoutStudentNestedInput
+    mentee?: MenteeUpdateOneWithoutStudentNestedInput
+    mentor?: MentorUpdateOneWithoutStudentNestedInput
+    seller?: SellerUpdateOneWithoutStudentNestedInput
+  }
+
+  export type StudentUncheckedUpdateWithoutCollegeInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    buyer?: BuyerUncheckedUpdateOneWithoutStudentNestedInput
+    mentee?: MenteeUncheckedUpdateOneWithoutStudentNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutStudentNestedInput
+    seller?: SellerUncheckedUpdateOneWithoutStudentNestedInput
+  }
+
+  export type StudentUncheckedUpdateManyWithoutCollegeInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpdateWithoutCollegeInput = {
@@ -30892,17 +30923,17 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    buyer?: BuyerUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUpdateOneWithoutUserNestedInput
+    mentor?: MentorUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     otps?: OTPUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUpdateOneWithoutUserNestedInput
     seller?: SellerUpdateOneWithoutUserNestedInput
-    mentor?: MentorUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCollegeInput = {
@@ -30917,17 +30948,17 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
+    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
+    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
+    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     otps?: OTPUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    buyer?: BuyerUncheckedUpdateOneWithoutUserNestedInput
     seller?: SellerUncheckedUpdateOneWithoutUserNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutUserNestedInput
-    mentee?: MenteeUncheckedUpdateOneWithoutUserNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    itemComments?: ItemCommentUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCollegeInput = {
@@ -30942,37 +30973,6 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type StudentUpdateWithoutCollegeInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    buyer?: BuyerUpdateOneWithoutStudentNestedInput
-    seller?: SellerUpdateOneWithoutStudentNestedInput
-    mentor?: MentorUpdateOneWithoutStudentNestedInput
-    mentee?: MenteeUpdateOneWithoutStudentNestedInput
-  }
-
-  export type StudentUncheckedUpdateWithoutCollegeInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    buyer?: BuyerUncheckedUpdateOneWithoutStudentNestedInput
-    seller?: SellerUncheckedUpdateOneWithoutStudentNestedInput
-    mentor?: MentorUncheckedUpdateOneWithoutStudentNestedInput
-    mentee?: MenteeUncheckedUpdateOneWithoutStudentNestedInput
-  }
-
-  export type StudentUncheckedUpdateManyWithoutCollegeInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    department?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ItemCreateManyBuyerInput = {
@@ -30999,8 +30999,8 @@ export namespace Prisma {
     cost?: FloatFieldUpdateOperationsInput | number
     condition?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
     category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
+    seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
     comments?: ItemCommentUpdateManyWithoutItemNestedInput
     reviews?: ReviewUpdateManyWithoutItemNestedInput
   }
@@ -31208,8 +31208,8 @@ export namespace Prisma {
     cost?: FloatFieldUpdateOperationsInput | number
     condition?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
     buyer?: BuyerUpdateOneWithoutPurchasesNestedInput
+    seller?: SellerUpdateOneRequiredWithoutItemsNestedInput
     comments?: ItemCommentUpdateManyWithoutItemNestedInput
     reviews?: ReviewUpdateManyWithoutItemNestedInput
   }
