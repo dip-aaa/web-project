@@ -16,8 +16,8 @@ export type Tab = "overview" | "browse";
 ────────────────────────────────────────────── */
 function NavigationCards({ active, onChange }: { active: Tab; onChange: (t: Tab) => void }) {
   const cards = [
-    { id: "overview" as Tab, label: "Overview", emoji: "🏠" },
-    { id: "browse" as Tab, label: "Find Mentors", emoji: "🔍" },
+    { id: "overview" as Tab, label: "Overview" },
+    { id: "browse" as Tab, label: "Find Mentors" },
   ];
 
   return (
@@ -59,7 +59,6 @@ function NavigationCards({ active, onChange }: { active: Tab; onChange: (t: Tab)
               boxShadow: isActive ? "0 2px 12px rgba(139, 111, 71, 0.15)" : "none",
             }}
           >
-            <span style={{ fontSize: 18 }}>{card.emoji}</span>
             <span
               style={{
                 fontSize: 14,
@@ -98,11 +97,10 @@ function PageHeader() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: 24,
             boxShadow: "0 4px 16px rgba(139, 111, 71, 0.15)",
           }}
         >
-          🧑‍🎓
+          <img src="/svg/mentorship/mentor-cap.svg" alt="Mentorship" style={{ width: 26, height: 26 }} />
         </div>
         <div>
           <h1
@@ -129,42 +127,10 @@ function PageHeader() {
           </p>
         </div>
 
-        {/* Status chip */}
-        <div
-          style={{
-            marginLeft: "auto",
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "10px 18px",
-            borderRadius: 12,
-            background: "rgba(90, 158, 111, 0.1)",
-            border: "1px solid rgba(90, 158, 111, 0.2)",
-          }}
-        >
-          <div
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: "#5a9e6f",
-            }}
-          />
-          <span
-            style={{
-              fontSize: 12,
-              fontWeight: 600,
-              color: "#5a9e6f",
-              fontFamily: "system-ui, -apple-system, sans-serif",
-            }}
-          >
-            
-          </span>
-        </div>
         {/* Coffee coins display */}
         <div
           style={{
-            marginLeft: 18,
+            marginLeft: "auto",
             display: "flex",
             alignItems: "center",
             gap: 6,

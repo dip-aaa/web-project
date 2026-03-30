@@ -49,7 +49,6 @@ export default function ListingsGrid({ limit }: ListingsGridProps) {
         color: '#8b6f47'
       }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 40, marginBottom: 10 }}>⏳</div>
           <p>Loading your listings...</p>
         </div>
       </div>
@@ -70,7 +69,6 @@ export default function ListingsGrid({ limit }: ListingsGridProps) {
         textAlign: 'center'
       }}>
         <div>
-          <div style={{ fontSize: 60, marginBottom: 16 }}>📦</div>
           <h3 style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 8, color: '#6b4423' }}>
             No listings yet
           </h3>
@@ -175,7 +173,7 @@ export default function ListingsGrid({ limit }: ListingsGridProps) {
                 padding: '4px 10px',
                 borderRadius: 12
               }}>
-                🏷️ {item.category}
+                {item.category}
               </span>
             </div>
 
@@ -196,7 +194,7 @@ export default function ListingsGrid({ limit }: ListingsGridProps) {
                   cursor: 'pointer'
                 }}
               >
-                ✏️ Edit
+                Edit
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -212,7 +210,7 @@ export default function ListingsGrid({ limit }: ListingsGridProps) {
                   cursor: 'pointer'
                 }}
               >
-                📊
+                View
               </motion.button>
             </div>
           </div>

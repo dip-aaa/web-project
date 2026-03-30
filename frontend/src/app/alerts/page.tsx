@@ -30,19 +30,7 @@ export default function AlertsPage() {
         >
           {/* Page Header */}
           <div style={{ marginBottom: 32 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 8 }}>
-              <div style={{
-                width: 48,
-                height: 48,
-                borderRadius: 14,
-                background: 'linear-gradient(135deg, #ffd89b, #f5c77e)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 24
-              }}>
-                🔔
-              </div>
+            <div style={{ marginBottom: 8 }}>
               <h1 style={{
                 margin: 0,
                 fontSize: 32,
@@ -57,7 +45,6 @@ export default function AlertsPage() {
               margin: 0,
               fontSize: 15,
               color: '#8b6f47',
-              paddingLeft: 64,
               fontFamily: 'system-ui, -apple-system, sans-serif'
             }}>
               Stay updated with messages, marketplace activity, and connections

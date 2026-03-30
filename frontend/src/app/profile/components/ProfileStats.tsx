@@ -7,35 +7,35 @@ const stats = [
   {
     label: 'Total Sales',
     value: '$3,247',
-    icon: '💰',
+
     color: '#4CAF50',
     trend: '+23%'
   },
   {
     label: 'Items Listed',
     value: '47',
-    icon: '📦',
+
     color: '#2196F3',
     trend: '+8'
   },
   {
     label: 'Reviews',
     value: '128',
-    icon: '⭐',
+
     color: '#FF9800',
     trend: '4.9'
   },
   {
     label: 'Mentorship Hours',
     value: '245',
-    icon: '🎓',
+
     color: '#9C27B0',
     trend: '+15h'
   },
   {
     label: 'Response Rate',
     value: '98%',
-    icon: '⚡',
+
     color: '#f44336',
     trend: '+2%'
   }
@@ -70,24 +70,7 @@ export default function ProfileStats() {
             overflow: 'hidden'
           }}
         >
-          {/* Background Icon */}
-          <div style={{
-            position: 'absolute',
-            right: -10,
-            bottom: -10,
-            fontSize: 80,
-            opacity: 0.05
-          }}>
-            {stat.icon}
-          </div>
-
           <div style={{ position: 'relative', zIndex: 1 }}>
-            <div style={{ 
-              fontSize: 32, 
-              marginBottom: 8 
-            }}>
-              {stat.icon}
-            </div>
             <div style={{ 
               fontSize: 28, 
               fontWeight: 'bold', 

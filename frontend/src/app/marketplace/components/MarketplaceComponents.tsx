@@ -77,7 +77,7 @@ export function MarketplaceHeader({
 							<button
 								type="button"
 								onClick={onCartClick}
-								className="relative bg-[#6b4423] text-white font-extrabold px-6 py-3 rounded-xl hover:bg-[#573217] transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
+								className="relative bg-[#8b6f47] text-white font-bold px-4 py-2.5 rounded-xl hover:bg-[#7c6240] transition-all shadow-md hover:shadow-lg flex items-center gap-2"
 							>
 								<span className="text-xl">🛒</span>
 								My Cart
@@ -712,7 +712,7 @@ export function MarketplaceView() {
 			) : selectedItem ? (
 				<ProductDetails item={selectedItem} onBack={() => setSelectedItem(null)} />
 			) : showSellForm ? (
-				<SellItemForm onAdd={handleAddItem} />
+				<SellItemForm onAdd={handleAddItem} onBack={() => setShowSellForm(false)} />
 			) : (
 				<>
 					<MarketplaceHeader onReset={resetAll} onCartClick={() => setShowCart(true)} />
@@ -755,7 +755,13 @@ export function MarketplaceView() {
 
 
 
-function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) => void }) {
+function SellItemForm({
+	onAdd,
+	onBack,
+}: {
+	onAdd: (item: Omit<MarketplaceItem, "id">) => void;
+	onBack: () => void;
+}) {
 	const [title, setTitle] = React.useState("");
 	const [price, setPrice] = React.useState("15");
 	const [seller, setSeller] = React.useState("You");
@@ -857,155 +863,196 @@ function SellItemForm({ onAdd }: { onAdd: (item: Omit<MarketplaceItem, "id">) =>
 
 	return (
 		<>
-			<form
-				style={{
-					display: "grid",
-					gridTemplateColumns: "1fr 1fr",
-					gap: 16,
-					fontFamily: "system-ui, -apple-system, sans-serif"
-				}}
-				onSubmit={handleSubmit}
-			>
-				<div style={{ gridColumn: "1 / -1" }}>
-					<label className="mk-filter-label">TITLE</label>
-					<input
-						className="mk-select"
-						value={title}
-						onChange={(e) => setTitle(e.target.value)}
-						placeholder="e.g., Calculus Notes Pack"
-					/>
-				</div>
-
-				<div>
-					<label className="mk-filter-label">PRICE</label>
-					<input
-						className="mk-select"
-						value={price}
-						onChange={(e) => setPrice(e.target.value)}
-						inputMode="decimal"
-						placeholder="e.g., 25"
-					/>
-				</div>
-
-				<div>
-					<label className="mk-filter-label">SELLER</label>
-					<input
-						className="mk-select"
-						value={seller}
-						onChange={(e) => setSeller(e.target.value)}
-						placeholder="Your name"
-					/>
-				</div>
-
-				<div>
-					<label className="mk-filter-label">CATEGORY</label>
-					<div className="mk-select-wrap">
-						<select className="mk-select" value={category} onChange={(e) => setCategory(e.target.value)}>
-							<option>Books</option>
-							<option>Notes</option>
-							<option>Calculators</option>
-							<option>Lab Gear</option>
-							<option>Art Supplies</option>
-						</select>
-						<span className="mk-select-icon">▾</span>
-					</div>
-				</div>
-
-				<div>
-					<label className="mk-filter-label">CONDITION</label>
-					<div className="mk-select-wrap">
-						<select
-							className="mk-select"
-							value={condition}
-							onChange={(e) => setCondition(e.target.value as Condition)}
+			<section className="mk-container" style={{ paddingTop: 32, paddingBottom: 40 }}>
+				<div
+					style={{
+						maxWidth: 980,
+						margin: "0 auto",
+						background: "rgba(255, 255, 255, 0.9)",
+						border: "1px solid #f0e6dc",
+						borderRadius: 24,
+						padding: "24px 22px",
+						boxShadow: "0 8px 32px rgba(139, 111, 71, 0.08)",
+					}}
+				>
+					<div style={{ marginBottom: 18 }}>
+						<button
+							type="button"
+							onClick={onBack}
+							style={{
+								display: "inline-flex",
+								alignItems: "center",
+								gap: 8,
+								padding: "8px 12px",
+								fontSize: 13,
+								fontWeight: 700,
+								color: "#6b4423",
+								background: "#f7f1eb",
+								border: "1px solid #eadfd4",
+								borderRadius: 12,
+								marginBottom: 12,
+								cursor: "pointer"
+							}}
 						>
-							<option value="Brand New">Brand New</option>
-							<option value="Like New">Like New</option>
-							<option value="Gently Used">Gently Used</option>
-							<option value="Well Loved">Well Loved</option>
-							<option value="High Quality">High Quality</option>
-						</select>
-						<span className="mk-select-icon">▾</span>
+							<span aria-hidden>←</span>
+							<span>Back to Marketplace</span>
+						</button>
+						<h2 style={{ fontSize: 24, fontWeight: 800, color: "#6b4423", marginBottom: 4 }}>Sell an Item</h2>
+						<p style={{ fontSize: 14, color: "#8b6f47" }}>Fill in the details below to list your item in the marketplace.</p>
 					</div>
-				</div>
 
-				<div style={{ gridColumn: "1 / -1" }}>
-					<label className="mk-filter-label">ITEM PHOTO</label>
-					<input
-						type="file"
-						accept="image/*"
-						onChange={handleImageChange}
+					<form
 						style={{
-							width: "100%",
-							borderRadius: 16,
-							border: "1px solid #f0e6dc",
-							background: "rgba(255, 255, 255, 0.9)",
-							padding: "12px 16px",
-							fontSize: 14,
-							color: "#6b4423",
-							boxShadow: "0 2px 12px rgba(139, 111, 71, 0.06)",
-							outline: "none",
-							transition: "all 0.2s ease",
-							fontFamily: "system-ui, -apple-system, sans-serif",
-							cursor: "pointer"
-						}}
-					/>
-					{imagePreview && (
-						<div style={{ marginTop: 12 }}>
-							<img
-								src={imagePreview}
-								alt="Preview"
-								style={{
-									maxWidth: "100%",
-									maxHeight: 200,
-									borderRadius: 12,
-									border: "2px solid #f0e6dc"
-								}}
-							/>
-						</div>
-					)}
-				</div>
-
-				<div style={{ gridColumn: "1 / -1" }}>
-					<label className="mk-filter-label">DESCRIPTION</label>
-					<textarea
-						style={{
-							width: "100%",
-							borderRadius: 16,
-							border: "1px solid #f0e6dc",
-							background: "rgba(255, 255, 255, 0.9)",
-							padding: "12px 16px",
-							fontSize: 14,
-							color: "#6b4423",
-							boxShadow: "0 2px 12px rgba(139, 111, 71, 0.06)",
-							outline: "none",
-							transition: "all 0.2s ease",
+							display: "grid",
+							gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+							columnGap: 18,
+							rowGap: 16,
 							fontFamily: "system-ui, -apple-system, sans-serif"
 						}}
-						value={description}
-						onChange={(e) => setDescription(e.target.value)}
-						rows={3}
-						placeholder="Add a short description (optional)"
-					/>
-				</div>
-
-				<div style={{ gridColumn: "1 / -1" }}>
-					<button
-						type="submit"
-						className="mk-btn"
-						disabled={uploading}
-						style={{
-							opacity: uploading ? 0.6 : 1,
-							cursor: uploading ? 'not-allowed' : 'pointer'
-						}}
+						onSubmit={handleSubmit}
 					>
-						{uploading ? 'Uploading...' : 'Add Item'}
-					</button>
-					<div style={{ marginTop: 8, fontSize: 12, color: "#a0826d", fontFamily: "system-ui, -apple-system, sans-serif" }}>
-						Tip: After adding, use filters to find it.
-					</div>
+						<div style={{ gridColumn: "1 / -1" }}>
+							<label className="mk-filter-label">TITLE</label>
+							<input
+								className="mk-select"
+								value={title}
+								onChange={(e) => setTitle(e.target.value)}
+								placeholder="e.g., Calculus Notes Pack"
+							/>
+						</div>
+
+						<div>
+							<label className="mk-filter-label">PRICE</label>
+							<input
+								className="mk-select"
+								value={price}
+								onChange={(e) => setPrice(e.target.value)}
+								inputMode="decimal"
+								placeholder="e.g., 25"
+							/>
+						</div>
+
+						<div>
+							<label className="mk-filter-label">SELLER</label>
+							<input
+								className="mk-select"
+								value={seller}
+								onChange={(e) => setSeller(e.target.value)}
+								placeholder="Your name"
+							/>
+						</div>
+
+						<div>
+							<label className="mk-filter-label">CATEGORY</label>
+							<div className="mk-select-wrap">
+								<select className="mk-select" value={category} onChange={(e) => setCategory(e.target.value)}>
+									<option>Books</option>
+									<option>Notes</option>
+									<option>Calculators</option>
+									<option>Lab Gear</option>
+									<option>Art Supplies</option>
+								</select>
+								<span className="mk-select-icon">▾</span>
+							</div>
+						</div>
+
+						<div>
+							<label className="mk-filter-label">CONDITION</label>
+							<div className="mk-select-wrap">
+								<select
+									className="mk-select"
+									value={condition}
+									onChange={(e) => setCondition(e.target.value as Condition)}
+								>
+									<option value="Brand New">Brand New</option>
+									<option value="Like New">Like New</option>
+									<option value="Gently Used">Gently Used</option>
+									<option value="Well Loved">Well Loved</option>
+									<option value="High Quality">High Quality</option>
+								</select>
+								<span className="mk-select-icon">▾</span>
+							</div>
+						</div>
+
+						<div style={{ gridColumn: "1 / -1", marginTop: 4 }}>
+							<label className="mk-filter-label">ITEM PHOTO</label>
+							<input
+								type="file"
+								accept="image/*"
+								onChange={handleImageChange}
+								style={{
+									width: "100%",
+									borderRadius: 16,
+									border: "1px solid #f0e6dc",
+									background: "rgba(255, 255, 255, 0.9)",
+									padding: "12px 16px",
+									fontSize: 14,
+									color: "#6b4423",
+									boxShadow: "0 2px 12px rgba(139, 111, 71, 0.06)",
+									outline: "none",
+									transition: "all 0.2s ease",
+									fontFamily: "system-ui, -apple-system, sans-serif",
+									cursor: "pointer"
+								}}
+							/>
+							{imagePreview && (
+								<div style={{ marginTop: 12 }}>
+									<img
+										src={imagePreview}
+										alt="Preview"
+										style={{
+											maxWidth: "100%",
+											maxHeight: 200,
+											borderRadius: 12,
+											border: "2px solid #f0e6dc"
+										}}
+									/>
+								</div>
+							)}
+						</div>
+
+						<div style={{ gridColumn: "1 / -1" }}>
+							<label className="mk-filter-label">DESCRIPTION</label>
+							<textarea
+								style={{
+									width: "100%",
+									borderRadius: 16,
+									border: "1px solid #f0e6dc",
+									background: "rgba(255, 255, 255, 0.9)",
+									padding: "12px 16px",
+									fontSize: 14,
+									color: "#6b4423",
+									boxShadow: "0 2px 12px rgba(139, 111, 71, 0.06)",
+									outline: "none",
+									transition: "all 0.2s ease",
+									fontFamily: "system-ui, -apple-system, sans-serif"
+								}}
+								value={description}
+								onChange={(e) => setDescription(e.target.value)}
+								rows={4}
+								placeholder="Add a short description (optional)"
+							/>
+						</div>
+
+						<div style={{ gridColumn: "1 / -1", marginTop: 4 }}>
+							<button
+								type="submit"
+								className="mk-btn"
+								disabled={uploading}
+								style={{
+									opacity: uploading ? 0.6 : 1,
+									cursor: uploading ? 'not-allowed' : 'pointer'
+								}}
+							>
+								{uploading ? 'Uploading...' : 'Add Item'}
+							</button>
+							<div style={{ marginTop: 10, fontSize: 12, color: "#a0826d", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+								Tip: After adding, use filters to find it.
+							</div>
+						</div>
+					</form>
 				</div>
-			</form>
+			</section>
 
 			{/* Image Crop Modal */}
 			<ImageCropModal

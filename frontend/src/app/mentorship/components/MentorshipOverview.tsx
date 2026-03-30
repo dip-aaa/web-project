@@ -125,7 +125,7 @@ function FeaturedMentors() {
   return (
     <Card>
       <SectionHeading
-        title="⭐ Featured Mentors"
+        title="Featured Mentors"
         sub="Available mentors from your college"
         action={<Button variant="ghost" size="sm">See all</Button>}
       />
@@ -253,7 +253,7 @@ function BecomeMentorCard() {
       if (response.success) {
         setIsMentor(true);
         setShowForm(false);
-        alert('🎉 Congratulations! You are now a mentor. Your profile will appear in the "Find Mentors" section.');
+        alert('Congratulations! You are now a mentor. Your profile will appear in the "Find Mentors" section.');
       } else {
         alert('Failed to register as mentor: ' + response.message);
       }
@@ -285,7 +285,9 @@ function BecomeMentorCard() {
           border: "1.5px solid rgba(90, 158, 111, 0.2)",
           textAlign: "center"
         }}>
-          <div style={{ fontSize: 48, marginBottom: 12 }}>🎓</div>
+          <div style={{ marginBottom: 12 }}>
+            <img src="/svg/mentorship/mentor-cap.svg" alt="Mentor" style={{ width: 44, height: 44, margin: "0 auto" }} />
+          </div>
           <div style={{
             fontSize: 18,
             fontWeight: 700,
@@ -325,7 +327,7 @@ function BecomeMentorCard() {
     return (
       <Card>
         <SectionHeading
-          title="🎓 Become a Mentor"
+          title="Become a Mentor"
           sub="Share your knowledge with juniors"
         />
         <div style={{ padding: "16px 0" }}>
@@ -403,7 +405,9 @@ function BecomeMentorCard() {
         padding: "24px",
         textAlign: "center"
       }}>
-        <div style={{ fontSize: 56, marginBottom: 16 }}>🎓</div>
+        <div style={{ marginBottom: 16 }}>
+          <img src="/svg/mentorship/mentor-cap.svg" alt="Mentor" style={{ width: 56, height: 56, margin: "0 auto" }} />
+        </div>
         <div style={{
           fontSize: 20,
           fontWeight: 700,
@@ -443,14 +447,17 @@ function RecentCallouts() {
     event: "#c97b1a",
     collab: "#a0684a",
   };
-  const typeEmoji: Record<string, string> = {
-    opportunity: "🎯", request: "🔍", event: "📅", collab: "🤝"
+  const typeIcon: Record<string, string> = {
+    opportunity: "/svg/mentorship/opportunity.svg",
+    request: "/svg/mentorship/request.svg",
+    event: "/svg/mentorship/event.svg",
+    collab: "/svg/mentorship/collab.svg",
   };
 
   return (
     <Card>
       <SectionHeading
-        title="📢 Latest Callouts"
+        title="Latest Callouts"
         sub="Posts from your college"
         action={<Button variant="ghost" size="sm">View all</Button>}
       />
@@ -484,14 +491,15 @@ function RecentCallouts() {
                       background: `${typeColors[post.type]}18`,
                       fontWeight: 700, fontFamily: "'Inter', sans-serif",
                     }}>
-                      {typeEmoji[post.type]} {post.type}
+                      <img src={typeIcon[post.type]} alt="" style={{ width: 11, height: 11, display: "inline-block", marginRight: 4, verticalAlign: "-1px" }} />
+                      {post.type}
                     </span>
                   </div>
                   <div style={{ fontSize: 13, fontWeight: 700, color: T.text, fontFamily: "'Playfair Display', serif", lineHeight: 1.3 }}>
                     {post.title}
                   </div>
                   <div style={{ fontSize: 11, color: T.textMuted, fontFamily: "'Inter', sans-serif", marginTop: 4 }}>
-                    ❤️ {post.likes} · 💬 {post.responses} · {post.timestamp}
+                    Likes {post.likes} · Responses {post.responses} · {post.timestamp}
                   </div>
                 </div>
               </div>
@@ -513,7 +521,7 @@ function UpcomingSessions() {
 
   return (
     <Card>
-      <SectionHeading title="📅 Upcoming Sessions" />
+      <SectionHeading title="Upcoming Sessions" />
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {sessions.map((s, i) => (
           <motion.div
@@ -545,8 +553,16 @@ function UpcomingSessions() {
               background: s.type === "mentor" ? "rgba(90, 158, 111, 0.15)" : "rgba(139, 111, 71, 0.12)",
               color: s.type === "mentor" ? "#3d7a52" : T.accent,
               fontWeight: 700, fontFamily: "'Inter', sans-serif",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 5,
             }}>
-              {s.type === "mentor" ? "🧑‍🏫 Mentoring" : "📚 Learning"}
+              <img
+                src={s.type === "mentor" ? "/svg/mentorship/mentor-cap.svg" : "/svg/mentorship/learning.svg"}
+                alt=""
+                style={{ width: 12, height: 12 }}
+              />
+              {s.type === "mentor" ? "Mentoring" : "Learning"}
             </span>
           </motion.div>
         ))}
@@ -584,7 +600,7 @@ export function MentorshipOverview({ onTabChange }: { onTabChange?: (tab: string
           gap: 14,
         }}
       >
-        <span style={{ fontSize: 28 }}>☕</span>
+        <span style={{ fontSize: 24 }}>☕</span>
         <div>
           <div style={{ fontSize: 13, fontWeight: 700, color: T.text, fontFamily: "'Inter', sans-serif" }}>
             Coffee Coins Tip

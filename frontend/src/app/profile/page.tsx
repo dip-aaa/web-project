@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Sidebar from '../../components/sidebar';
 import ProfileHeader from './components/ProfileHeader';
 import ProfileTabs from './components/ProfileTabs';
@@ -33,7 +32,6 @@ export default function ProfilePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     fetchUserProfile();
@@ -78,20 +76,6 @@ export default function ProfilePage() {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await authAPI.logout();
-      router.push('/setup/login');
-    } catch (error) {
-      console.error('Logout error:', error);
-      // Clear local storage even if API call fails
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('user');
-      router.push('/setup/login');
-    }
-  };
-
   const handleProfileUpdate = async (updatedData: Partial<UserData>) => {
     try {
       const response = await authAPI.updateProfile(updatedData);
@@ -100,7 +84,7 @@ export default function ProfilePage() {
         const updatedUser = response.data.user;
         setUserData(updatedUser);
         localStorage.setItem('user', JSON.stringify(updatedUser));
-        alert('Profile updated successfully! ✨');
+        alert('Profile updated successfully.');
         setIsModalOpen(false);
       } else {
         alert('Failed to update profile: ' + response.message);
@@ -113,10 +97,25 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9f6f3' }}>
-        <div style={{ textAlign: 'center', color: '#6b4423' }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>⏳</div>
-          <h3 style={{ fontSize: 20, fontWeight: 'bold' }}>Loading profile...</h3>
+      <div style={{ height: '100vh', display: 'flex', background: '#f9f6f3', overflow: 'hidden' }}>
+        {/* Sidebar */}
+        <div style={{
+          minWidth: 220,
+          maxWidth: 260,
+          background: '#fff',
+          borderRight: '1.5px solid #e8ddd4',
+          zIndex: 2,
+          flexShrink: 0
+        }}>
+          <Sidebar animate={false} />
+        </div>
+
+        {/* Loading Content */}
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ textAlign: 'center', color: '#6b4423' }}>
+            <div style={{ fontSize: 48, marginBottom: 16 }}>⏳</div>
+            <h3 style={{ fontSize: 20, fontWeight: 'bold' }}>Loading profile...</h3>
+          </div>
         </div>
       </div>
     );
@@ -148,7 +147,6 @@ export default function ProfilePage() {
             isEditMode={false}
             onEditToggle={() => setIsModalOpen(true)}
             userData={userData}
-            onLogout={handleLogout}
           />
 
           {/* Tab Navigation */}

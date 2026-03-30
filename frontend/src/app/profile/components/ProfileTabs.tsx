@@ -10,9 +10,9 @@ interface ProfileTabsProps {
 }
 
 const tabs = [
-  { id: 'overview' as ProfileTab, label: 'Overview', icon: '🏠' },
-  { id: 'listings' as ProfileTab, label: 'My Listings', icon: '📦' },
-  { id: 'reviews' as ProfileTab, label: 'Reviews', icon: '⭐' }
+  { id: 'overview' as ProfileTab, label: 'Overview' },
+  { id: 'listings' as ProfileTab, label: 'My Listings' },
+  { id: 'reviews' as ProfileTab, label: 'Reviews' }
 ];
 
 export default function ProfileTabs({ activeTab, onTabChange }: ProfileTabsProps) {
@@ -51,11 +51,9 @@ export default function ProfileTabs({ activeTab, onTabChange }: ProfileTabsProps
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 8,
               boxShadow: isActive ? '0 4px 15px rgba(212, 165, 116, 0.3)' : 'none'
             }}
           >
-            <span style={{ fontSize: 18 }}>{tab.icon}</span>
             {tab.label}
           </motion.button>
         );

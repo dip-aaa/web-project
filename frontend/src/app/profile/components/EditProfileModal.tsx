@@ -214,7 +214,7 @@ export default function EditProfileModal({ isOpen, onClose, userData, onUpdate }
             {/* Header */}
             <div style={{ marginBottom: 30, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h2 style={{ fontSize: 28, fontWeight: 'bold', color: '#6b4423', textShadow: '2px 2px 4px rgba(245, 199, 126, 0.3)' }}>
-                ✏️ Edit Profile
+                Edit Profile
               </h2>
               <motion.button
                 whileHover={{ scale: 1.1, rotate: 90 }}
@@ -455,7 +455,7 @@ export default function EditProfileModal({ isOpen, onClose, userData, onUpdate }
                     transition: 'all 0.3s ease'
                   }}
                 >
-                  {uploading ? '⏳ Saving...' : '💾 Save Changes'}
+                  {uploading ? 'Saving...' : 'Save Changes'}
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05, boxShadow: '0 8px 20px rgba(212, 165, 116, 0.4)' }}
@@ -493,7 +493,7 @@ export default function EditProfileModal({ isOpen, onClose, userData, onUpdate }
         onCropComplete={handleCropComplete}
         aspectRatio={cropType === 'profile' ? 1 : 16 / 5}
         cropShape={cropType === 'profile' ? 'round' : 'rect'}
-        title={cropType === 'profile' ? '📸 Adjust Profile Picture' : '🖼️ Adjust Cover Photo'}
+        title={cropType === 'profile' ? 'Adjust Profile Picture' : 'Adjust Cover Photo'}
       />
     </AnimatePresence>
   );

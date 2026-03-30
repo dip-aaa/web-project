@@ -20,10 +20,9 @@ interface ProfileHeaderProps {
   isEditMode: boolean;
   onEditToggle: () => void;
   userData: UserData | null;
-  onLogout: () => void;
 }
 
-export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLogout }: ProfileHeaderProps) {
+export default function ProfileHeader({ isEditMode, onEditToggle, userData }: ProfileHeaderProps) {
   const displayName = userData?.name || 'Guest User';
   const displayEmail = userData?.email || 'user@khwopa.edu.np';
   const displayDepartment = userData?.department || 'Not specified';
@@ -143,38 +142,19 @@ export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLo
                     color: '#8b6f47',
                     marginBottom: 15
                   }}>
-                    <span>📍 Kathmandu, Nepal</span>
-                    <span>📅 Joined January 2024</span>
-                    <span>⭐ {userData?.avgRating || "0.0"} Rating</span>
-                  </div>
-
-                  {/* Social Links */}
-                  <div style={{ display: 'flex', gap: 10 }}>
-                    {['🌐', '💼', '🐦', '📧'].map((icon, i) => (
-                      <motion.button
-                        key={i}
-                        whileHover={{ scale: 1.15, y: -2 }}
-                        whileTap={{ scale: 0.9 }}
-                        style={{
-                          width: 36,
-                          height: 36,
-                          borderRadius: '50%',
-                          background: '#f9f6f3',
-                          border: '1.5px solid #d4a574',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: 16
-                        }}
-                      >
-                        {icon}
-                      </motion.button>
-                    ))}
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                      <img src="/svg/profile/location.svg" alt="" style={{ width: 14, height: 14 }} /> Kathmandu, Nepal
+                    </span>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                      <img src="/svg/profile/calendar.svg" alt="" style={{ width: 14, height: 14 }} /> Joined January 2024
+                    </span>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                      <img src="/svg/profile/star.svg" alt="" style={{ width: 14, height: 14 }} /> {userData?.avgRating || "0.0"} Rating
+                    </span>
                   </div>
                 </div>
 
-                {/* Edit Profile & Logout Buttons */}
+                {/* Edit Profile Button */}
                 <div style={{ display: 'flex', gap: 10, flexDirection: 'column' }}>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -192,26 +172,9 @@ export default function ProfileHeader({ isEditMode, onEditToggle, userData, onLo
                       boxShadow: '0 4px 15px rgba(107, 68, 35, 0.2)'
                     }}
                   >
-                    ✏️ Edit Profile
-                  </motion.button>
-
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={onLogout}
-                    style={{
-                      background: '#fff',
-                      color: '#d9534f',
-                      border: '2px solid #d9534f',
-                      borderRadius: 12,
-                      padding: '12px 28px',
-                      cursor: 'pointer',
-                      fontWeight: 'bold',
-                      fontSize: 15,
-                      boxShadow: '0 4px 15px rgba(217, 83, 79, 0.2)'
-                    }}
-                  >
-                    🚪 Logout
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                      <img src="/svg/profile/edit.svg" alt="" style={{ width: 16, height: 16 }} /> Edit Profile
+                    </span>
                   </motion.button>
                 </div>
               </div>

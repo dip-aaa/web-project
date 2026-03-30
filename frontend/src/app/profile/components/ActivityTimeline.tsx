@@ -10,7 +10,6 @@ const activities = [
     title: 'Sold "React Course Notes"',
     description: 'Purchased by Emily Chen',
     time: '2 hours ago',
-    icon: '💰',
     color: '#4CAF50'
   },
   {
@@ -19,7 +18,7 @@ const activities = [
     title: 'Completed Mentorship Session',
     description: 'Session with John Davis - React Hooks Discussion',
     time: '5 hours ago',
-    icon: '🎓',
+
     color: '#9C27B0'
   },
   {
@@ -28,7 +27,6 @@ const activities = [
     title: 'Received 5-Star Review',
     description: 'From Michael Brown on TypeScript Guide',
     time: '1 day ago',
-    icon: '⭐',
     color: '#FF9800'
   },
   {
@@ -37,7 +35,7 @@ const activities = [
     title: 'Listed New Item',
     description: 'Added "Database Design Tutorial" to marketplace',
     time: '2 days ago',
-    icon: '📦',
+
     color: '#2196F3'
   },
   {
@@ -46,7 +44,6 @@ const activities = [
     title: 'Sold "JavaScript Cheat Sheet"',
     description: 'Purchased by Lisa Wang',
     time: '3 days ago',
-    icon: '💰',
     color: '#4CAF50'
   },
   {
@@ -55,7 +52,7 @@ const activities = [
     title: 'Scheduled Mentorship Session',
     description: 'Upcoming session with David Kim - Node.js Best Practices',
     time: '4 days ago',
-    icon: '📅',
+
     color: '#9C27B0'
   },
   {
@@ -64,7 +61,7 @@ const activities = [
     title: 'Unlocked Achievement',
     description: 'Earned "Top Seller" badge for reaching $3,000 in sales',
     time: '5 days ago',
-    icon: '🏆',
+
     color: '#FFD700'
   },
   {
@@ -73,7 +70,6 @@ const activities = [
     title: 'Received 5-Star Review',
     description: 'From Alex Johnson on Full Stack Project Template',
     time: '1 week ago',
-    icon: '⭐',
     color: '#FF9800'
   }
 ];
@@ -91,12 +87,9 @@ export default function ActivityTimeline() {
         fontSize: 22, 
         fontWeight: 'bold', 
         color: '#6b4423',
-        marginBottom: 24,
-        display: 'flex',
-        alignItems: 'center',
-        gap: 8
+        marginBottom: 24
       }}>
-        <span>📈</span> Recent Activity
+        Recent Activity
       </h3>
 
       <div style={{ position: 'relative' }}>
@@ -125,27 +118,19 @@ export default function ActivityTimeline() {
                 paddingLeft: 60
               }}
             >
-              {/* Icon Circle */}
-              <motion.div
-                whileHover={{ scale: 1.1 }}
+              <div
                 style={{
                   position: 'absolute',
-                  left: 0,
-                  width: 48,
-                  height: 48,
+                  left: 16,
+                  top: 18,
+                  width: 14,
+                  height: 14,
                   borderRadius: '50%',
-                  background: '#fff',
-                  border: `3px solid ${activity.color}`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 20,
-                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+                  background: activity.color,
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.12)',
                   zIndex: 1
                 }}
-              >
-                {activity.icon}
-              </motion.div>
+              />
 
               {/* Content */}
               <div style={{ 

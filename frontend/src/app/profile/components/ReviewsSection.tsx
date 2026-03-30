@@ -9,10 +9,17 @@ interface StarRatingProps {
 }
 
 const StarRating = ({ rating }: StarRatingProps) => {
+  const fullStars = Math.round(rating);
+  const emptyStars = Math.max(0, 5 - fullStars);
+
   return (
-    <div style={{ fontSize: 18 }}>
-      {'⭐'.repeat(Math.round(rating))}
-      {rating < 5 && <span style={{ opacity: 0.3 }}>{'⭐'.repeat(5 - Math.round(rating))}</span>}
+    <div style={{ display: 'flex', gap: 4 }}>
+      {Array.from({ length: fullStars }).map((_, i) => (
+        <img key={`f-${i}`} src="/svg/profile/star.svg" alt="" style={{ width: 16, height: 16 }} />
+      ))}
+      {Array.from({ length: emptyStars }).map((_, i) => (
+        <img key={`e-${i}`} src="/svg/profile/star.svg" alt="" style={{ width: 16, height: 16, opacity: 0.25 }} />
+      ))}
     </div>
   );
 };
@@ -49,7 +56,7 @@ export default function ReviewsSection() {
   if (loading) {
     return (
       <div style={{ textAlign: 'center', padding: '40px 0', color: '#8b6f47' }}>
-        <div style={{ fontSize: 32, marginBottom: 10 }}>⏳</div>
+        <div style={{ fontSize: 48, marginBottom: 12 }}>⏳</div>
         <p>Loading your reviews...</p>
       </div>
     );
@@ -117,9 +124,13 @@ export default function ReviewsSection() {
                   width: 60,
                   fontSize: 14,
                   color: '#6b4423',
-                  fontWeight: 'bold'
+                  fontWeight: 'bold',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4
                 }}>
-                  {star} ⭐
+                  <span>{star}</span>
+                  <img src="/svg/profile/star.svg" alt="" style={{ width: 14, height: 14 }} />
                 </span>
                 <div style={{
                   flex: 1,

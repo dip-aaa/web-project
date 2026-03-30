@@ -39,7 +39,7 @@ export default function AboutSection({ userData }: AboutSectionProps) {
           alignItems: 'center',
           gap: 8
         }}>
-          <span>📝</span> Profile Information
+          <img src="/svg/profile/info.svg" alt="" style={{ width: 18, height: 18 }} /> Profile Information
         </h3>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -85,7 +85,7 @@ export default function AboutSection({ userData }: AboutSectionProps) {
           alignItems: 'center',
           gap: 8
         }}>
-          <span>🎓</span> College
+          <img src="/svg/profile/college.svg" alt="" style={{ width: 18, height: 18 }} /> College
         </h3>
         <p style={{ 
           fontSize: 15, 

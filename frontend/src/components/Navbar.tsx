@@ -1,4 +1,5 @@
 import styles from "./Navbar.module.css";
+import Link from "next/link";
 
 export const Navbar = () => {
   return (
@@ -10,12 +11,9 @@ export const Navbar = () => {
         <span className={styles.logoText}>KOSH</span>
       </div>
       <div className={styles.actions}>
-        <span className={styles.login}>Login</span>
-        <button className={styles.joinHub}>Join Hub</button>
+        <Link href="/setup/login" className={styles.login}>Login</Link>
+        <Link href="/setup/signup" className={styles.joinHub}>Sign Up</Link>
       </div>
     </nav>
   );
 };
-Sign Uup        <Link href="/setup/signup" passHref legacyBehavior>
-          <a className={styles.joinHub}>Sign Up</a>
-        </Link>

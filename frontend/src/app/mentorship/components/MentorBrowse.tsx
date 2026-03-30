@@ -258,7 +258,9 @@ export function MentorBrowse() {
       {/* Cards Grid */}
       {loading ? (
         <div style={{ textAlign: "center", padding: "60px 20px", color: T.textMuted }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>☕</div>
+          <div style={{ marginBottom: 16 }}>
+            <img src="/svg/mentorship/coffee.svg" alt="" style={{ width: 48, height: 48, margin: "0 auto" }} />
+          </div>
           <div style={{ fontSize: 16, fontWeight: 700, color: T.text }}>Loading mentors...</div>
         </div>
       ) : filtered.length > 0 ? (
@@ -287,7 +289,9 @@ export function MentorBrowse() {
             fontFamily: "'Inter', sans-serif",
           }}
         >
-          <div style={{ fontSize: 48, marginBottom: 16 }}>☕</div>
+          <div style={{ marginBottom: 16 }}>
+            <img src="/svg/mentorship/coffee.svg" alt="" style={{ width: 48, height: 48, margin: "0 auto" }} />
+          </div>
           <div style={{ fontSize: 16, fontWeight: 700, color: T.text, marginBottom: 8 }}>No matches found</div>
           <div style={{ fontSize: 14 }}>Try adjusting your filters or search term</div>
           <Button

@@ -7,10 +7,10 @@ import { Avatar, Button, Card } from "./ui";
 import { MOCK_MENTORS, MOCK_CALLOUTS, type CalloutPost } from "./data";
 
 const TYPE_CONFIG = {
-  opportunity: { label: "Opportunity", emoji: "🎯", bg: "rgba(90, 158, 111, 0.12)", color: "#3d7a52", border: "rgba(90, 158, 111, 0.3)" },
-  request: { label: "Looking For", emoji: "🔍", bg: "rgba(123, 142, 200, 0.12)", color: "#5a6fb0", border: "rgba(123, 142, 200, 0.3)" },
-  event: { label: "Event", emoji: "📅", bg: "rgba(247, 147, 30, 0.12)", color: "#c97b1a", border: "rgba(247, 147, 30, 0.3)" },
-  collab: { label: "Collab", emoji: "🤝", bg: "rgba(201, 127, 110, 0.12)", color: "#a0684a", border: "rgba(201, 127, 110, 0.3)" },
+  opportunity: { label: "Opportunity", icon: "/svg/mentorship/opportunity.svg", bg: "rgba(90, 158, 111, 0.12)", color: "#3d7a52", border: "rgba(90, 158, 111, 0.3)" },
+  request: { label: "Looking For", icon: "/svg/mentorship/request.svg", bg: "rgba(123, 142, 200, 0.12)", color: "#5a6fb0", border: "rgba(123, 142, 200, 0.3)" },
+  event: { label: "Event", icon: "/svg/mentorship/event.svg", bg: "rgba(247, 147, 30, 0.12)", color: "#c97b1a", border: "rgba(247, 147, 30, 0.3)" },
+  collab: { label: "Collab", icon: "/svg/mentorship/collab.svg", bg: "rgba(201, 127, 110, 0.12)", color: "#a0684a", border: "rgba(201, 127, 110, 0.3)" },
 };
 
 function CalloutCard({ post, delay = 0 }: { post: CalloutPost; delay?: number }) {
@@ -50,7 +50,7 @@ function CalloutCard({ post, delay = 0 }: { post: CalloutPost; delay?: number })
             fontSize: 11, fontWeight: 700, fontFamily: "'Inter', sans-serif",
             whiteSpace: "nowrap",
           }}>
-            {tc.emoji} {tc.label}
+            <img src={tc.icon} alt="" style={{ width: 14, height: 14 }} /> {tc.label}
           </span>
         </div>
 
@@ -91,7 +91,7 @@ function CalloutCard({ post, delay = 0 }: { post: CalloutPost; delay?: number })
         <div style={{ display: "flex", gap: 16, marginBottom: 16, flexWrap: "wrap" }}>
           {post.spots !== undefined && (
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span style={{ fontSize: 16 }}>👥</span>
+              <img src="/svg/mentorship/users.svg" alt="" style={{ width: 16, height: 16 }} />
               <div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: post.spotsLeft === 1 ? "#e55b4d" : T.success, fontFamily: "'Inter', sans-serif" }}>
                   {post.spotsLeft} spot{post.spotsLeft !== 1 ? "s" : ""} left
@@ -111,7 +111,7 @@ function CalloutCard({ post, delay = 0 }: { post: CalloutPost; delay?: number })
           )}
           {post.deadline && (
             <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: T.textMuted, fontFamily: "'Inter', sans-serif" }}>
-              <span>📅</span>
+              <img src="/svg/mentorship/event.svg" alt="" style={{ width: 14, height: 14 }} />
               <span>Deadline: <strong style={{ color: T.text }}>{post.deadline}</strong></span>
             </div>
           )}
@@ -136,10 +136,10 @@ function CalloutCard({ post, delay = 0 }: { post: CalloutPost; delay?: number })
                 fontFamily: "'Inter', sans-serif", fontWeight: 600,
               }}
             >
-              {liked ? "❤️" : "🤍"} {post.likes + (liked ? 1 : 0)}
+              Likes {post.likes + (liked ? 1 : 0)}
             </motion.button>
             <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 13, color: T.textMuted, fontFamily: "'Inter', sans-serif" }}>
-              💬 {post.responses + (responded ? 1 : 0)}
+              <img src="/svg/mentorship/chat.svg" alt="" style={{ width: 14, height: 14 }} /> {post.responses + (responded ? 1 : 0)}
             </span>
           </div>
           <Button
@@ -188,7 +188,7 @@ function NewCalloutForm({ onClose }: { onClose: () => void }) {
       }}
     >
       <h3 style={{ margin: "0 0 16px", fontSize: 18, fontWeight: 800, fontFamily: "'Playfair Display', serif", color: T.textDark }}>
-        Post a Callout ✦
+        Post a Callout
       </h3>
 
       {/* Type Selector */}
@@ -211,7 +211,8 @@ function NewCalloutForm({ onClose }: { onClose: () => void }) {
                 cursor: "pointer",
               }}
             >
-              {tc.emoji} {tc.label}
+              <img src={tc.icon} alt="" style={{ width: 13, height: 13, verticalAlign: "middle", marginRight: 6 }} />
+              {tc.label}
             </button>
           );
         })}
@@ -269,7 +270,7 @@ export function CalloutFeed() {
                 textTransform: "capitalize",
               }}
             >
-              {f === "all" ? "All Posts" : TYPE_CONFIG[f].emoji + " " + TYPE_CONFIG[f].label}
+              {f === "all" ? "All Posts" : TYPE_CONFIG[f].label}
             </button>
           ))}
         </div>

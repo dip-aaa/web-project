@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { mentorshipAPI, notificationAPI } from '../lib/api';
+import { authAPI, notificationAPI } from '../lib/api';
 
 /* ── Coffee-themed color palette matching the dashboard ── */
 export const T = {
@@ -158,28 +158,20 @@ export default function Sidebar({ animate = true }: { animate?: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
-  const [userName, setUserName] = useState('User');
-  const [userInitial, setUserInitial] = useState('U');
   const [notificationCount, setNotificationCount] = useState(0);
 
-  // Fetch user data from localStorage - refresh on pathname change
-  useEffect(() => {
-    const fetchUserData = () => {
-      const userStr = localStorage.getItem('user');
-      if (userStr) {
-        try {
-          const user = JSON.parse(userStr);
-          const name = user.name || 'User';
-          setUserName(name);
-          setUserInitial(name.charAt(0).toUpperCase());
-        } catch (error) {
-          console.error('Error parsing user data:', error);
-        }
-      }
-    };
-    
-    fetchUserData();
-  }, [pathname]);
+  const handleLogout = async () => {
+    try {
+      await authAPI.logout();
+    } catch (error) {
+      console.error('Sidebar logout error:', error);
+    } finally {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
+      router.push('/setup/login');
+    }
+  };
 
   // Fetch notification count
   useEffect(() => {
@@ -444,8 +436,7 @@ export default function Sidebar({ animate = true }: { animate?: boolean }) {
         }}
       />
 
-      {/* User/XP/Level section removed for minimal look */}
-      {/* Profile Section */}
+      {/* Logout Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -456,7 +447,9 @@ export default function Sidebar({ animate = true }: { animate?: boolean }) {
           padding: 0,
         }}
       >
-        <motion.div
+        <motion.button
+          type="button"
+          onClick={handleLogout}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.98 }}
           style={{
@@ -471,29 +464,29 @@ export default function Sidebar({ animate = true }: { animate?: boolean }) {
             boxShadow: "0 4px 16px rgba(107, 68, 35, 0.15)",
             cursor: "pointer",
             transition: "all 0.3s ease",
+            width: "100%",
           }}
         >
-          <motion.div
-            whileHover={{ rotate: [0, -10, 10, 0] }}
-            transition={{ duration: 0.5 }}
+          <div
             style={{
-              width: 44,
-              height: 44,
-              borderRadius: "50%",
+              width: 38,
+              height: 38,
+              borderRadius: 12,
               flexShrink: 0,
               background: "linear-gradient(135deg, #8b6f47, #6b4423)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 18,
-              fontWeight: 800,
               color: "#ffffff",
-              boxShadow: "0 4px 12px rgba(107, 68, 35, 0.3)",
-              border: "3px solid rgba(255, 255, 255, 0.4)",
+              boxShadow: "0 3px 10px rgba(107, 68, 35, 0.25)",
             }}
           >
-            {userInitial}
-          </motion.div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+          </div>
           <AnimatePresence>
             {!collapsed && (
               <motion.div
@@ -510,27 +503,12 @@ export default function Sidebar({ animate = true }: { animate?: boolean }) {
                     fontFamily: "'Inter', sans-serif",
                   }}
                 >
-                  {userName}
-                </div>
-                <div
-                  style={{
-                    color: T.accent,
-                    fontSize: 11,
-                    fontWeight: 600,
-                    marginTop: 2,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 4,
-                  }}
-                >
-                  <span>Level 3</span>
-                  <span style={{ opacity: 0.5 }}>•</span>
-                  <span>1250 XP</span>
+                  Logout
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
-        </motion.div>
+        </motion.button>
       </motion.div>
 
       {/* Toggle Button */}

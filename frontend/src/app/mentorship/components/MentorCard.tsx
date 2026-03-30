@@ -172,7 +172,7 @@ export default function MentorCard({ mentor, pendingRequestId, onRequestChange }
           }}>
             {mentor.rating >= 0 && (
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ color: "#f7931e", fontSize: 16 }}>⭐</span>
+                <img src="/svg/mentorship/star.svg" alt="Rating" style={{ width: 16, height: 16 }} />
                 <span style={{ fontSize: 15, fontWeight: 700, color: T.textDark, fontFamily: "'Inter', sans-serif" }}>
                   {mentor.rating || "0.0"}
                 </span>
@@ -183,7 +183,7 @@ export default function MentorCard({ mentor, pendingRequestId, onRequestChange }
             )}
             {mentor.fee > 0 && (
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ color: "#f7931e", fontSize: 16 }}>☕</span>
+                <img src="/svg/mentorship/coffee.svg" alt="Fee" style={{ width: 16, height: 16 }} />
                 <span style={{ fontSize: 15, fontWeight: 700, color: "#f7931e", fontFamily: "'Inter', sans-serif" }}>
                   {mentor.fee}
                 </span>
@@ -319,7 +319,7 @@ function MentorModal({ mentor, onClose }: { mentor: MentorProfile; onClose: () =
         setNewComment("");
         setNewRating(5);
         fetchReviews();
-        alert('✨ Thank you for your review for ' + mentor.name + '!');
+        alert('Thank you for your review for ' + mentor.name + '!');
       } else {
         alert('❌ Failed to submit review: ' + response.message);
       }

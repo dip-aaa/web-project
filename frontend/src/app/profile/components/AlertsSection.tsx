@@ -122,7 +122,6 @@ export default function AlertsSection() {
         textAlign: 'center',
         color: '#8b6f47'
       }}>
-        <div style={{ fontSize: 48, marginBottom: 16 }}>🔔</div>
         <h3 style={{ fontSize: 18, fontWeight: 'bold', color: '#6b4423' }}>Loading alerts...</h3>
       </div>
     );
@@ -145,7 +144,7 @@ export default function AlertsSection() {
           color: '#6b4423',
           marginBottom: 8
         }}>
-          🔔 Connection Requests
+          Connection Requests
         </h2>
         <p style={{ color: '#8b6f47', fontSize: 14 }}>
           Manage your mentorship connection requests
@@ -204,7 +203,6 @@ export default function AlertsSection() {
           padding: '60px 20px',
           color: '#8b6f47'
         }}>
-          <div style={{ fontSize: 64, marginBottom: 16 }}>📭</div>
           <h3 style={{ fontSize: 18, fontWeight: 'bold', color: '#6b4423', marginBottom: 8 }}>
             No {activeView} requests
           </h3>

@@ -79,9 +79,6 @@ export default function WelcomeHeader({ firstName }: WelcomeHeaderProps) {
                 className="h-full bg-gradient-to-r from-[#ffd89b] via-[#f5c77e] to-[#ffd89b] rounded-full shadow-lg"
               />
             </div>
-            <div className="bg-gradient-to-r from-[#f5f0eb]/80 to-[#f9f6f3]/80 backdrop-blur-sm px-6 py-2 rounded-full text-[#6b4423] font-bold shadow-lg">
-              Level 3 • 1250 XP
-            </div>
           </div>
           <motion.p
             initial={{ opacity: 0 }}

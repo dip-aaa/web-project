@@ -7,7 +7,7 @@ const badges = [
   { 
     id: 1, 
     title: 'Top Seller', 
-    icon: '🏆', 
+
     color: '#FFD700',
     description: 'Achieved $3,000+ in sales',
     unlocked: true
@@ -15,7 +15,7 @@ const badges = [
   { 
     id: 2, 
     title: 'Mentor Pro', 
-    icon: '🎓', 
+
     color: '#9C27B0',
     description: '200+ mentorship hours',
     unlocked: true
@@ -23,7 +23,7 @@ const badges = [
   { 
     id: 3, 
     title: '5-Star Rating', 
-    icon: '⭐', 
+
     color: '#FF9800',
     description: 'Maintained 4.9+ rating',
     unlocked: true
@@ -31,7 +31,7 @@ const badges = [
   { 
     id: 4, 
     title: 'Early Adopter', 
-    icon: '🚀', 
+
     color: '#2196F3',
     description: 'Joined in the first month',
     unlocked: true
@@ -39,7 +39,7 @@ const badges = [
   { 
     id: 5, 
     title: 'Community Leader', 
-    icon: '🌟', 
+
     color: '#4CAF50',
     description: '100+ helpful responses',
     unlocked: false,
@@ -48,7 +48,7 @@ const badges = [
   { 
     id: 6, 
     title: 'Master Mentor', 
-    icon: '👑', 
+
     color: '#E91E63',
     description: '500 mentorship hours',
     unlocked: false,
@@ -76,12 +76,9 @@ export default function AchievementsBadges() {
           fontSize: 20, 
           fontWeight: 'bold', 
           color: '#6b4423',
-          marginBottom: 20,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8
+          marginBottom: 20
         }}>
-          <span>🏅</span> Achievements
+          Achievements
         </h3>
 
         <div style={{ 
@@ -111,15 +108,6 @@ export default function AchievementsBadges() {
                 opacity: badge.unlocked ? 1 : 0.6
               }}
             >
-              {/* Icon */}
-              <div style={{ 
-                fontSize: 36,
-                marginBottom: 8,
-                filter: badge.unlocked ? 'none' : 'grayscale(100%)'
-              }}>
-                {badge.icon}
-              </div>
-              
               {/* Title */}
               <div style={{ 
                 fontSize: 13,
@@ -197,20 +185,17 @@ export default function AchievementsBadges() {
           fontSize: 20, 
           fontWeight: 'bold', 
           color: '#6b4423',
-          marginBottom: 18,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8
+          marginBottom: 18
         }}>
-          <span>📊</span> Quick Stats
+          Quick Stats
         </h3>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {[
-            { label: 'Profile Views', value: '1,234', icon: '👁️' },
-            { label: 'Followers', value: '456', icon: '❤️' },
-            { label: 'Total Transactions', value: '89', icon: '💰' },
-            { label: 'Avg. Response Time', value: '2h', icon: '⚡' }
+            { label: 'Profile Views', value: '1,234' },
+            { label: 'Followers', value: '456' },
+            { label: 'Total Transactions', value: '89' },
+            { label: 'Avg. Response Time', value: '2h' }
           ].map((stat, index) => (
             <div 
               key={index}
@@ -223,7 +208,6 @@ export default function AchievementsBadges() {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: 18 }}>{stat.icon}</span>
                 <span style={{ 
                   fontSize: 14, 
                   color: '#6b4423',
