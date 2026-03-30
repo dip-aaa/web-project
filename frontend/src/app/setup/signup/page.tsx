@@ -2,9 +2,31 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Nunito } from "next/font/google";
 import StickyFooter from "../../../components/StickyFooter";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
+const nunito = Nunito({ subsets: ["latin"], weight: ["400", "600", "700", "800"] });
+
+const getFriendlyError = (err: unknown, fallback: string) => {
+  if (err instanceof Error) {
+    const message = err.message?.trim();
+    const lowerMessage = message.toLowerCase();
+
+    if (
+      !message ||
+      lowerMessage === "failed to fetch" ||
+      lowerMessage.includes("networkerror") ||
+      lowerMessage.includes("network request failed")
+    ) {
+      return "Unable to reach server. Please check your connection and try again.";
+    }
+
+    return message;
+  }
+
+  return fallback;
+};
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -74,8 +96,8 @@ export default function SignUpPage() {
       
       alert("OTP sent to your email! Check your inbox.");
       setStep(2);
-    } catch (err: any) {
-      setError(err.message || "Failed to send OTP. Please try again.");
+    } catch (err: unknown) {
+      setError(getFriendlyError(err, "Failed to send OTP. Please try again."));
     } finally {
       setLoading(false);
     }
@@ -122,8 +144,8 @@ export default function SignUpPage() {
       
       alert("Email verified! Welcome to Khwopa College Portal 🎉");
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message || "OTP verification failed. Please try again.");
+    } catch (err: unknown) {
+      setError(getFriendlyError(err, "OTP verification failed. Please try again."));
     } finally {
       setLoading(false);
     }
@@ -151,8 +173,8 @@ export default function SignUpPage() {
       }
       
       alert("OTP resent successfully! Check your email.");
-    } catch (err: any) {
-      setError(err.message || "Failed to resend OTP. Please try again.");
+    } catch (err: unknown) {
+      setError(getFriendlyError(err, "Failed to resend OTP. Please try again."));
     } finally {
       setLoading(false);
     }
@@ -164,7 +186,7 @@ export default function SignUpPage() {
     border: "1.5px solid #E0D5C8",
     borderRadius: "10px",
     fontSize: "15px",
-    fontFamily: "'Nunito', sans-serif",
+    fontFamily: nunito.style.fontFamily,
     color: "#5C4033",
     background: "#FFFAF5",
     outline: "none",
@@ -178,21 +200,30 @@ export default function SignUpPage() {
     fontWeight: 600,
     marginBottom: "6px",
     display: "block",
-    fontFamily: "'Nunito', sans-serif",
+    fontFamily: nunito.style.fontFamily,
     letterSpacing: "0.3px",
   };
 
   return (
     <>
-      <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+      <style>{`
+        .signup-scroll {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .signup-scroll::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
       <div
+        className={nunito.className}
         style={{
           minHeight: "100vh",
           background: "linear-gradient(145deg, #FBF0E3 0%, #F5E6D3 50%, #EDD9C4 100%)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontFamily: "'Nunito', sans-serif",
+          fontFamily: nunito.style.fontFamily,
           position: "relative",
           overflow: "hidden",
         }}
@@ -274,10 +305,41 @@ export default function SignUpPage() {
             />
           </div>
           {/* Sign Up form */}
-          <div style={{ position: "relative", zIndex: 3, padding: "48px 36px 36px 80px" }}>
-            <h2 style={{ fontWeight: 800, fontSize: 28, color: "#8B5E3C", marginBottom: 8, letterSpacing: 1 }}>
+          <div
+            style={{
+              position: "relative",
+              zIndex: 3,
+              padding: "48px 36px 36px 80px",
+              maxHeight: "78vh",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <h2
+              style={{
+                zIndex: 4,
+                fontWeight: 800,
+                fontSize: 28,
+                color: "#8B5E3C",
+                marginBottom: 8,
+                letterSpacing: 1,
+                background: "#FFF",
+                paddingBottom: 6,
+                flexShrink: 0,
+              }}
+            >
               {step === 1 ? "Sign Up" : "Verify OTP"}
             </h2>
+
+            <div
+              className="signup-scroll"
+              style={{
+                overflowY: "auto",
+                flex: 1,
+                paddingRight: 4,
+              }}
+            >
             
             {/* Error/Info messages */}
             {error && (
@@ -332,7 +394,7 @@ export default function SignUpPage() {
                     style={inputStyle}
                     value={password}
                     onChange={e => setPassword(e.target.value)}
-                    placeholder="Min 8 chars, 1 upper, 1 lower, 1 number"
+                    placeholder="Min 8 chars"
                     autoComplete="new-password"
                     disabled={loading}
                   />
@@ -432,7 +494,7 @@ export default function SignUpPage() {
                     borderRadius: "10px",
                     fontSize: "16px",
                     fontWeight: 800,
-                    fontFamily: "'Nunito', sans-serif",
+                    fontFamily: nunito.style.fontFamily,
                     cursor: loading ? "not-allowed" : "pointer",
                     letterSpacing: "1.5px",
                     boxShadow: "0 4px 14px rgba(158, 111, 80, 0.35)",
@@ -502,7 +564,7 @@ export default function SignUpPage() {
                     borderRadius: "10px",
                     fontSize: "16px",
                     fontWeight: 800,
-                    fontFamily: "'Nunito', sans-serif",
+                    fontFamily: nunito.style.fontFamily,
                     cursor: loading ? "not-allowed" : "pointer",
                     letterSpacing: "1.5px",
                     boxShadow: "0 4px 14px rgba(158, 111, 80, 0.35)",
@@ -578,6 +640,7 @@ export default function SignUpPage() {
                   onMouseLeave={(e) => (e.target as HTMLAnchorElement).style.textDecoration = "none"}
                 >Login</a>
               </p>
+            </div>
             </div>
           </div>
         </div>

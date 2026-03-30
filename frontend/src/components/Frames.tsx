@@ -64,7 +64,17 @@ export const Frames = () => {
       </div>
       <div style={{ marginLeft: 15, width: 700, marginTop: 40, display: 'flex', gap: 32, border: 0, overflow: 'visible' }}>
         {/* Marketplace Card */}
-        <div style={{ width: 250, height: 222.46, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', background: '#fff', borderRadius: 22.4, overflow: 'hidden', borderBottom: '7.84px solid #856046', boxShadow: '0px 0px 0px transparent', padding: '12px 10px 10px 10px', boxSizing: 'border-box' }}>
+        <div
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-8px) scale(0.98)';
+            e.currentTarget.style.boxShadow = '0 14px 24px rgba(133, 96, 70, 0.20)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+            e.currentTarget.style.boxShadow = '0px 0px 0px transparent';
+          }}
+          style={{ width: 250, height: 222.46, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', background: '#fff', borderRadius: 22.4, overflow: 'hidden', borderBottom: '7.84px solid #856046', boxShadow: '0px 0px 0px transparent', padding: '12px 10px 10px 10px', boxSizing: 'border-box', transition: 'transform 0.2s ease, box-shadow 0.2s ease', cursor: 'pointer' }}
+        >
           <div style={{ margin: '0 auto 8px auto', width: 48, height: 48, display: 'flex', background: '#f0e6d9', borderRadius: 12, border: 0, alignItems: 'center', justifyContent: 'center' }}>
             <img src="/market.svg" alt="Market" style={{ width: '24px', height: '24px' }} />
           </div>
@@ -79,7 +89,17 @@ export const Frames = () => {
           </div>
         </div>
         {/* Mentorship Card */}
-        <div style={{ width: 250, height: 222.46, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', background: '#fff', borderRadius: 22.4, overflow: 'hidden', borderBottom: '7.84px solid #856046', boxShadow: '0px 0px 0px transparent', padding: '12px 10px 10px 10px', boxSizing: 'border-box' }}>
+        <div
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-8px) scale(0.98)';
+            e.currentTarget.style.boxShadow = '0 14px 24px rgba(133, 96, 70, 0.20)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+            e.currentTarget.style.boxShadow = '0px 0px 0px transparent';
+          }}
+          style={{ width: 250, height: 222.46, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', background: '#fff', borderRadius: 22.4, overflow: 'hidden', borderBottom: '7.84px solid #856046', boxShadow: '0px 0px 0px transparent', padding: '12px 10px 10px 10px', boxSizing: 'border-box', transition: 'transform 0.2s ease, box-shadow 0.2s ease', cursor: 'pointer' }}
+        >
           <div style={{ margin: '0 auto 8px auto', width: 44, height: 44, display: 'flex', background: '#f0e6d9', borderRadius: 11, border: 0, alignItems: 'center', justifyContent: 'center' }}>
             <img src="/mentor.svg" alt="Mentor" style={{ width: '24px', height: '24px' }} />
           </div>
@@ -94,7 +114,17 @@ export const Frames = () => {
           </div>
         </div>
         {/* Connect Card */}
-        <div style={{ width: 250, height: 222.46, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', background: '#fff', borderRadius: 22.4, overflow: 'hidden', borderBottom: '7.84px solid #856046', boxShadow: '0px 0px 0px transparent', padding: '12px 10px 10px 10px', boxSizing: 'border-box' }}>
+        <div
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-8px) scale(0.98)';
+            e.currentTarget.style.boxShadow = '0 14px 24px rgba(133, 96, 70, 0.20)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+            e.currentTarget.style.boxShadow = '0px 0px 0px transparent';
+          }}
+          style={{ width: 250, height: 222.46, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', background: '#fff', borderRadius: 22.4, overflow: 'hidden', borderBottom: '7.84px solid #856046', boxShadow: '0px 0px 0px transparent', padding: '12px 10px 10px 10px', boxSizing: 'border-box', transition: 'transform 0.2s ease, box-shadow 0.2s ease', cursor: 'pointer' }}
+        >
           <div style={{ margin: '0 auto 8px auto', width: 44, height: 44, display: 'flex', background: '#f0e6d9', borderRadius: 11, border: 0, alignItems: 'center', justifyContent: 'center' }}>
             <img src="/connect.svg" alt="Connect" style={{ width: '24px', height: '24px' }} />
           </div>

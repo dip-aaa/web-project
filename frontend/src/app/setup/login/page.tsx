@@ -2,9 +2,31 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Nunito } from "next/font/google";
 import StickyFooter from "../../../components/StickyFooter";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
+const nunito = Nunito({ subsets: ["latin"], weight: ["400", "600", "700", "800"] });
+
+const getFriendlyError = (err: unknown, fallback: string) => {
+  if (err instanceof Error) {
+    const message = err.message?.trim();
+    const lowerMessage = message.toLowerCase();
+
+    if (
+      !message ||
+      lowerMessage === "failed to fetch" ||
+      lowerMessage.includes("networkerror") ||
+      lowerMessage.includes("network request failed")
+    ) {
+      return "Unable to reach server. Please check your connection and try again.";
+    }
+
+    return message;
+  }
+
+  return fallback;
+};
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -55,8 +77,8 @@ export default function LoginPage() {
       
       alert("Login successful! Welcome back 🎉");
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Login failed. Please check your credentials.");
+    } catch (err: unknown) {
+      setError(getFriendlyError(err, "Login failed. Please check your credentials."));
     } finally {
       setLoading(false);
     }
@@ -68,7 +90,7 @@ export default function LoginPage() {
     border: "1.5px solid #E0D5C8",
     borderRadius: "10px",
     fontSize: "15px",
-    fontFamily: "'Nunito', sans-serif",
+    fontFamily: nunito.style.fontFamily,
     color: "#5C4033",
     background: "#FFFAF5",
     outline: "none",
@@ -82,21 +104,21 @@ export default function LoginPage() {
     fontWeight: 600,
     marginBottom: "6px",
     display: "block",
-    fontFamily: "'Nunito', sans-serif",
+    fontFamily: nunito.style.fontFamily,
     letterSpacing: "0.3px",
   };
 
   return (
     <>
-      <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
       <div
+        className={nunito.className}
         style={{
           minHeight: "100vh",
           background: "linear-gradient(145deg, #FBF0E3 0%, #F5E6D3 50%, #EDD9C4 100%)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontFamily: "'Nunito', sans-serif",
+          fontFamily: nunito.style.fontFamily,
           position: "relative",
           overflow: "hidden",
         }}
@@ -252,7 +274,7 @@ export default function LoginPage() {
                   borderRadius: "10px",
                   fontSize: "16px",
                   fontWeight: 800,
-                  fontFamily: "'Nunito', sans-serif",
+                  fontFamily: nunito.style.fontFamily,
                   cursor: loading ? "not-allowed" : "pointer",
                   letterSpacing: "1.5px",
                   boxShadow: "0 4px 14px rgba(158, 111, 80, 0.35)",

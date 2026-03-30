@@ -1,5 +1,4 @@
 "use client";
-import Snowfall from 'react-snowfall';
 import styles from './page.module.css'
 import { Navbar } from '../../components/Navbar';
 import { Frames } from '../../components/Frames';
@@ -11,59 +10,9 @@ export default function Dashboard() {
     
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(90deg, #F5E6D3 0%, #FFF9F3 15%, #FFFFFF 35%, #FFFFFF 100%)',
+      background: 'linear-gradient(135deg, #F2E3D1 0%, #F8EAD9 35%, #FDF5EA 70%, #FFFFFF 100%)',
       position: 'relative',
     }}>
-      {/* Snowfall effect */}
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        zIndex: 9999,
-        pointerEvents: 'none',
-      }}>
-        <Snowfall color="#FF69B4" radius={[5, 5]} />
-      </div>
-      
-      {/* Decorative circles with unified color theme */}
-      <div style={{
-        position: 'fixed',
-        left: 32,
-        bottom: 32,
-        width: 36,
-        height: 36,
-        background: 'linear-gradient(135deg, #DAA520, #CD853F)',
-        borderRadius: '50%',
-        zIndex: 10,
-        boxShadow: '0 4px 12px rgba(218, 165, 32, 0.3)',
-      }} />
-      {/* Decorative circle center */}
-      <div style={{
-        position: 'fixed',
-        left: '50%',
-        top: '50%',
-        width: 28,
-        height: 28,
-        background: 'linear-gradient(135deg, #CD853F, #8B4513)',
-        borderRadius: '50%',
-        zIndex: 10,
-        transform: 'translate(-50%, -50%)',
-        boxShadow: '0 4px 12px rgba(139, 69, 19, 0.25)',
-      }} />
-      {/* Decorative circle top right below navbar */}
-      <div style={{
-        position: 'fixed',
-        right: 48,
-        top: 88,
-        width: 28,
-        height: 28,
-        background: 'linear-gradient(135deg, #DAA520, #CD853F)',
-        borderRadius: '50%',
-        zIndex: 10,
-        boxShadow: '0 4px 12px rgba(218, 165, 32, 0.3)',
-      }} />
       <Navbar />
       <main
         className={styles.main}

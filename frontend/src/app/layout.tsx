@@ -5,8 +5,12 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Frontend App',
-  description: 'A Next.js React application',
+  title: 'KOSH - A Marketplace and Skill Sharing Platform',
+  description: 'A student marketplace and skill-sharing platform for buying, selling, mentoring, and connecting.',
+  icons: {
+    icon: '/favicon-32x32.png',
+    shortcut: '/favicon-32x32.png',
+  },
 }
 
 export default function RootLayout({
