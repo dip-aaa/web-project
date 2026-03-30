@@ -282,7 +282,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/dipu/Documents/codes/web-project/backend1/src/generated/prisma",
+      "value": "/home/dipu/web-project/backend1/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -300,12 +300,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/dipu/Documents/codes/web-project/backend1/prisma/schema.prisma",
+    "sourceFilePath": "/home/dipu/web-project/backend1/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../prisma",
   "clientVersion": "6.19.2",
@@ -314,6 +313,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {
