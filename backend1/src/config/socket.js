@@ -186,6 +186,79 @@ const initializeSocket = (server) => {
       });
     });
 
+    // WebRTC Call Signaling
+    // Initiate a call
+    socket.on('call-user', (data) => {
+      const { to, offer, callType } = data;
+      const recipientSocketId = activeUsers.get(to);
+
+      if (recipientSocketId) {
+        io.to(recipientSocketId).emit('incoming-call', {
+          from: socket.userId,
+          fromName: socket.userName,
+          callType: callType || 'audio',
+          offer
+        });
+        console.log(`Call initiated from ${socket.userId} to ${to}`);
+      } else {
+        socket.emit('error', { message: 'User is not online' });
+      }
+    });
+
+    // Accept a call
+    socket.on('accept-call', (data) => {
+      const { to } = data;
+      const recipientSocketId = activeUsers.get(to);
+
+      if (recipientSocketId) {
+        io.to(recipientSocketId).emit('call-accepted', {});
+        console.log(`Call accepted from ${socket.userId} to ${to}`);
+      }
+    });
+
+    // Send answer
+    socket.on('answer-call', (data) => {
+      const { to, answer } = data;
+      const recipientSocketId = activeUsers.get(to);
+
+      if (recipientSocketId) {
+        io.to(recipientSocketId).emit('call-accepted', { answer });
+        console.log(`Answer sent from ${socket.userId} to ${to}`);
+      }
+    });
+
+    // Send ICE candidate
+    socket.on('ice-candidate', (data) => {
+      const { to, candidate } = data;
+      const recipientSocketId = activeUsers.get(to);
+
+      if (recipientSocketId) {
+        io.to(recipientSocketId).emit('ice-candidate', { candidate });
+      }
+    });
+
+    // Reject a call
+    socket.on('reject-call', (data) => {
+      const { to } = data;
+      const recipientSocketId = activeUsers.get(to);
+
+      if (recipientSocketId) {
+        io.to(recipientSocketId).emit('call-rejected');
+        console.log(`Call rejected from ${socket.userId} to ${to}`);
+      }
+    });
+
+    // End a call
+    socket.on('end-call', (data) => {
+      const { to } = data;
+      const recipientSocketId = activeUsers.get(to);
+
+      if (recipientSocketId) {
+        io.to(recipientSocketId).emit('call-ended');
+        console.log(`Call ended from ${socket.userId} to ${to}`);
+      }
+    });
+
     // Disconnect
     socket.on('disconnect', () => {
       console.log(`User disconnected: ${socket.userName} (${socket.userId})`);
