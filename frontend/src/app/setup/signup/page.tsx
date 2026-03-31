@@ -206,7 +206,6 @@ export default function SignUpPage() {
 
   return (
     <>
-<<<<<<< HEAD
       <style>{`
         .signup-scroll {
           -ms-overflow-style: none;
@@ -216,8 +215,6 @@ export default function SignUpPage() {
           display: none;
         }
       `}</style>
-=======
->>>>>>> ce3fa3c6cc3c7f144fc6e072c23a049de4de43f8
       <div
         className={nunito.className}
         style={{

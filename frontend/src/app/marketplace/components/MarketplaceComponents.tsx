@@ -10,6 +10,7 @@ export type MarketplaceItem = {
 	title: string;
 	price: number;
 	seller: string;
+	sellerId?: number;
 	conditionLabel: string;
 	category: string;
 	imageUrl: string;
@@ -177,12 +178,40 @@ export function MarketplaceFilters({
 export function ProductCard({
 	item,
 	onViewDetails,
+	currentUserId,
+	onDelete,
 }: {
 	item: MarketplaceItem;
 	onViewDetails: (item: MarketplaceItem) => void;
+	currentUserId?: number;
+	onDelete?: (itemId: string) => void;
 }) {
+	const isOwnItem = currentUserId && item.sellerId === currentUserId;
+
+	const handleDelete = (e: React.MouseEvent) => {
+		e.stopPropagation();
+		if (confirm('Are you sure you want to delete this item? This action cannot be undone.')) {
+			onDelete?.(item.id);
+		}
+	};
+
 	return (
-		<article className="mk-card">
+		<article className="mk-card relative">
+			{isOwnItem && (
+				<button
+					type="button"
+					onClick={handleDelete}
+					className="absolute top-3 right-3 z-10 bg-red-500 text-white p-2 rounded-lg hover:bg-red-600 transition-all shadow-md"
+					title="Delete this item"
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+						<polyline points="3 6 5 6 21 6"></polyline>
+						<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+						<line x1="10" y1="11" x2="10" y2="17"></line>
+						<line x1="14" y1="11" x2="14" y2="17"></line>
+					</svg>
+				</button>
+			)}
 			<div className="mk-card-media">
 				<img
 					src={item.imageUrl}
@@ -218,9 +247,13 @@ export function ProductCard({
 export function ProductGrid({
 	items,
 	onViewDetails,
+	currentUserId,
+	onDelete,
 }: {
 	items: MarketplaceItem[];
 	onViewDetails: (item: MarketplaceItem) => void;
+	currentUserId?: number;
+	onDelete?: (itemId: string) => void;
 }) {
 	if (items.length === 0) {
 		return (
@@ -242,7 +275,13 @@ export function ProductGrid({
 		<section className="mk-container">
 			<div className="mk-grid">
 				{items.map((item) => (
-					<ProductCard key={item.id} item={item} onViewDetails={onViewDetails} />
+					<ProductCard 
+						key={item.id} 
+						item={item} 
+						onViewDetails={onViewDetails}
+						currentUserId={currentUserId}
+						onDelete={onDelete}
+					/>
 				))}
 			</div>
 		</section>
@@ -638,6 +677,7 @@ function ProductDetails({ item, onBack }: { item: MarketplaceItem; onBack: () =>
 export function MarketplaceView() {
 	const [items, setItems] = React.useState<MarketplaceItem[]>([]);
 	const [loading, setLoading] = React.useState(true);
+	const [currentUserId, setCurrentUserId] = React.useState<number | undefined>(undefined);
 	const [filters, setFilters] = React.useState<Filters>({
 		category: "Select Category",
 		priceRange: "Any Price",
@@ -646,6 +686,19 @@ export function MarketplaceView() {
 	const [selectedItem, setSelectedItem] = React.useState<MarketplaceItem | null>(null);
 	const [showSellForm, setShowSellForm] = React.useState(false);
 	const [showCart, setShowCart] = React.useState(false);
+
+	// Get current user ID from localStorage
+	React.useEffect(() => {
+		const userStr = localStorage.getItem("user");
+		if (userStr) {
+			try {
+				const user = JSON.parse(userStr);
+				setCurrentUserId(user.id);
+			} catch (error) {
+				console.error("Error parsing user data:", error);
+			}
+		}
+	}, []);
 
 	// Fetch items from API
 	const fetchItems = React.useCallback(async () => {
@@ -702,6 +755,21 @@ export function MarketplaceView() {
 		}
 	}
 
+	async function handleDeleteItem(itemId: string) {
+		try {
+			const response = await marketplaceAPI.deleteItem(itemId);
+			if (response.success) {
+				alert('Item deleted successfully!');
+				await fetchItems();
+			} else {
+				alert('Failed to delete item: ' + response.message);
+			}
+		} catch (error) {
+			console.error('Error deleting item:', error);
+			alert('Failed to delete item. Please try again.');
+		}
+	}
+
 	// Import CartView dynamically
 	const CartView = require('./CartView').CartView;
 
@@ -742,6 +810,8 @@ export function MarketplaceView() {
 										key={item.id}
 										item={item}
 										onViewDetails={() => setSelectedItem(item)}
+										currentUserId={currentUserId}
+										onDelete={handleDeleteItem}
 									/>
 								))}
 							</div>

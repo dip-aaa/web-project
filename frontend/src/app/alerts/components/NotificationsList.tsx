@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { notificationAPI, marketplaceAPI } from '../../../lib/api';
+import { notificationAPI, marketplaceAPI, mentorshipAPI } from '../../../lib/api';
 import { useRouter } from 'next/navigation';
 
 interface Notification {
@@ -104,6 +104,91 @@ export default function NotificationsList() {
     } catch (error) {
       console.error('Error dismissing buy request:', error);
       alert('❌ Error dismissing request. Please try again.');
+    } finally {
+      setProcessing(null);
+    }
+  };
+
+  const handleAcceptMentorRequest = async (id: number, notif: Notification) => {
+    try {
+      setProcessing(id);
+      
+      // Extract requestId from notification data
+      let requestId = null;
+      
+      // Handle different data formats
+      if (notif.data) {
+        try {
+          const parsedData = typeof notif.data === 'string' ? JSON.parse(notif.data) : notif.data;
+          requestId = parsedData.requestId || parsedData.request_id || notif.id;
+        } catch (e) {
+          console.warn('Could not parse notification data:', notif.data);
+          // Fallback: use notification id as request id
+          requestId = notif.id;
+        }
+      } else {
+        // If no data, use notification id as fallback
+        requestId = notif.id;
+      }
+      
+      if (!requestId) {
+        alert('❌ Invalid request data');
+        return;
+      }
+
+      const response = await mentorshipAPI.respondToRequest(requestId, 'accept');
+      if (response.success) {
+        alert('✅ Mentorship request accepted! You can now chat.');
+        fetchNotifications();
+        // Redirect to chat
+        router.push('/chat');
+      } else {
+        alert('❌ Failed to accept request: ' + (response.message || response.error || 'Unknown error'));
+        console.error('Backend response:', response);
+      }
+    } catch (error) {
+      console.error('Error accepting mentor request:', error);
+      alert('❌ Error accepting request. Please try again.');
+    } finally {
+      setProcessing(null);
+    }
+  };
+
+  const handleRejectMentorRequest = async (id: number, notif: Notification) => {
+    try {
+      setProcessing(id);
+      
+      // Extract requestId from notification data (same logic as accept)
+      let requestId = null;
+      
+      if (notif.data) {
+        try {
+          const parsedData = typeof notif.data === 'string' ? JSON.parse(notif.data) : notif.data;
+          requestId = parsedData.requestId || parsedData.request_id || notif.id;
+        } catch (e) {
+          console.warn('Could not parse notification data:', notif.data);
+          requestId = notif.id;
+        }
+      } else {
+        requestId = notif.id;
+      }
+      
+      if (!requestId) {
+        alert('❌ Invalid request data');
+        return;
+      }
+
+      const response = await mentorshipAPI.respondToRequest(requestId, 'reject');
+      if (response.success) {
+        alert('✅ Mentorship request rejected.');
+        fetchNotifications();
+      } else {
+        alert('❌ Failed to reject request: ' + (response.message || response.error || 'Unknown error'));
+        console.error('Backend response:', response);
+      }
+    } catch (error) {
+      console.error('Error rejecting mentor request:', error);
+      alert('❌ Error rejecting request. Please try again.');
     } finally {
       setProcessing(null);
     }
@@ -392,12 +477,12 @@ export default function NotificationsList() {
 
                 {/* Actions */}
                 <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexShrink: 0 }}>
-                  {notif.type === 'buy_request' && !notif.read ? (
+                  {(notif.type === 'buy_request' || notif.type === 'mentorship_request') && !notif.read ? (
                     <div style={{ display: 'flex', gap: 8 }}>
                       <motion.button
                         whileHover={{ backgroundColor: '#6b4423' }}
                         whileTap={{ scale: 0.98 }}
-                        onClick={() => handleAcceptBuyRequest(notif.id)}
+                        onClick={() => notif.type === 'buy_request' ? handleAcceptBuyRequest(notif.id) : handleAcceptMentorRequest(notif.id, notif)}
                         disabled={processing === notif.id}
                         style={{
                           padding: '6px 16px',
@@ -411,12 +496,12 @@ export default function NotificationsList() {
                           opacity: processing === notif.id ? 0.7 : 1
                         }}
                       >
-                        Accept & Chat
+                        {notif.type === 'buy_request' ? 'Accept & Chat' : 'Accept'}
                       </motion.button>
                       <motion.button
                         whileHover={{ backgroundColor: '#f3f6f8' }}
                         whileTap={{ scale: 0.98 }}
-                        onClick={() => handleRejectBuyRequest(notif.id)}
+                        onClick={() => notif.type === 'buy_request' ? handleRejectBuyRequest(notif.id) : handleRejectMentorRequest(notif.id, notif)}
                         disabled={processing === notif.id}
                         style={{
                           padding: '6px 16px',

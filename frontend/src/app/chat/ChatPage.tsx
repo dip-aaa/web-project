@@ -5,7 +5,10 @@ import Sidebar from '../../components/sidebar';
 import Header from './components/Header';
 import ChatBox from './components/ChatBox';
 import ChatInput from './components/ChatInput';
+import CallInterface from './components/CallInterface';
+import ProfileModal from './components/ProfileModal';
 import { mentorshipAPI, chatAPI } from '../../lib/api';
+import { useWebRTC } from './hooks/useWebRTC';
 import './chat.css';
 
 export interface Message {
@@ -39,7 +42,12 @@ const ChatPageComponent: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const currentUserIdRef = useRef<number | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+  const [callType, setCallType] = useState<'audio' | 'video' | null>(null);
+
+  const webRTC = useWebRTC(currentUserId);
 
   // Get current user ID
   useEffect(() => {
@@ -47,6 +55,7 @@ const ChatPageComponent: React.FC = () => {
     if (userStr) {
       const user = JSON.parse(userStr);
       currentUserIdRef.current = user.id;
+      setCurrentUserId(user.id);
     }
   }, []);
 
@@ -77,9 +86,10 @@ const ChatPageComponent: React.FC = () => {
   useEffect(() => {
     if (!selectedUser || !currentUserIdRef.current) return;
 
+    let prevMessageCount = 0;
+
     const fetchMessages = async () => {
       try {
-        setIsLoadingMessages(true);
         const response = await chatAPI.getMessages(selectedUser.id);
 
         if (response.success && response.data) {
@@ -93,19 +103,26 @@ const ChatPageComponent: React.FC = () => {
             timestamp: new Date(msg.createdAt)
           }));
 
+          // Only set loading if this is the first fetch or new messages arrived
+          if (prevMessageCount === 0) {
+            setIsLoadingMessages(false);
+          }
+
           setMessages(transformedMessages);
+          prevMessageCount = transformedMessages.length;
         }
       } catch (error) {
         console.error('Error fetching messages:', error);
         setMessages([]);
-      } finally {
         setIsLoadingMessages(false);
       }
     };
 
+    // Initial fetch with loading indicator
+    setIsLoadingMessages(true);
     fetchMessages();
 
-    // Poll for new messages every 3 seconds
+    // Poll for new messages every 3 seconds (without showing loading indicator)
     const interval = setInterval(fetchMessages, 3000);
 
     return () => clearInterval(interval);
@@ -156,6 +173,25 @@ const ChatPageComponent: React.FC = () => {
       setIsSending(false);
     }
   }, [selectedUser, isSending]);
+
+  const handleAudioCall = useCallback(async () => {
+    if (selectedUser) {
+      setCallType('audio');
+      await webRTC.initiateCall(selectedUser.id, 'audio', selectedUser.name);
+    }
+  }, [selectedUser, webRTC]);
+
+  const handleVideoCall = useCallback(async () => {
+    if (selectedUser) {
+      setCallType('video');
+      await webRTC.initiateCall(selectedUser.id, 'video', selectedUser.name);
+    }
+  }, [selectedUser, webRTC]);
+
+  const handleEndCall = useCallback(() => {
+    webRTC.endCall();
+    setCallType(null);
+  }, [webRTC]);
 
   return (
     <div className="min-h-screen h-screen flex bg-gradient-to-br from-[#f9f6f3] via-[#fdfcfa] to-[#f5f0eb] overflow-hidden">
@@ -229,7 +265,14 @@ const ChatPageComponent: React.FC = () => {
         <div className="flex-1 flex flex-col bg-white rounded-2xl shadow-lg border border-[#e8ddd4] overflow-hidden min-w-0 relative">
           {selectedUser ? (
             <>
-              <Header username={selectedUser.name} status="online" />
+              <Header 
+                username={selectedUser.name} 
+                userId={selectedUser.id} 
+                status="online"
+                onAudioCall={handleAudioCall}
+                onVideoCall={handleVideoCall}
+                onViewProfile={() => setShowProfileModal(true)}
+              />
               <div className="flex-1 overflow-hidden">
                 <ChatBox messages={messages} isLoading={isLoadingMessages} />
               </div>
@@ -252,6 +295,32 @@ const ChatPageComponent: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Call Interface */}
+      <CallInterface
+        isActive={webRTC.isCallActive}
+        isInitiatingCall={webRTC.isInitiatingCall}
+        isReceivingCall={webRTC.isReceivingCall}
+        remoteUserName={selectedUser?.name || 'User'}
+        callType={callType || 'audio'}
+        hasAudio={webRTC.hasAudio}
+        hasVideo={webRTC.hasVideo}
+        localVideoRef={webRTC.localVideoRef}
+        remoteVideoRef={webRTC.remoteVideoRef}
+        onAccept={webRTC.acceptCall}
+        onReject={webRTC.rejectCall}
+        onEndCall={handleEndCall}
+        onToggleAudio={webRTC.toggleAudio}
+        onToggleVideo={webRTC.toggleVideo}
+      />
+
+      {/* Profile Modal */}
+      <ProfileModal
+        isOpen={showProfileModal}
+        userId={selectedUser?.id || null}
+        userName={selectedUser?.name || ''}
+        onClose={() => setShowProfileModal(false)}
+      />
     </div>
   );
 };
